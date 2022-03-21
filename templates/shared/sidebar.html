@@ -1,0 +1,108 @@
+{% load static %}
+<nav class="sidenav flex-shrink-0 p-3 bg-white scrollarea" id="navbar"
+  style="width: 240px; font-family: 'Poppins', sans-serif, monospace;height: 100vh; position:fixed; left:0px; background-color: #f1f1f2 !important;"
+  id="sidenav">
+  <ion-icon name="menu" class="nav__toggle" id="nav-toggle" style="color: #fff;"></ion-icon>
+  <a href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
+    <svg class="bi me-2" width="30" height="24">
+      <use xlink:href="#bootstrap"></use>
+    </svg>
+    <span class="fs-5 fw-semibold">Harvard</span>
+  </a>
+  <div>
+    <ul class="list-unstyled ps-0">
+      <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+          data-bs-target="#home-collapse" aria-expanded="false">
+          Home
+        </button>
+        <div class="collapse" id="home-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li><a href="#" class="link-dark rounded nav__link">Overview</a></li>
+            <li><a href="#" class="link-dark rounded nav__link">Updates</a></li>
+            <li><a href="#" class="link-dark rounded nav__link">Reports</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+          data-bs-target="#farm-collapse" aria-expanded="false">
+          Farm
+        </button>
+        <div class="collapse" id="farm-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li><a href="{% url 'farm:farm-home' %}" class="link-dark rounded nav__link">All Farm details</a></li>
+            <li><a href="{% url 'farm:soil-detail' %}" class="link-dark rounded nav__link">Soil details</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+          data-bs-target="#inputs-collapse" aria-expanded="false">
+          Inputs
+        </button>
+        <div class="collapse" id="inputs-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li><a href="{% url 'input:input_home' %}" class="link-dark rounded nav__link">Inventory</a></li>
+            <li><a href="{% url 'input:input_home' %}" class="link-dark rounded nav__link">Products</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+          data-bs-target="#tasks-collapse" aria-expanded="false">
+          Tasks
+        </button>
+        <div class="collapse" id="tasks-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li><a href="{% url 'task:task_home' %}" class="link-dark rounded nav__link">Ongoing</a></li>
+            <li><a href="{% url 'task:task_home' %}" class="link-dark rounded nav__link">Pending</a></li>
+            <li><a href="{% url 'task:task_home' %}" class="link-dark rounded nav__link">Complete</a></li>
+            <li><a href="{% url 'task:task_home' %}" class="link-dark rounded nav__link">Cancelled</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+          data-bs-target="#seasons-collapse" aria-expanded="false">
+          Farming Seasons
+        </button>
+        <div class="collapse" id="seasons-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li><a href="{% url 'farming:farming_home' %}" class="link-dark rounded nav__link">Current</a></li>
+            <li><a href="{% url 'farming:farming_home' %}" class="link-dark rounded nav__link">All</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="border-top my-3"></li>
+      <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+          data-bs-target="#weather-collapse" aria-expanded="false">
+          Weather
+        </button>
+        <div class="collapse" id="weather-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li><a href="{% url 'farming:farming_home' %}" class="link-dark rounded nav__link">Today</a></li>
+            <li><a href="{% url 'farming:farming_home' %}" class="link-dark rounded nav__link">All Time</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="border-top my-3"></li>
+      <li class="mb-1">
+        <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse"
+          data-bs-target="#account-collapse" aria-expanded="false">
+          Account
+        </button>
+        <div class="collapse" id="account-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+            <li><a href="#" class="link-dark rounded nav__link">New...</a></li>
+            <li><a href="#" class="link-dark rounded nav__link">Profile</a></li>
+            <li><a href="#" class="link-dark rounded nav__link">Settings</a></li>
+            <li><a href="{% url 'account:logout' %}" class="link-dark rounded nav__link">Sign out</a></li>
+          </ul>
+        </div>
+      </li>
+  </div>
+  
+  </ul>
+</nav>

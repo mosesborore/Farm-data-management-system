@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block headContent %}
+
+{% endblock %}
+
+{% block title %}
+    Farm Information
+{% endblock title %}
+
+{% block main %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Farm Information</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group me-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+          </div>
+          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+            <span data-feather="calendar"></span>
+            This week
+          </button>
+    </div>
+</div>
+<div class="content" style="margin-top: 20px">
+    <button id="modelBtn" type="button" class="btn btn-primary mb-4 " data-bs-toggle="modal" data-bs-target="#farmModal">
+        Add New Farm details
+    </button>
+    <!-- Add new farm Modal -->
+    {% include './add-farm-modal.html' %}
+    <!--  Add new farm  MODAL -->
+
+    <!-- DATATABLE -->
+    <div class="container">
+        <table class="table table-striped display table-hover " id="table_id">
+            <thead>
+                <tr>
+                    <th scope="col">Farm ID</th>
+                    <th scope="col">name</th>
+                    <th scope="col">location</th>
+                    <th scope="col">area</th>
+                    <th scope="col">area unit</th>
+                    <th scope="col">options</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if farms %}
+                {% for farm in farms %}
+                <tr>
+                    <td>{{ farm.id}}</td>
+                    <td>{{ farm.name}}</td>
+                    <td>{{ farm.location }}</td>
+                    <td>{{ farm.area }}</td>
+                    <td> {{ farm.area_unit }}</td>
+                    <td>
+                        <a class="btn" id="edit" href="{% url 'farm:edit-farm-detail' farm.id %}" role="button" style="margin-left: 1px; font-size: 14px;" data-id="{{farm.id}}">edit</a>
+                        <a class="btn " id="delete" href="{% url 'farm:delete-farm-detail' farm.id %}" id="modelBtn" data-bs-toggle="modal" data-bs-target="#farmDeleteModal" role="button" style="margin-left: 1px; color: red; font-size: 14px;">delete</a>
+                        <!-- confirm delete modal -->
+                        <div class="modal fade" id="farmDeleteModal" tabindex="-1" aria-labelledby="farmDeleteModal" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="farmDeleteModal">Delete Farm details</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{% url 'farm:delete-farm-detail' farm.id %}" method="POST" class="mt-4">
+                                            {% csrf_token %}
+                                            <input type="checkbox" name="delete" id="delete"> Are sure you want to delete Farm: {{ farm.name }}?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end confirm delete modal -->
+                    </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr aria-colspan="5">
+                    <td></td>
+                    <td></td>
+                    <td colspan="5">
+                        No farm data in the database
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<script type="text/javascript" src="{% static 'datatables/main.js' %}"></script>
+{% endblock main %}

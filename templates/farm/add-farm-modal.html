@@ -1,0 +1,36 @@
+{% load widget_tweaks %}
+<div class="modal fade" id="farmModal" tabindex="-1" aria-labelledby="AddNewFarmDetailModel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="AddNewFarmDetailModel">Add New Farm details</h5>
+				
+			</div>
+			<div class="modal-body">
+				<form action="{% url 'farm:farm-home' %}" method="POST" class="mt-4">
+					{% csrf_token %}
+					<div class="form-group mb-2">
+						<label for="name">{{form.name.label}}</label>
+						{% render_field form.name id="name" class="form-control" placeholder="Enter Farm name" %}
+					</div>
+					<div class="form-group mb-2">
+						<label for="location">{{form.location.label}}</label>
+						{% render_field form.location id="location" class="form-control" placeholder="Enter Farm location" %}
+					</div>
+					<div class="form-group mb-2">
+						<label for="area">{{form.area.label}}</label>
+						{% render_field form.area id="area" class="form-control" placeholder="Enter Farm area" %}
+					</div>
+					<div class="form-group mb-2">
+						<label for="area_unit">{{form.area_unit.label}}</label>
+						{% render_field form.area_unit id="area_unit" class="form-control" placeholder="Enter Farm area unit" %}
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-primary">Save changes</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

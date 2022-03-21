@@ -1,0 +1,49 @@
+{% extends './base.html' %}
+{% load static %}
+
+
+{% block title %}
+Sign up
+{% endblock title %}
+
+{% load widget_tweaks %}
+
+{% block main %}
+
+<div class="main">
+	<h2 class="h2 text-center mb-5"> Farm Data management System</h2>
+
+	<section class="signup">
+		<div class="form-container">
+			<div class="signup-content">
+				<div class="signup-form">
+					<h2 class="form-title">Sign up</h2>
+					<form method="POST" action="{% url 'account:signup' %}" class="register-form" id="register-form">
+						{% csrf_token %}
+						<div class="form-group">
+							<label for="name"><i class="bi bi-person-fill"></i></label>
+							{% render_field form.username placeholder="Enter username" id="name" autofocus=True %}
+						</div>
+						<div class="form-group">
+							<label for="pass"><i class="bi bi-lock-fill"></i></label>
+							{% render_field form.password1 placeholder="Password" id="pass" %}
+						</div>
+						<div class="form-group">
+							<label for="re-pass"><i class="bi bi-lock"></i></i></label>
+							{% render_field form.password2 placeholder="Repeat your Password" id="re_pass" %}
+						</div>
+
+						<div class="form-group form-button">
+							<input type="submit" name="signup" id="signup" class="form-submit" value="Register" />
+						</div>
+					</form>
+				</div>
+				<div class="signup-image">
+					<figure><img src="{% static 'images/signup-image.svg' %}" alt="sing up image"></figure>
+					<a href="{% url 'account:login' %}" class="signup-image-link">I have an account</a>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+{% endblock main%}

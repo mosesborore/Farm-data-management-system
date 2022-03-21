@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+
+{% block headContent %}
+
+{% endblock %}
+
+{% block title %}
+	Soil Information
+{% endblock title %}
+
+
+{% block main %}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Soil Information</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+          <div class="btn-group me-2">
+            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+          </div>
+          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+            <span data-feather="calendar"></span>
+            This week
+          </button>
+    </div>
+</div>
+<div class="content" style="margin-top: 20px">
+    <button id="modelBtn" type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#soilModal">
+        Add New Soil details
+    </button>
+    <!-- add soil modal -->
+    {% include './add-soil-modal.html' %}
+
+    <!-- DATATABLE -->
+    <div class="container-fluid ">
+        <table class="table table-striped display table-hover " id="table_id">
+            <thead>
+                <tr>
+                    <td colspan="6">
+                        soil information
+                    </td>
+                    <td colspan="3">
+                        Soil Testing Dates
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="col"> Farm name</th>
+                    <th scope="col">pH</th>
+                    <th scope="col">color</th>
+                    <th scope="col">texture</th>
+                    <th scope="col">structure</th>
+                    <th scope="col">depth</th>
+                    <th scope="col">current</th>
+                    <th scope="col">last</th>
+                    <th scope="col">next</th>
+                    <th scope="col">status</th>
+                    <th scope="col">options</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if soils %}
+                    {% for soil in soils %}
+                    <tr>
+                        <td>{{ soil.farm_id.name}}</td>
+                        <td>{{ soil.pH}}</td>
+                        <td>{{ soil.color }}</td>
+                        <td>{{ soil.texture }}</td>
+                        <td> {{ soil.structure }}</td>
+                        <td> {{ soil.depth }}</td>
+                        <td> {{ soil.testing_date }}</td>
+                        <td> {{ soil.last_testing_date }}</td>
+                        <td> {{ soil.next_testing_date }}</td>
+                        <td> {{ soil.status }}</td>
+                        <td>
+                        <a class="btn" id="edit" href="{% url 'farm:edit-soil-detail' soil.id %}" role="button" style="margin-left: 1px; font-size: 12px;" data-id="{{farm.id}}">edit</a>
+                        <a class="btn" id="delete" href="{% url 'farm:delete-soil-detail' soil.id %}"  id="modelBtn" data-bs-toggle="modal" data-bs-target="#SoilDeleteModal" role="button"  style="margin-left: 1px; color: red; font-size: 14px;" >delete</a>
+                        <!-- confirm delete modal -->
+                        <div class="modal fade" id="SoilDeleteModal" tabindex="-1" aria-labelledby="SoilDeleteModal" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="farmDeleteModal">Delete Soil details</h5>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{% url 'farm:delete-soil-detail' soil.id %}" method="POST" class="mt-4">
+                                            {% csrf_token %}
+                                            <input type="checkbox" name="delete" id="delete"> Are sure you want to delete soil details?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end confirm delete modal -->
+                    </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr aria-colspan="5">
+                        <td></td>
+                        <td></td>
+                        <td colspan="5">
+                            No soil data in the database
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="{% static 'datatables/main.js' %}"></script>
+{% endblock main %}

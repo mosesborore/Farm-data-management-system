@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% load i18n %}
+
+
+{% block headContent %}
+<style type="text/css">
+	.content {
+		margin-top: 10px;
+	}
+
+	h2 {
+		margin: 10px 10px;
+	}
+</style>
+{% endblock headContent %}
+
+
+{% block title %}
+Edit Farm Information
+{% endblock title %}
+
+{% load widget_tweaks %}
+
+{% block main %}
+
+<div class="content">
+	<div
+		class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+		<h1 class="h2">Add Input Product Information</h1>
+	</div>
+	{% if form.is_bound and not form.is_valid %}
+	<div class="alert alert-warning">
+		<strong>{% trans "Oops! We found some errors" %}</strong> -
+		{% trans "please check the error messages below and try again" %}
+	</div>
+	{% endif %}
+
+	{% if product_form.non_field_errors %}
+	{% for error in product_form.non_field_errors %}
+	<div class="alert alert-danger">
+		{{ error }}
+	</div>
+	{% endfor %}
+	{% endif %}
+	<form action="{% url 'input:add-product' %}" method="POST" class="mt-4" style="max-width: 720px; margin: auto 50px;">
+		{% csrf_token %}
+
+		<div class="row g-3">
+			<div class="col">
+				<div class="form-group mb-2">
+					<label for="name">Product Name</label>
+					{% render_field product_form.name id="name" class="form-control" placeholder="Enter product name" autofocus=True %}
+				</div>
+			</div>
+			<div class="col">
+				<div class="form-group mb-2">
+					<label for="unit_price_amount">Price Per Unit</label>
+					{% render_field product_form.unit_price_amount id="unit_price_amount" class="form-control" placeholder="Enter Price per unit" %}
+				</div>
+			</div>
+		</div>
+		<div class="row g-3">
+			<div class="col">
+				<div class="form-group mb-2">
+					<label for="total_units">Total Units</label>
+					{% render_field product_form.total_units id="total_units" class="form-control" placeholder="Enter total units" %}
+				</div>
+			</div>
+			<div class="col">
+				<div class="form-group mb-2">
+					<label for="total_net_amount">Total Amount</label>
+					{% render_field product_form.total_net_amount id="total_net_amount" class="form-control" placeholder="Enter total amount" %}
+				</div>
+			</div>
+		</div>
+		<div class="row g-3">
+			<div class="col">
+				<div class="form-group mb-2 date">
+					<label for="unit_weight">Weight per Unit</label>
+					{% render_field product_form.unit_weight id="unit_weight" class="form-control" placeholder="Enter weight per unit" %}
+				</div>
+			</div>
+			<div class="col">
+				<div class="form-group mb-2">
+					<label for="unit_measurement">Unit measurement</label>
+					{% render_field product_form.unit_measurement id="unit_measurement" class="form-control" placeholder="Enter unit measurement" %}
+				</div>
+			</div>
+		</div>
+
+		<div class="row g-3">
+			<div class="col">
+				<div class="form-group mb-2 date">
+					<label for="unit_rate">Rate per unit</label>
+					{% render_field product_form.unit_rate id="unit_rate" class="form-control" placeholder="Enter rate e.g. 10kg/acre" %}
+				</div>
+			</div>
+			<div class="col">
+				<div class="form-group mb-2">
+					<label for="unit_rate_measurement">Rate measurement</label>
+					{% render_field product_form.unit_rate_measurement id="unit_rate_measurement" class="form-control" placeholder="Enter unit rate measurement" %}
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			<div class="form-group mb-3">
+				<label for="desc">Product Category</label>
+				{% render_field product_form.desc id="desc" class="form-control" placeholder="Enter product description" %}
+			</div>
+		</div>
+
+		<div class="row g-1">
+			<div class="col">
+				<div class="form-group mb-3">
+					<label for="cat-id">Product Category</label>
+					{% render_field product_form.category id="cat-id" class="form-control"  %}
+				</div>
+			</div>
+
+
+			{% comment %}
+			<!-- <div class="col">
+				<span data-bs-toggle="tooltip" title="Add New category" data-bs-placement="top"
+					data-bs-original-title="Add New category" aria-label="title">
+					<a href="#" id="modelBtn" data-bs-toggle="modal" data-bs-target="#categoryModal" role="button">
+						<img class="py-100" src="{% static 'icons/addlink.svg' %}" alt=""></a>
+					<!-- add category modal -->
+			{% include './add-category-modal.html' %}
+			<!-- end add category modal -->
+			</span>
+		</div> -->
+		{% endcomment %}
+
+
+</div>
+
+<button type="submit" class="btn btn-primary btn-block mt-2 mb-5">Save</button>
+</form>
+</div>
+
+{% endblock main %}

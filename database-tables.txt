@@ -1,0 +1,120 @@
+Login
+Login_id (PK)
+Login_username
+Login_password
+Login_rank
+
+Farmer (Owner)
+Farmer_id (PK)
+Farmer_first_name
+Farmer_last_name
+Farmer_national_id
+Farmer_phone_no
+Farmer_login_id (FK)
+
+
+Farm
+Farm_id(PK)
+Farm_name
+Farm_location
+Farm_area (acre/ha)
+Farm_Farmer_id
+
+
+Worker
+Worker_id (PK)
+Worker_first_name
+Worker_last_name
+Worker_national_id
+Worker_phone_no
+Worker_login_id(FK)
+
+
+Soil
+Soil_id(PK)
+Soil_pH
+Soil_color
+Soil_texture
+Soil_structure
+Soil_depth
+Soil_testing_date
+Soil_last_testing_date
+Soil_next_testing_date
+Soil_status
+Soil_notes
+Soil_farm_farm_id(FK)
+
+Input_category
+Input_category_id (PK)
+Input_category_name
+Input_category_desc
+
+Input_product
+Input_product_id (PK)
+Input_product_name
+Input_product_desc
+Input_product_unit_price
+Input_product_total_units
+Input_product_total_cost
+Input_product_unit_weight
+Input_product_unit_measurement (kg, g, liter, bag)
+Input_product_unit_rate (kg/acre, L/acre)
+Input_product_Input_category_id(FK)
+
+Input_Inventory
+Input_Inventory_id(PK)
+Input_Inventory_name
+Input_Inventory_desc
+Input_Inventory_ref_code
+Input_Inventory_created_on
+Input_Inventory_updated_on
+
+Input_Inventory_item
+Input_Inventory_item_id (PK)
+Input_Inventory_item_Input_product_id(FK)
+Input_Inventory_item_quantity
+Input_Inventory_item_total_cost
+Input_Inventory_item_Input_Inventory_id (FK)
+
+Crop
+Crop_id (PK)
+Crop_name
+Crop_desc
+Crop_variety
+Crop_maturity_duration
+
+
+Farming_season
+Farming_season_id (PK)
+Farming_season_name
+Farming_season_desc
+Farming_season_start_date
+Farming_season_end_date
+Farming_season_Farm_id (FK)
+Farming_season_Crop_id (FK)
+Farming_season_yields
+
+Farming_stage
+Farming_stage_id(PK)
+Farming_stage_name
+Farming_stage_desc
+Farming_stage_start_date
+Farming_stage_duration
+Farming_stage_duration_measurement (months, weeks)
+Farming_stage_Farming_Season_id (FK)
+
+Farm_Task
+Farm_Task_id (PK)
+Farm_Task_name
+Farm_Task_start_date
+Farm_Task_deadline
+Farm_Task_created_by
+Farm_Task_objectives
+Farm_Task_notes
+Farm_Task_status
+Farm_Task_expected_expenses
+Farm_Task_Farm_id(FK)
+Farm_Task_Input_product_id (FK)
+Farm_Task_Input_product_units_used
+Farm_Task_Farming_season_id(FK)
+Farm_Task_Worker_id(FK)

@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+
+{% block headContent %}
+<style type="text/css">
+	.content{
+		margin-top: 10px;
+	}
+	h2{
+		margin: 10px 10px;
+	}
+</style>
+{% endblock headContent %}
+	
+
+{% block title %}
+	Edit Farm Information
+{% endblock title %}
+
+{% load widget_tweaks %}
+
+{% block main %}
+
+<div class="content">
+	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+		<h1 class="h2">Edit Farm Information</h1>
+	</div>
+	<form action="{% url 'farm:edit-farm-detail' pk %}" method="POST" class="mt-4" style="max-width: 720px; margin: auto 50px;">
+		{% csrf_token %}
+		<div class="form-group mb-2">
+			<label for="name">{{form.name.label}}</label>
+			{% render_field form.name id="name" class="form-control" placeholder="Enter farm name" autofocus=True %}
+		</div>
+		<div class="form-group mb-2">
+			<label for="location">{{form.location.label}}</label>
+			{% render_field form.location id="location" class="form-control" placeholder="Enter Farm Location" %}
+		</div>
+		<div class="form-group mb-2">
+			<label for="area">{{form.area.label}}</label>
+			{% render_field form.area id="area" class="form-control" placeholder="Enter area covered" %}
+		</div>
+		<div class="form-group mb-2">
+			<label for="area-unit">{{form.area_unit.label}}</label>
+			{% render_field form.area_unit id="area-unit" class="form-control" placeholder="Enter Farm Location" %}
+		</div>
+		<button type="submit" class="btn btn-primary btn-block mt-4 mb-5">Save changes</button>
+	</form>
+</div>
+
+{% endblock main %}
+	
+	

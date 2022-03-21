@@ -1,0 +1,31 @@
+<!-- Modal -->
+{% load widget_tweaks %}
+<div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="AddNewCategoryDetailModal" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="AddNewCategoryDetailModal">Add New Category</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form action="{% url 'farm:soil-detail' %}" method="POST" class="mt-4">
+					{% csrf_token %}
+          {{category_form.media}}
+					<div class="form-group mb-2">
+						<label for="name">Category name</label>
+						{% render_field category_form.name id="name" class="form-control" placeholder="Enter soil pH levels" autofocus=True %}
+					</div>
+					<div class="form-group mb-2">
+						<label for="category-description">Category description</label>
+						{% render_field category_form.desc id="category-description" class="form-control" placeholder="Enter category description" %}
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-primary">Save</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+	<!--  MODAL -->

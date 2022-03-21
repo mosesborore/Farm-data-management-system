@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block headContent %}
+
+{% endblock %}
+
+{% block title %}
+Product Information
+{% endblock title %}
+
+{% block main %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+	<h1 class="h2">Product Information</h1>
+	<div class="btn-toolbar mb-2 mb-md-0">
+		<div class="btn-group me-2">
+			<button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
+			<button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
+		</div>
+		<button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+			<span data-feather="calendar"></span>
+			This week
+		</button>
+	</div>
+</div>
+<div class="content" style="margin-top: 20px">
+
+	{% comment %}
+	<button id="modelBtn" type="button" class="btn btn-primary mb-4 " data-bs-toggle="modal"
+		data-bs-target="#ProductModal">
+		Add New Product details
+	</button>
+	<!-- Add new Product Modal -->
+	{% include './add-Product-modal.html' %}
+	<!--  Add new Product  MODAL -->
+	{% endcomment %}
+
+
+
+	<!-- DATATABLE -->
+	<div class="container">
+		<table class="table table-striped display table-hover " id="table_id">
+			<thead>
+				<tr>
+					<th scope="col">name</th>
+					<th scope="col">Price per Unit</th>
+					<th scope="col">Total units</th>
+					<th scope="col">Total costs</th>
+					<th scope="col">Wgt per unit</th>
+					<th scope="col">Wgt meas.</th>
+					<th scope="col">Prod. rate</th>
+					<th scope="col">Rate meas.</th>
+					<th scope="col">Prod. category</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% if products %}
+				{% for product in products %}
+				<tr>
+					<td>{{ product.name}}</td>
+					<td>{{ product.unit_price_amount }}</td>
+					<td>{{ product.total_units }}</td>
+					<td>{{ product.total_net_amount }}</td>
+					<td>{{ product.unit_weight }}</td>
+					<td>{{ product.unit_measurement }}</td>
+					<td> {{ product.unit_rate }}</td>
+					<td> {{ product.unit_rate_measurement }}</td>
+					<td> {{ product.category.name }}</td>
+				</tr>
+				{% endfor %}
+				{% else %}
+				<tr aria-colspan="5">
+					<td></td>
+					<td></td>
+					<td colspan="5">
+						No Product data in the database
+					</td>
+					<td></td>
+					<td></td>
+				</tr>
+				{% endif %}
+			</tbody>
+		</table>
+	</div>
+</div>
+<script type="text/javascript" src="{% static 'datatables/main.js' %}"></script>
+{% endblock main %}

@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block title %}
+Weather: ALL
+{% endblock title %}
+
+
+{% block main %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+	<h1 class="h2">Weather Information</h1>
+	
+</div>
+
+
+<div class="p-5 mb-4 bg-light rounded-3">
+	<div class="container-fluid py-5">
+		<div class="d-flex justify-content-even ">
+			<form action="{% url "weather:today" %}" method="post">
+			{% csrf_token %}
+			<div class="form-group mb-2 mx-100">
+				<input type="text" class="form-control" name="city" placeholder="Enter the town name">
+			</div>
+			<div class="form-group mb-4 mx-100">
+				<input type="checkbox" name="save_data" id="save_data"> <span class="ms-2">get data and save</span>
+			</div>
+			<input type="submit" role="button" class="btn btn-primary" value="submit">
+		</form>
+		</div>
+	</div>
+  </div>
+
+<div class="row container mb-100">
+	<div class="col ">
+		<div class="card mb-6">
+			<div class="card-body">
+				<div class="card-title fw-bold h5">Today's Weather in {{name}}</div>
+				<h1 class="fw-bold mb-0">{{temp_feels}} <span>°</span></h1>
+				<small class="text-muted fw-bold my-0">Feels like</small>
+
+				<div class="row">
+					<div class="col border-top me-5 py-2">
+						<div class="d-flex align-items-center justify-content-between">
+							<div class="h6 me-3">
+								Country Code
+							</div>
+							<span>{{country_code}}</span>
+						</div>
+					</div>
+					<div class="col border-top me-5 py-2">
+						<div class="d-flex align-items-center justify-content-between">
+							<div class="h6 me-3">
+								Coordinate
+							</div>
+							<span>{{coord}}</span>
+						</div>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col border-top me-5 py-1">
+						<div class="d-flex align-items-center justify-content-between">
+							<div class="h6 me-3">
+								<img src="{% static 'icons/thermometer.svg' %}" alt="thermometer icon">
+								High/Low
+							</div>
+							<span>{{temp_max}}°/{{temp_min}}°</span>
+						</div>
+					</div>
+					<div class="col border-top me-5 py-1">
+						<div class="d-flex align-items-center justify-content-between">
+							<div class="h6 me-3">
+								Pressure
+							</div>
+							<span>{{pressure}}</span>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col border-top me-5 py-1">
+						<div class="d-flex align-items-center justify-content-between">
+							<div class="h6 me-3">
+								<img src="{% static 'icons/thermometer.svg' %}" alt="thermometer icon">
+								Humidity
+							</div>
+							<span>{{humidity}}</span>
+						</div>
+					</div>
+					<div class="col border-top me-5 py-1">
+						<div class="d-flex align-items-center justify-content-between">
+							<div class="h6 me-3">
+								Forecast
+							</div>
+							<span>{{main}} <img src="https://openweathermap.org/img/wn/{{icon}}.png" class="ms-2" alt="weather icons"></span>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col border-top me-5 py-1">
+						<div class="d-flex align-items-center justify-content-between">
+							<div class="h6 me-3">
+								<img src="{% static 'icons/thermometer.svg' %}" alt="thermometer icon">
+								Description
+							</div>
+							<span>{{desc}}</span>
+						</div>
+					</div>
+					<div class="col border-top me-5 py-1">
+						<div class="d-flex align-items-center justify-content-between">
+							<div class="h6 me-3">
+								Wind
+							</div>
+							<span>{{wind}} km/h</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+{% endblock main %}
