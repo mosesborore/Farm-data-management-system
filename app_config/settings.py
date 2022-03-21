@@ -91,15 +91,6 @@ if os.environ.get("DATABASE_URL"):
     DATABASES["default"] = dj_database_url.config(
         default=os.environ.get("DATABASE_URL")
     )
-else:
-    DATABASES["default"] = {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "FarmData",
-        "USER": "orion",
-        "PASSWORD": "orion-master",
-        "HOST": "localhost",
-        "PORT": "5433",
-    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
