@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import FarmingSeason, FarmingStage, Crop
+from .models import Crop, FarmingSeason, FarmingStage
 
 admin.site.register(Crop)
 admin.site.register(FarmingSeason)

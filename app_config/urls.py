@@ -13,24 +13,22 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 
-from django.conf import settings
-from django.conf.urls.static import static
-
 urlpatterns = [
-    path('', include("account.urls", namespace='account')),
-    path('farm/', include("farm.urls", namespace='farm')),
-    path('farming/', include("farming.urls", namespace="farming")),
-    path('input/', include("input.urls", namespace='input')),
+    path("", include("account.urls", namespace="account")),
+    path("farm/", include("farm.urls", namespace="farm")),
+    path("farming/", include("farming.urls", namespace="farming")),
+    path("input/", include("input.urls", namespace="input")),
     path("task/", include("task.urls", namespace="task")),
     path("weather/", include("weather.urls", namespace="weather")),
-    path('admin/', admin.site.urls),
-    path('tinymce/', include('tinymce.urls')),
+    path("admin/", admin.site.urls),
+    path("tinymce/", include("tinymce.urls")),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-

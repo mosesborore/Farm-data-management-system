@@ -1,10 +1,8 @@
-from distutils.log import warn
-from logging import warning
+import os
+import warnings
 from pathlib import Path
 
-import os
 import dj_database_url
-import warnings
 from django.core.management.utils import get_random_secret_key
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -18,8 +16,10 @@ if not SECRET_KEY and DEBUG:
     warnings.warn("SECRET_KEY not configured, using a random temporary key.")
     SECRET_KEY = get_random_secret_key()
 
+
 def get_list(text):
     return [item.strip() for item in text.split(",")]
+
 
 ALLOWED_HOSTS = get_list(os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1"))
 
@@ -29,13 +29,13 @@ if not OPENWEATHER_API_KEY:
 
 # Application definition
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
     "whitenoise.runserver_nostatic",
-    'django.contrib.staticfiles',
+    "django.contrib.staticfiles",
     # Local app
     "account",
     "farm",
@@ -46,44 +46,44 @@ INSTALLED_APPS = [
     # External apps
     "widget_tweaks",
     "django_prices",
-    'versatileimagefield',
-    'phonenumber_field',
+    "versatileimagefield",
+    "phonenumber_field",
     "tinymce",
 ]
 
-AUTH_USER_MODEL = 'account.Login'
+AUTH_USER_MODEL = "account.Login"
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = 'app_config.urls'
+ROOT_URLCONF = "app_config.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            BASE_DIR.joinpath('templates'),
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [
+            BASE_DIR.joinpath("templates"),
         ],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'app_config.wsgi.application'
+WSGI_APPLICATION = "app_config.wsgi.application"
 
 # DATABASES
 DATABASES = {}
@@ -107,9 +107,9 @@ DEFAULT_CURRENCY_CODE_LENGTH = 3
 
 
 # Internationalization
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'Africa/Nairobi'
+TIME_ZONE = "Africa/Nairobi"
 
 USE_I18N = True
 
@@ -122,7 +122,7 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = str(BASE_DIR.joinpath("media"))
 
 # static
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 STATICFILES_DIRS = (str(BASE_DIR.joinpath("static")),)
 STATIC_ROOT = str(BASE_DIR.joinpath("staticfiles"))
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
@@ -133,12 +133,12 @@ STATICFILES_FINDERS = [
 ]
 
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # PHONE-NUMBER FIELD
-PHONENUMBER_DEFAULT_REGION = 'KE'
+PHONENUMBER_DEFAULT_REGION = "KE"
 PHONENUMBER_DB_FORMAT = "NATIONAL"
-PHONENUMBER_DEFAULT_FORMAT = 'NATIONAL'
+PHONENUMBER_DEFAULT_FORMAT = "NATIONAL"
 
 # VERSATILE SETTINGS
 VERSATILEIMAGEFIELD_SETTINGS = {
@@ -149,11 +149,8 @@ VERSATILEIMAGEFIELD_SETTINGS = {
 VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
     "user_avatars": [
         ("default", "thumbnail__445x445"),
-        ('profile_medium', 'thumbnail__300x300'),
+        ("profile_medium", "thumbnail__300x300"),
     ]
 }
 
-TINYMCE_DEFAULT_CONFIG ={
-    "width": "500px",
-    "height": "320px"
-}
+TINYMCE_DEFAULT_CONFIG = {"width": "500px", "height": "320px"}

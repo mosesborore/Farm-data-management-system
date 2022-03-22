@@ -10,7 +10,5 @@ def validate_possible_number(phone, country=None):
         and not is_possible_number(phone_number)
         or not phone_number.is_valid()
     ):
-        raise ValidationError(
-            "The phone number entered is not valid."
-        )
+        raise ValidationError("The phone number entered is not valid.")
     return phone_number

@@ -8,7 +8,9 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = Login
         fields = (
-            'username', 'password1', 'password2',
+            "username",
+            "password1",
+            "password2",
         )
 
 
@@ -19,10 +21,15 @@ class LoginForm(AuthenticationForm):
 class FarmerForm(ModelForm):
     class Meta:
         model = Farmer
-        fields = ['first_name', 'last_name', 'national_id', 'phone_no', ]
+        fields = [
+            "first_name",
+            "last_name",
+            "national_id",
+            "phone_no",
+        ]
 
 
 class WorkerForm(ModelForm):
     class Meta:
         model = Worker
-        fields = ['first_name', 'last_name', 'national_id', 'phone_no']
+        fields = ["first_name", "last_name", "national_id", "phone_no"]

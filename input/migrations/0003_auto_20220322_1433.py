@@ -6,28 +6,35 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('input', '0002_auto_20220321_1050'),
+        ("input", "0002_auto_20220321_1050"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='inputinventoryitem',
-            old_name='input_inventory_id',
-            new_name='input_inventory',
+            model_name="inputinventoryitem",
+            old_name="input_inventory_id",
+            new_name="input_inventory",
         ),
         migrations.RenameField(
-            model_name='inputinventoryitem',
-            old_name='input_product_id',
-            new_name='input_product',
+            model_name="inputinventoryitem",
+            old_name="input_product_id",
+            new_name="input_product",
         ),
         migrations.AlterField(
-            model_name='inputproduct',
-            name='total_net_amount',
-            field=models.DecimalField(decimal_places=2, default=0.0, max_digits=12, verbose_name='Total Amount'),
+            model_name="inputproduct",
+            name="total_net_amount",
+            field=models.DecimalField(
+                decimal_places=2,
+                default=0.0,
+                max_digits=12,
+                verbose_name="Total Amount",
+            ),
         ),
         migrations.AlterField(
-            model_name='inputproduct',
-            name='unit_price_amount',
-            field=models.DecimalField(decimal_places=2, max_digits=12, verbose_name='Price per unit'),
+            model_name="inputproduct",
+            name="unit_price_amount",
+            field=models.DecimalField(
+                decimal_places=2, max_digits=12, verbose_name="Price per unit"
+            ),
         ),
     ]

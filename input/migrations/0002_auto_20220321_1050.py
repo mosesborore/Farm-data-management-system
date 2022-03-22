@@ -6,23 +6,50 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('input', '0001_initial'),
+        ("input", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='inputcategory',
-            name='desc',
-            field=models.TextField(db_column='Input_category_desc', verbose_name='Input Category description'),
+            model_name="inputcategory",
+            name="desc",
+            field=models.TextField(
+                db_column="Input_category_desc",
+                verbose_name="Input Category description",
+            ),
         ),
         migrations.AlterField(
-            model_name='inputproduct',
-            name='unit_measurement',
-            field=models.CharField(choices=[('KG', 'kilograms'), ('G', 'grams'), ('L', 'liter'), ('BAG', 'bag')], db_column='Input_product_unit_measurement', default='KG', max_length=5, verbose_name='Product unit measurement'),
+            model_name="inputproduct",
+            name="unit_measurement",
+            field=models.CharField(
+                choices=[
+                    ("KG", "kilograms"),
+                    ("G", "grams"),
+                    ("L", "liter"),
+                    ("BAG", "bag"),
+                ],
+                db_column="Input_product_unit_measurement",
+                default="KG",
+                max_length=5,
+                verbose_name="Product unit measurement",
+            ),
         ),
         migrations.AlterField(
-            model_name='inputproduct',
-            name='unit_rate_measurement',
-            field=models.CharField(choices=[('KG/acre', 'kilogram/acre'), ('L/acre', 'liter/acre'), ('G/acre', 'grams/acre'), ('KG/ha', 'kilogram/hectare'), ('L/ha', 'liter/hectare'), ('G/hectare', 'grams/hectare')], db_column='Input_product_unit_rate_measurement', default='KG/acre', max_length=32, verbose_name='Product unit rate measurement'),
+            model_name="inputproduct",
+            name="unit_rate_measurement",
+            field=models.CharField(
+                choices=[
+                    ("KG/acre", "kilogram/acre"),
+                    ("L/acre", "liter/acre"),
+                    ("G/acre", "grams/acre"),
+                    ("KG/ha", "kilogram/hectare"),
+                    ("L/ha", "liter/hectare"),
+                    ("G/hectare", "grams/hectare"),
+                ],
+                db_column="Input_product_unit_rate_measurement",
+                default="KG/acre",
+                max_length=32,
+                verbose_name="Product unit rate measurement",
+            ),
         ),
     ]
