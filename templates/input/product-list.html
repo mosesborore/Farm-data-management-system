@@ -48,9 +48,7 @@ Product Information
 					<th scope="col">Total units</th>
 					<th scope="col">Total costs</th>
 					<th scope="col">Wgt per unit</th>
-					<th scope="col">Wgt meas.</th>
-					<th scope="col">Prod. rate</th>
-					<th scope="col">Rate meas.</th>
+					<th scope="col">Rate</th>
 					<th scope="col">Prod. category</th>
 				</tr>
 			</thead>
@@ -59,14 +57,12 @@ Product Information
 				{% for product in products %}
 				<tr>
 					<td>{{ product.name}}</td>
-					<td>{{ product.unit_price_amount }}</td>
+					<td>{{ product.unit_price_amount }}/{{ product.unit_measurement }}</td>
 					<td>{{ product.total_units }}</td>
 					<td>{{ product.total_net_amount }}</td>
-					<td>{{ product.unit_weight }}</td>
-					<td>{{ product.unit_measurement }}</td>
-					<td> {{ product.unit_rate }}</td>
-					<td> {{ product.unit_rate_measurement }}</td>
-					<td> {{ product.category.name }}</td>
+					<td>{{ product.unit_weight }} {{ product.unit_measurement }}</td>
+					<td> {{ product.unit_rate }} {{ product.unit_rate_measurement }}</td>
+					<td> <span class="badge bg-secondary">{{ product.category.name }}</span></td>
 				</tr>
 				{% endfor %}
 				{% else %}
