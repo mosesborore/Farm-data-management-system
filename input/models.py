@@ -6,7 +6,6 @@ from django.db import models
 from django.forms import SlugField
 from django.utils.translation import gettext_lazy as _
 from django_prices.models import MoneyField
-from tinymce.models import HTMLField
 
 
 class InputCategory(models.Model):
@@ -107,7 +106,7 @@ class InputInventory(models.Model):
 
 class InputInventoryItem(models.Model):
     id = models.BigAutoField(db_column='Input_Inventory_item_id',auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
-    input_product_id = models.ForeignKey(
+    input_product = models.ForeignKey(
         InputProduct, on_delete=models.CASCADE, 
         db_column='Input_Inventory_item_Input_product_id'
     )
@@ -118,7 +117,7 @@ class InputInventoryItem(models.Model):
         default=0,
     )
     total_cost = MoneyField(amount_field="total_net_amount", currency_field="currency")
-    input_inventory_id = models.ForeignKey(
+    input_inventory = models.ForeignKey(
         InputInventory, on_delete=models.CASCADE, related_name="items",
         db_column='Input_Inventory_item_Input_Inventory_id'
     )
@@ -130,4 +129,4 @@ class InputInventoryItem(models.Model):
         pass
     
     def __str__(self):
-        return "%s - %s Inventory Item" %(self.input_product_id.name, self.input_inventory_id.name)
+        return "%s - %s Inventory Item" %(self.input_product.name, self.input_inventory.name)

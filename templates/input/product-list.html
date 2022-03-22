@@ -7,12 +7,12 @@
 {% endblock %}
 
 {% block title %}
-Inventory Information
+Product Information
 {% endblock title %}
 
 {% block main %}
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-	<h1 class="h2">Inventory Information</h1>
+	<h1 class="h2">Product Information</h1>
 	<div class="btn-toolbar mb-2 mb-md-0">
 		<div class="btn-group me-2">
 			<button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
@@ -36,27 +36,37 @@ Inventory Information
 	<!--  Add new Product  MODAL -->
 	{% endcomment %}
 
+
+
 	<!-- DATATABLE -->
 	<div class="container">
 		<table class="table table-striped display table-hover " id="table_id">
 			<thead>
 				<tr>
-					<th scope="col">Inventory name</th>
-					<th scope="col">Inventory Ref. No</th>
-					<th scope="col">Item Count</th>
-					<th scope="col">Created on</th>
-					<th scope="col">Updated on</th>
+					<th scope="col">name</th>
+					<th scope="col">Price per Unit</th>
+					<th scope="col">Total units</th>
+					<th scope="col">Total costs</th>
+					<th scope="col">Wgt per unit</th>
+					<th scope="col">Wgt meas.</th>
+					<th scope="col">Prod. rate</th>
+					<th scope="col">Rate meas.</th>
+					<th scope="col">Prod. category</th>
 				</tr>
 			</thead>
 			<tbody>
-				{% if inventories %}
-				{% for inventory in inventories %}
+				{% if products %}
+				{% for product in products %}
 				<tr>
-					<td>{{ inventory.name}}</td>
-					<td>{{ inventory.ref_code }}</td>
-					<td>{{ inventory.item_count }}</td>
-					<td>{{ inventory.created_on }}</td>
-					<td>{{ inventory.updated_on }}</td>
+					<td>{{ product.name}}</td>
+					<td>{{ product.unit_price_amount }}</td>
+					<td>{{ product.total_units }}</td>
+					<td>{{ product.total_net_amount }}</td>
+					<td>{{ product.unit_weight }}</td>
+					<td>{{ product.unit_measurement }}</td>
+					<td> {{ product.unit_rate }}</td>
+					<td> {{ product.unit_rate_measurement }}</td>
+					<td> {{ product.category.name }}</td>
 				</tr>
 				{% endfor %}
 				{% else %}
@@ -64,7 +74,7 @@ Inventory Information
 					<td></td>
 					<td></td>
 					<td colspan="5">
-						No Inventory data in the database
+						No Product data in the database
 					</td>
 					<td></td>
 					<td></td>

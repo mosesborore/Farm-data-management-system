@@ -18,7 +18,7 @@
 
   <!-- CSS -->
   <link rel="stylesheet" type="text/css" href="{% static 'datatables/dataTables.bootstrap5.min.css' %}">
-  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'datatables/export/buttons.dataTables.min.css' %}">
   <script type="text/javascript" src="{% static 'datatables/jquery-3.5.1.js' %}" ></script>
   <script type="text/javascript" src="{% static 'datatables/jquery.dataTables.min.js' %}" charset="utf8" ></script>
   <script type="text/css" src="{% static 'datatables/select.dataTables.min.css' %}" charset="utf8"></script>
@@ -125,7 +125,7 @@
                 <div class="collapse" id="inputs-collapse">
                   <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                     <li><a href="{% url 'input:input_home' %}" class="link-dark rounded nav__link">Inventory</a></li>
-                    <li><a href="{% url 'input:input_home' %}" class="link-dark rounded nav__link">Products</a></li>
+                    <li><a href="{% url 'input:product-list' %}" class="link-dark rounded nav__link">Products</a></li>
                   </ul>
                 </div>
               </li>
@@ -189,7 +189,7 @@
 
 
     <!-- MAIN -->
-    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mb-100">
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 mb-10">
 
     	<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
 				  <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
@@ -247,7 +247,7 @@
   </div>
   <script type="text/javascript" src="{% static 'bootstrap/popper.min.js'%} "></script>
   <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+  <script src="{% static 'feather.min.js' %}"></script>
 
 </body>
 

@@ -1,7 +1,7 @@
 import random
 from django.conf import settings
 from django.contrib import messages
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 
 import requests
 
@@ -53,7 +53,6 @@ def today_weather(request):
     }
     data = {}
     if request.method == "POST":
-        
         save_data = request.POST.get("save_data", None)
         city_name = request.POST.get("city")
         
