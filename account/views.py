@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import FarmerForm, LoginForm, SignUpForm, WorkerForm
 from .models import Farmer, Worker
@@ -99,7 +99,7 @@ def profile(request):
             farmer_form = FarmerForm(request.POST)
 
             if farmer_form.is_valid():
-                farmer = Farmer.objects.filter(login_id=user).first()
+                farmer = get_object_or_404(Farmer, login_id=user)
                 if farmer is None:
                     # meaning the user has no farmer account
                     # create new Farmer account
@@ -109,24 +109,20 @@ def profile(request):
                 else:
                     # the user has the Farmer details, hence
                     # update the Farmer details
-                    farmer.first_name = farmer_form.cleaned_data["first_name"]
-                    farmer.last_name = farmer_form.cleaned_data["last_name"]
-                    farmer.national_id = farmer_form.cleaned_data["national_id"]
-                    farmer.phone_no = farmer_form.cleaned_data["phone_no"]
-                    farmer.login_id = user
-                    farmer.save()
+                    farmer_form = FarmerForm(request.POST or None, instance=farmer)
+                    farmer_form.login_id = user
+                    farmer_form.save()
 
                 messages.success(request, "Profile update successfully")
             else:
-                # check out how to display form errors
-                messages.error(request, "ERROR")
+                messages.error(request, farmer_form.errors.as_text())
 
         else:
             # the user is a worker
             worker_form = WorkerForm(request.POST)
 
             if worker_form.is_valid():
-                worker = Worker.objects.filter(login_id=user).first()
+                worker = get_object_or_404(Worker, login_id=user)
                 if worker is None:
                     # meaning the user has no worker account
                     # create new Worker account
@@ -136,17 +132,12 @@ def profile(request):
                 else:
                     # the user has the Worker details, hence
                     # update the Worker details
-                    worker.first_name = worker_form.cleaned_data["first_name"]
-                    worker.last_name = worker_form.cleaned_data["last_name"]
-                    worker.national_id = worker_form.cleaned_data["national_id"]
-                    worker.phone_no = worker_form.cleaned_data["phone_no"]
-                    worker.login_id = user
-                    worker.save()
+                    worker_form = WorkerForm(request.POST or None, instance=worker)
+                    worker_form.save()
 
                 messages.success(request, "Profile update successfully")
             else:
-                # check out how to display form errors
-                messages.info(request, "ERROR")
+                messages.info(request, worker_form.errors.as_text())
 
     context = {"form": None, "personal_data": None, "title": "Worker"}
 
