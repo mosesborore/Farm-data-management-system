@@ -17,3 +17,4 @@ app_config/__pycache__/
 media/__sized__/
 media/user-profile-images/
 scripts/
+input/templatetags/__pycache__/
