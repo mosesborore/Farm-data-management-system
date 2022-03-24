@@ -1,0 +1,91 @@
+{% load widget_tweaks %}
+<div class="modal fade" id="ProductModal" tabindex="-1" aria-labelledby="AddNewProductDetailModel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="AddNewProductDetailModel">Add New Product details</h5>
+			</div>
+			<div class="modal-body">
+				<form action="{% url 'input:add-product' %}" method="POST" class="mt-4">
+					{% csrf_token %}
+					<div class="row g-3">
+						<div class="col">
+							<div class="form-group mb-2">
+								<label for="name">Product Name</label>
+								{% render_field product_form.name id="name" class="form-control" placeholder="Enter product name" autofocus=True %}
+							</div>
+						</div>
+						<div class="col">
+							<div class="form-group mb-2">
+								<label for="unit_price_amount">Price Per Unit</label>
+								{% render_field product_form.unit_price_amount id="unit_price_amount" class="form-control" placeholder="Enter Price per unit" %}
+							</div>
+						</div>
+					</div>
+					<div class="row g-3">
+						<div class="col">
+							<div class="form-group mb-2">
+								<label for="total_units">Total Units</label>
+								{% render_field product_form.total_units id="total_units" class="form-control" placeholder="Enter total units" %}
+							</div>
+						</div>
+						<div class="col">
+							<div class="form-group mb-2">
+								<label for="total_net_amount">Total Amount</label>
+								{% render_field product_form.total_net_amount id="total_net_amount" class="form-control" placeholder="Enter total amount" %}
+							</div>
+						</div>
+					</div>
+					<div class="row g-3">
+						<div class="col">
+							<div class="form-group mb-2 date">
+								<label for="unit_weight">Weight per Unit</label>
+								{% render_field product_form.unit_weight id="unit_weight" class="form-control" placeholder="Enter weight per unit" %}
+							</div>
+						</div>
+						<div class="col">
+							<div class="form-group mb-2">
+								<label for="unit_measurement">Unit measurement</label>
+								{% render_field product_form.unit_measurement id="unit_measurement" class="form-control" placeholder="Enter unit measurement" %}
+							</div>
+						</div>
+					</div>
+
+					<div class="row g-3">
+						<div class="col">
+							<div class="form-group mb-2 date">
+								<label for="unit_rate">Rate per unit</label>
+								{% render_field product_form.unit_rate id="unit_rate" class="form-control" placeholder="Enter rate e.g. 10kg/acre" %}
+							</div>
+						</div>
+						<div class="col">
+							<div class="form-group mb-2">
+								<label for="unit_rate_measurement">Rate measurement</label>
+								{% render_field product_form.unit_rate_measurement id="unit_rate_measurement" class="form-control" placeholder="Enter unit rate measurement" %}
+							</div>
+						</div>
+					</div>
+					<div class="col">
+						<div class="form-group mb-3">
+							<label for="desc">Product Category</label>
+							{% render_field product_form.desc id="desc" class="form-control" placeholder="Enter product description" %}
+						</div>
+					</div>
+
+					<div class="row g-1">
+						<div class="col">
+							<div class="form-group mb-3">
+								<label for="cat-id">Product Category</label>
+								{% render_field product_form.category id="cat-id" class="form-control"  %}
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+						<button type="submit" class="btn btn-primary">Save changes</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

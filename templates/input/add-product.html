@@ -26,23 +26,22 @@ Edit Farm Information
 {% block main %}
 
 <div class="content">
-	<div
-		class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 		<h1 class="h2">Add Input Product Information</h1>
 	</div>
 	{% if form.is_bound and not form.is_valid %}
-	<div class="alert alert-warning">
-		<strong>{% trans "Oops! We found some errors" %}</strong> -
-		{% trans "please check the error messages below and try again" %}
-	</div>
+		<div class="alert alert-warning">
+			<strong>{% trans "Oops! We found some errors" %}</strong> -
+			{% trans "please check the error messages below and try again" %}
+		</div>
 	{% endif %}
 
 	{% if product_form.non_field_errors %}
-	{% for error in product_form.non_field_errors %}
-	<div class="alert alert-danger">
-		{{ error }}
-	</div>
-	{% endfor %}
+		{% for error in product_form.non_field_errors %}
+		<div class="alert alert-danger">
+			{{ error }}
+		</div>
+		{% endfor %}
 	{% endif %}
 	<form action="{% url 'input:add-product' %}" method="POST" class="mt-4" style="max-width: 720px; margin: auto 50px;">
 		{% csrf_token %}
@@ -89,7 +88,6 @@ Edit Farm Information
 				</div>
 			</div>
 		</div>
-
 		<div class="row g-3">
 			<div class="col">
 				<div class="form-group mb-2 date">
@@ -118,8 +116,6 @@ Edit Farm Information
 					{% render_field product_form.category id="cat-id" class="form-control"  %}
 				</div>
 			</div>
-
-
 			{% comment %}
 			<!-- <div class="col">
 				<span data-bs-toggle="tooltip" title="Add New category" data-bs-placement="top"
@@ -132,10 +128,7 @@ Edit Farm Information
 			</span>
 		</div> -->
 		{% endcomment %}
-
-
 </div>
-
 <button type="submit" class="btn btn-primary btn-block mt-2 mb-5">Save</button>
 </form>
 </div>
