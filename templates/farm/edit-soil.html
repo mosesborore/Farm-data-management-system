@@ -38,18 +38,18 @@
 			<div class="col">
 				<div class="form-group mb-2">
 					<label for="color">{{form.color.label}}</label>
-					{% render_field form.color id="color" class="form-control" placeholder="Enter soil color" %}
+					{% render_field form.color id="color" class="form-select" placeholder="Enter soil color" %}
 				</div>
 			</div>
 			<div class="form-group mb-2">
 				<label for="texture">{{form.texture.label}}</label>
-				{% render_field form.texture id="texture" class="form-control" placeholder="Enter soil texture" %}
+				{% render_field form.texture id="texture" class="form-select" placeholder="Enter soil texture" %}
 			</div>
 		</div>
 
 		<div class="form-group mb-2">
 			<label for="structure">{{form.structure.label}}</label>
-			{% render_field form.structure id="structure" class="form-control" placeholder="Enter soil structure" %}
+			{% render_field form.structure id="structure" class="form-select" placeholder="Enter soil structure" %}
 		</div>
 		<div class="form-group mb-2">
 			<label for="depth">{{form.depth.label}}</label>
@@ -86,8 +86,8 @@
 			</div>
 			<div class="col">
 				<div class="form-group mb-2">
-					<label for="farm_id">{{form.farm_id.label}}</label>
-					{% render_field form.farm_id id="farm_id" class="form-control" placeholder="Enter Farm name" %}
+					<label for="farm_id">Farm</label>
+					{% render_field form.farm_id id="farm_id" class="form-select" placeholder="Enter Farm name" %}
 				</div>
 			</div>
 		</div>
