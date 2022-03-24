@@ -49,7 +49,6 @@ class Products(LoginRequiredMixin, ListView):
 def add_product(request):
     form = InputProductForm(request.POST)
     if form.is_valid():
-        print(request.POST)
         form.save()
         messages.success(request, "new product added successfully")
     else:

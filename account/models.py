@@ -191,6 +191,6 @@ def warm_Account_profile_images(sender, instance, **kwargs):
 
     num_created, failed_to_create = profile_img_warmer.warm()
     if num_created:
-        print("successful image warmer created")
+        pass
     if failed_to_create:
-        print("unsuccessful image warmer")
+        pass

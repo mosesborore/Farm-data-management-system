@@ -22,7 +22,6 @@ def farm_home_view(request):
             if form.is_valid():
                 farmer = Farmer.objects.get(login_id=request.user)
                 farm = form.save(commit=False)
-                print("FARMER,", farmer)
                 farm.farmer_id = farmer
                 farm.save()
                 messages.success(request, "New farm added successfully")
