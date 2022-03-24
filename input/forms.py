@@ -2,7 +2,8 @@ from django import forms
 from django.conf import settings
 from django_prices.forms import MoneyField
 
-from .models import InputCategory, InputInventory, InputInventoryItem, InputProduct
+from .models import (InputCategory, InputInventory, InputInventoryItem,
+                     InputProduct)
 
 AVAILABLE_CURRENCIES = [settings.DEFAULT_CURRENCY]
 

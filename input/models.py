@@ -1,4 +1,3 @@
-from enum import unique
 from uuid import uuid4
 
 from django.conf import settings
@@ -20,7 +19,7 @@ class InputCategory(models.Model):
         "Input Category name", max_length=256, db_column="Input_category_name"
     )
     desc = models.TextField(
-        "Input Category description", db_column="Input_category_desc"
+        "Input Category description", db_column="Input_category_desc", blank=True
     )
 
     class Meta:
@@ -60,7 +59,9 @@ class InputProduct(models.Model):
     name = models.CharField(
         "Product name", max_length=256, db_column="Input_product_name"
     )
-    desc = models.TextField("Input product description", db_column="Input_product_desc")
+    desc = models.TextField(
+        "Input product description", db_column="Input_product_desc", blank=True
+    )
     currency = models.CharField(
         max_length=settings.DEFAULT_CURRENCY_CODE_LENGTH,
         default=settings.DEFAULT_CURRENCY,
@@ -134,7 +135,7 @@ class InputInventory(models.Model):
     )
     slug = SlugField(allow_unicode=True)
     desc = models.TextField(
-        "Input Inventory description", db_column="Input_Inventory_desc"
+        "Input Inventory description", db_column="Input_Inventory_desc", blank=True
     )
     ref_code = models.CharField(
         "Input Inventory reference code",
