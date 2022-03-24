@@ -41,14 +41,9 @@ def farm_home_view(request):
 def edit_farm(request, pk):
 
     if request.method == "POST":
-        form = FarmForm(request.POST)
+        farm = get_object_or_404(Farm, pk=pk)
+        form = FarmForm(request.POST or None, instance=farm)
         if form.is_valid():
-            farm = get_object_or_404(Farm, pk=pk)
-            farm.name = form.cleaned_data["name"]
-            farm.location = form.cleaned_data["location"]
-            farm.area = form.cleaned_data["area"]
-            farm.area_unit = form.cleaned_data["area_unit"]
-
             name = farm.name
             farm.save()
             messages.success(request, f"Farm details for {name} updated")
@@ -114,24 +109,11 @@ def soil_detail(request):
 def edit_soil_detail(request, pk):
 
     if request.method == "POST":
-        form = SoilForm(request.POST)
+        soil = get_object_or_404(Soil, pk=pk)
+        form = SoilForm(request.POST or None, instance=soil)
 
         if form.is_valid():
-            soil = get_object_or_404(Soil, pk=pk)
-
-            soil.pH = form.cleaned_data["pH"]
-            soil.color = form.cleaned_data["color"]
-            soil.texture = form.cleaned_data["texture"]
-            soil.structure = form.cleaned_data["structure"]
-            soil.depth = form.cleaned_data["depth"]
-            soil.testing_date = form.cleaned_data["testing_date"]
-            soil.last_testing_date = form.cleaned_data["last_testing_date"]
-            soil.next_testing_date = form.cleaned_data["next_testing_date"]
-            soil.status = form.cleaned_data["status"]
-            soil.notes = form.cleaned_data["notes"]
-            soil.farm_id = form.cleaned_data["farm_id"]
-            soil.save()
-
+            form.save()
             messages.success(request, "Soil details updated successfully")
             return redirect("farm:soil-detail")
 
@@ -154,8 +136,8 @@ def delete_soil(request, pk):
     try:
         delete = request.POST.get("delete", None)
         if delete:
-            soil_qs = get_object_or_404(Soil, pk=pk)
-            soil_qs.delete()
+            soil = get_object_or_404(Soil, pk=pk)
+            soil.delete()
             messages.success(request, "Soil deleted successfully")
         else:
             messages.info(
@@ -166,6 +148,6 @@ def delete_soil(request, pk):
             )
 
         return redirect("farm:soil-detail")
-    except soil_qs.DoesNotExist:
+    except Soil.DoesNotExist:
         messages.error(request, "Soil with that Soil ID does not exit")
         return redirect("farm:soil-detail")
