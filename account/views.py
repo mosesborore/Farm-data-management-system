@@ -1,8 +1,11 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
+from django.views.generic import ListView
 
 from .forms import FarmerForm, LoginForm, SignUpForm, WorkerForm
 from .models import Farmer, Worker
@@ -57,6 +60,7 @@ def login_view(request):
     return render(request, "account/login.html", {"form": form})
 
 
+@require_POST
 def logout_view(request):
     # implement to handle POST request only
     logout(request)
@@ -170,3 +174,8 @@ def profile(request):
         context["title"] = "Worker"
 
     return render(request, "account/profile.html", context)
+
+
+class AllUsersList(LoginRequiredMixin, ListView):
+    def get_queryset(self):
+        pass
