@@ -34,14 +34,15 @@
 
     <!-- DATATABLE -->
     <div class="container">
-        <table class="table table-striped display table-hover " id="table_id">
+        <table class="table table-striped display table-hover " id="table_id" style="width: 80%;">
             <thead>
                 <tr>
-                    <th scope="col">Farm ID</th>
+                    <th scope="col"></th>
                     <th scope="col">name</th>
                     <th scope="col">location</th>
                     <th scope="col">area</th>
                     <th scope="col">area unit</th>
+                    <th scope="col">Soil Test Count</th>
                     <th scope="col">actions</th>
                 </tr>
             </thead>
@@ -49,16 +50,17 @@
                 {% if farms %}
                 {% for farm in farms %}
                 <tr>
-                    <td>{{ farm.id}}</td>
+                    <td></td>
                     <td>{{ farm.name}}</td>
                     <td>{{ farm.location }}</td>
                     <td>{{ farm.area }}</td>
                     <td> {{ farm.area_unit }}</td>
+                    <td> {{farm.soil_test_count}}</td>
                     <td>
                         <a class="btn" id="edit" href="{% url 'farm:edit-farm-detail' farm.id %}" role="button" style="margin-left: 1px; font-size: 14px;" data-id="{{farm.id}}">edit</a>
-                        <a class="btn " id="delete" href="{% url 'farm:delete-farm-detail' farm.id %}" id="modelBtn" data-bs-toggle="modal" data-bs-target="#farmDeleteModal" role="button" style="margin-left: 1px; color: red; font-size: 14px;">delete</a>
+                        <a class="btn " id="delete" href="{% url 'farm:delete-farm-detail' farm.id %}" id="modelBtn" data-bs-toggle="modal" data-bs-target="#farmDeleteModal{{ farm.id }}" role="button" style="margin-left: 1px; color: red; font-size: 14px;">delete</a>
                         <!-- confirm delete modal -->
-                        <div class="modal fade" id="farmDeleteModal" tabindex="-1" aria-labelledby="farmDeleteModal" aria-hidden="true">
+                        <div class="modal fade" id="farmDeleteModal{{ farm.id }}" tabindex="-1" aria-labelledby="farmDeleteModal" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -96,5 +98,42 @@
         </table>
     </div>
 </div>
-<script type="text/javascript" src="{% static 'datatables/main.js' %}"></script>
+
 {% endblock main %}
+
+{% block scripts %}
+<script>
+	$(document).ready(function () {
+		$("#table_id").DataTable({
+			columnDefs: [{
+				orderable: false,
+				className: 'focusedRow',
+				target: 0
+			}],
+			select: {
+				style: 'os',
+			},
+			order: [
+				[1, 'asc']
+			],
+			scrollX: true,
+			scrollY: "70vh",
+			scrollCollapse: true,
+			//responsive: true,
+			paging: true,
+			dom: "Bfrtip",
+			orientation: "landscape",
+			buttons: [{
+					text: "Export PDF",
+					extend: "pdfHtml5",
+					messageTop: "Season information report",
+					exportOptions: {
+						columns: [':visible']
+					}
+				},
+				'colvis'
+			],
+		});
+	});
+</script>
+{% endblock scripts %}

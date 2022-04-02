@@ -36,7 +36,7 @@
 
     <!-- DATATABLE -->
     <div class="container-fluid ">
-        <table class="table table-striped display table-hover " id="table_id">
+        <table class="table table-striped display table-hover " id="table_id" style="width: 100%;">
             <thead>
                 <tr>
                     <td colspan="6">
@@ -116,5 +116,43 @@
         </table>
     </div>
 </div>
-<script src="{% static 'datatables/main.js' %}"></script>
+
+
 {% endblock main %}
+
+{% block scripts %}
+<script>
+	$(document).ready(function () {
+		$("#table_id").DataTable({
+			columnDefs: [{
+				orderable: false,
+				className: 'focusedRow',
+				target: 0
+			}],
+			select: {
+				style: 'os',
+			},
+			order: [
+				[1, 'asc']
+			],
+			scrollX: true,
+			scrollY: "70vh",
+			scrollCollapse: true,
+			//responsive: true,
+			paging: true,
+			dom: "Bfrtip",
+			orientation: "landscape",
+			buttons: [{
+					text: "Export PDF",
+					extend: "pdfHtml5",
+					messageTop: "Season information report",
+					exportOptions: {
+						columns: [':visible']
+					}
+				},
+				'colvis'
+			],
+		});
+	});
+</script>
+{% endblock scripts %}
