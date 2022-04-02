@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext_lazy as _
@@ -29,7 +30,7 @@ def farm_home_view(request):
         else:
             messages.error(request, "Only admins and managers can add farm details")
 
-    farms = Farm.objects.all()
+    farms = Farm.objects.all().annotate(soil_test_count=Count("soil"))
 
     form = FarmForm()
     context = {"farms": farms, "form": form}
