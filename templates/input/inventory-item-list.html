@@ -1,18 +1,24 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load widget_tweaks %}
+{% load options %}
 
 {% block headContent %}
+<style type="text/css">
+	.inventory-name{
+		text-transform: capitalize;
+	}
+</style>
 
 {% endblock %}
 
 {% block title %}
-Inventory Information
+Product Information
 {% endblock title %}
 
 {% block main %}
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-	<h1 class="h2">Inventory Information</h1>
+	<h1 class="h4">Inventory Items for: <span class="inventory-name">{{inventory_name}}</span> - {{ref_code}}</h1>
 	<div class="btn-toolbar mb-2 mb-md-0">
 		<div class="btn-group me-2">
 			<button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
@@ -25,58 +31,54 @@ Inventory Information
 	</div>
 </div>
 <div class="content" style="margin-top: 20px">
-
-	{% comment %}
+	<!-- Add new inventory item Modal -->
 	<button id="modelBtn" type="button" class="btn btn-primary mb-4 " data-bs-toggle="modal"
-		data-bs-target="#ProductModal">
-		Add New Product details
+		data-bs-target="#ItemModal">
+		Add item
 	</button>
-	<!-- Add new Product Modal -->
-	{% include './add-Product-modal.html' %}
-	<!--  Add new Product  MODAL -->
-	{% endcomment %}
+
+	{% include './add-inventory-item-modal.html' %}
+	<!-- end Add new inventory item  MODAL -->
 
 	<!-- DATATABLE -->
 	<div class="container">
-		<table class="table table-striped display table-hover " id="table_id" style="width: 100%;">
+		<table class="table table-striped display table-hover " id="inventory_items" style="width: 100%;">
 			<thead>
 				<tr>
-					<th scope="col">Inventory name</th>
-					<th scope="col">Inventory Ref. No</th>
-					<th scope="col">Item Count</th>
-					<th scope="col">Created on</th>
-					<th scope="col">Updated on</th>
-					<th scope="col">Actions</th>
+					<th scope="col">name</th>
+					<th scope="col">Quantity</th>
+					<th scope="col">Total Amount</th>
 				</tr>
 			</thead>
 			<tbody>
-				{% if inventories %}
-				{% for inventory in inventories %}
+				{% if items %}
+				{% for item in items %}
 				<tr>
-					<td> <a href="{% url "input:inventory-item-list" inventory.ref_code %}" style="text-decoration: none;">{{ inventory.name}}</a></td>
-					<td>{{ inventory.ref_code }}</td>
-					<td>{{ inventory.item_count }}</td>
-					<td>{{ inventory.created_on }}</td>
-					<td>{{ inventory.updated_on }}</td>
+					<td>{{ item.input_product.name}}</td>
+					<td>{{ item.quantity }}</td>
+					<td>{{ item.get_total_cost }}</td>
+
+
+					{% comment %}
 					<td>
 						<button class="btn " id="delete" id="modelBtn" data-bs-toggle="modal"
-							data-bs-target="#inventoryDeleteModal{{inventory.id}}" role="button"
+							data-bs-target="#itemDeleteModal{{item.id}}" role="button"
 							style="margin-left: 1px; color: red; font-size: 14px;">delete</button>
 					</td>
 					<!-- confirm delete modal -->
-					<div class="modal fade" id="inventoryDeleteModal{{inventory.id}}" tabindex="-1"
-						aria-labelledby="inventoryDeleteModal" aria-hidden="true">
+					<div class="modal fade" id="itemDeleteModal{{item.id}}" tabindex="-1"
+						aria-labelledby="itemDeleteModal" aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h5 class="modal-title" id="inventoryDeleteModal">Delete Inventory</h5>
+									<h5 class="modal-title" id="farmDeleteModal">Delete Soil details</h5>
 								</div>
 								<div class="modal-body">
-									<form action="{% url 'input:delete-inventory' inventory.ref_code %}" method="POST"
+									<form action="{% url 'input:delete-item' item.id %}" method="DELETE"
 										class="mt-4">
 										{% csrf_token %}
-										<input type="checkbox" name="delete" id="delete"> Are sure you want to delete
-										inventory: {{ inventory.name }}?
+										<input type="checkbox" name="item" id="delete"> Are sure you want to delete
+										soil details?
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-secondary"
@@ -88,6 +90,7 @@ Inventory Information
 						</div>
 					</div>
 					<!-- end confirm delete modal -->
+					{% endcomment %}
 				</tr>
 				{% endfor %}
 				{% else %}
@@ -95,23 +98,27 @@ Inventory Information
 					<td></td>
 					<td></td>
 					<td colspan="5">
-						No Inventory data in the database
+						No Inventory items data in the database
 					</td>
 					<td></td>
 					<td></td>
 				</tr>
 				{% endif %}
+
 			</tbody>
 		</table>
 	</div>
+
+	<h4 class="h5">TOTAL: {{inventory_total_cost}}</h4>
 </div>
+
 {% endblock main %}
 
 {% block scripts %}
 
 <script>
 	$(document).ready(function () {
-		$("#table_id").DataTable({
+		$("#inventory_items").DataTable({
 			columnDefs: [{
 				orderable: false,
 				className: 'focusedRow',

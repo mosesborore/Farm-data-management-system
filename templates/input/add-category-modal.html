@@ -10,7 +10,7 @@
 			<div class="modal-body">
 				<form action="{% url 'farm:soil-detail' %}" method="POST" class="mt-4">
 					{% csrf_token %}
-          {{category_form.media}}
+          				{{category_form.media}}
 					<div class="form-group mb-2">
 						<label for="name">Category name</label>
 						{% render_field category_form.name id="name" class="form-control" placeholder="Enter soil pH levels" autofocus=True %}

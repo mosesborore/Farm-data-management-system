@@ -36,7 +36,7 @@ Product Information
 
 	<!-- DATATABLE -->
 	<div class="container">
-		<table class="table table-striped display table-hover " id="table_id">
+		<table class="table table-striped display table-hover " id="table_id" style="width: 100%;">
 			<thead>
 				<tr>
 					<th scope="col">name</th>
@@ -57,32 +57,38 @@ Product Information
 					<td data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight{{product.id}}"
 						aria-controls="offcanvasRight">
 						{{ product.name}}</td>
-					<td>{{ product.unit_price_amount }}</td>
+					<td>{{ product.get_unit_price }}</td>
 					<td>{{ product.total_units }}</td>
 					<td>{{ product.unit_measurement }}</td>
-					<td>{{ product.total_net_amount }}</td>
+					<td>{{ product.get_total_cost }}</td>
 					<td>{{ product.unit_weight }} {{ product.unit_measurement }}</td>
 					<td> {{ product.unit_rate }} {{ product.unit_rate_measurement }}</td>
 					<td> <span class="badge bg-secondary">{{ product.category.name }}</span></td>
 					<td>
-						<button class="btn " id="delete"  id="modelBtn" data-bs-toggle="modal" data-bs-target="#productDeleteModal{{product.id}}" role="button" style="margin-left: 1px; color: red; font-size: 14px;">delete</button>
+						<button class="btn " id="delete" id="modelBtn" data-bs-toggle="modal"
+							data-bs-target="#productDeleteModal{{product.id}}" role="button"
+							style="margin-left: 1px; color: red; font-size: 14px;">delete</button>
 					</td>
 					<!-- confirm delete modal -->
-					<div class="modal fade" id="productDeleteModal{{product.id}}" tabindex="-1" aria-labelledby="productDeleteModal" aria-hidden="true">
+					<div class="modal fade" id="productDeleteModal{{product.id}}" tabindex="-1"
+						aria-labelledby="productDeleteModal{{product.id}}" aria-hidden="true">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
 									<h5 class="modal-title" id="farmDeleteModal">Delete Soil details</h5>
 								</div>
 								<div class="modal-body">
-									<form action="{% url 'input:delete-product' product.id %}" method="POST" class="mt-4">
+									<form action="{% url 'input:delete-product' product.id %}" method="POST"
+										class="mt-4">
 										{% csrf_token %}
-										<input type="checkbox" name="delete" id="delete"> Are sure you want to delete soil details?
-									</div>
-									<div class="modal-footer">
-										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-										<button type="submit" class="btn btn-danger">Delete</button>
-									</div>
+										<input type="checkbox" name="delete" id="delete"> Are sure you want to delete
+										soil details?
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary"
+										data-bs-dismiss="modal">Close</button>
+									<button type="submit" class="btn btn-danger">Delete</button>
+								</div>
 								</form>
 							</div>
 						</div>
@@ -103,14 +109,15 @@ Product Information
 								<div class="row g-3">
 									<div class="col">
 										<div class="form-group mb-2">
-											<label for="name">Product Name</label>
-											<input type="text" name="name" id="name" value="{{product.name}}" class="form-control"
-												placeholder="Enter product name" autofocus=True required>
+											<label for="name" class="fw-bold">Product Name</label>
+											<input type="text" name="name" id="name" value="{{product.name}}"
+												class="form-control" placeholder="Enter product name" autofocus=True
+												required>
 										</div>
 									</div>
 									<div class="col">
 										<div class="form-group mb-2">
-											<label for="unit_price_amount">Price Per Unit</label>
+											<label for="unit_price_amount" class="fw-bold">Price Per Unit</label>
 											<input type="number" step="0.01" name="unit_price_amount"
 												id="unit_price_amount" class="form-control"
 												value="{{product.unit_price_amount}}" placeholder="Enter Price per unit"
@@ -121,7 +128,7 @@ Product Information
 								<div class="row g-3">
 									<div class="col">
 										<div class="form-group mb-2">
-											<label for="total_units">Total Units</label>
+											<label for="total_units" class="fw-bold">Total Units</label>
 											<input type="number" name="total_units" id="total_units"
 												value="{{ product.total_units }}" class="form-control"
 												placeholder="Enter total units" required>
@@ -129,7 +136,7 @@ Product Information
 									</div>
 									<div class="col">
 										<div class="form-group mb-2">
-											<label for="total_net_amount">Total Amount</label>
+											<label for="total_net_amount" class="fw-bold">Total Amount</label>
 											<input type="number" name="total_net_amount"
 												value="{{product.total_net_amount}}" id="total_net_amount" min="0"
 												step="0.01" class="form-control" placeholder="Enter total amount"
@@ -140,7 +147,7 @@ Product Information
 								<div class="row g-3">
 									<div class="col">
 										<div class="form-group mb-2 date">
-											<label for="unit_weight">Weight per Unit</label>
+											<label for="unit_weight" class="fw-bold">Weight per Unit</label>
 											<input type="number" name="unit_weight" value="{{product.unit_weight}}"
 												id="unit_weight" class="form-control"
 												placeholder="Enter weight per unit" required>
@@ -148,7 +155,7 @@ Product Information
 									</div>
 									<div class="col">
 										<div class="form-group mb-2">
-											<label for="unit_measurement">Unit measurements</label>
+											<label for="unit_measurement" class="fw-bold">Unit measurements</label>
 											<select name="unit_measurement" class="form-select" required
 												aria-required="true">
 												{% unit_measurement_tag product.unit_measurement %}
@@ -161,7 +168,7 @@ Product Information
 								<div class="row g-3">
 									<div class="col">
 										<div class="form-group mb-2 date">
-											<label for="unit_rate">Rate per unit</label>
+											<label for="unit_rate" class="fw-bold">Rate per unit</label>
 											<input type="number" name="unit_rate" id="unit_rate" class="form-control"
 												min="0" value="{{product.unit_rate}}"
 												placeholder="Enter rate e.g. 10kg/acre" required aria-required="true">
@@ -169,7 +176,7 @@ Product Information
 									</div>
 									<div class="col">
 										<div class="form-group mb-2">
-											<label for="unit_rate_measurement">Rate measurement</label>
+											<label for="unit_rate_measurement" class="fw-bold">Rate measurement</label>
 											<select name="unit_rate_measurement" id="unit_rate_measurement"
 												class="form-select" required aria-required="true">
 												{% unit_rate_measurement_tag product.unit_rate_measurement %}
@@ -179,20 +186,20 @@ Product Information
 								</div>
 								<div class="col">
 									<div class="form-group mb-3">
-										<label for="desc">Product Description</label>
+										<label for="desc" class="fw-bold">Product Description</label>
 										<textarea name="desc" id="desc" cols="40" rows="10" class="form-control"
-											value="{{product.desc}}" placeholder="Enter product description"
-											aria-required="false"></textarea>
+											placeholder="Enter product description"
+											aria-required="false">{{ product.desc }}</textarea>
 									</div>
 								</div>
 								<div class="row g-1">
 									<div class="col">
 										<div class="form-group mb-3">
-											<label for="cat-id">Product Category</label>
+											<label for="cat-id" class="fw-bold"">Product Category</label>
 											<select name="category" id="cat-id" class="form-select">
 												{% category_option_tag product.category.id %}
 											</select>
-											
+
 										</div>
 									</div>
 								</div>
@@ -222,5 +229,43 @@ Product Information
 		</table>
 	</div>
 </div>
-<script type="text/javascript" src="{% static 'datatables/main.js' %}"></script>
 {% endblock main %}
+
+
+{% block scripts %}
+<script type="text/javascript">
+	$(document).ready(function () {
+		$("#table_id").DataTable({
+			columnDefs: [{
+				orderable: false,
+				className: 'focusedRow',
+				target: 0
+			}],
+			select: {
+				style: 'os',
+			},
+			order: [
+				[1, 'asc']
+			],
+			scrollX: true,
+			scrollY: "70vh",
+			scrollCollapse: true,
+			//responsive: true,
+			paging: true,
+			dom: "Bfrtip",
+			orientation: "landscape",
+			buttons: [{
+					text: "Export PDF",
+					extend: "pdfHtml5",
+					messageTop: "Product information report",
+					exportOptions: {
+						columns: [':visible']
+					}
+				},
+				'colvis'
+			],
+		});
+	});
+</script>
+
+{% endblock scripts %}

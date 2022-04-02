@@ -1,0 +1,41 @@
+<!-- Modal -->
+{% load widget_tweaks %}
+{% load options %}
+<div class="modal fade" id="ItemModal" tabindex="-1" aria-labelledby="AddNewItemDetailModel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="AddNewItemDetailModel">Add New Item</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<form action="{% url 'input:inventory-item-list' ref_code %}" method="POST" class="mt-4">
+					{% csrf_token %}
+					<div class="form-group">
+						<label for="input_product" class="fw-bold">Product Name</label>
+						{% render_field form.input_product class="form-select" %}
+					</div>
+					<div class="form-group">
+						<label for="quantity" class="fw-bold">Quantity</label>
+						{% render_field form.quantity class="form-control" %}
+					</div>
+					<div class="form-group">
+						<label for="total_net_amount" class="fw-bold">Total cost</label>
+						{% render_field form.total_net_amount id="total_net_amount" class="form-control" %}
+					</div>
+					<div class="form-group">
+						<label for="input_inventory" class="fw-bold">Input Inventory</label>
+						<select name="input_inventory" id="input_inventory" class="form-select">
+							{% inventory_option_tag ref_code %}
+						</select>
+					</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<button type="submit" class="btn btn-primary">Save</button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>
+<!--  MODAL -->
