@@ -1,9 +1,7 @@
 from django import forms
 from django.conf import settings
-from django_prices.forms import MoneyField
 
-from .models import (InputCategory, InputInventory, InputInventoryItem,
-                     InputProduct)
+from .models import InputCategory, InputInventory, InputInventoryItem, InputProduct
 
 AVAILABLE_CURRENCIES = [settings.DEFAULT_CURRENCY]
 
@@ -28,9 +26,9 @@ class InputInventoryForm(forms.ModelForm):
 
 
 class InputInventoryItemForm(forms.ModelForm):
-    total_cost = MoneyField(
-        label="Total Cost", available_currencies=AVAILABLE_CURRENCIES
-    )
+    # total_cost = MoneyField(
+    #     label="Total Cost", available_currencies=AVAILABLE_CURRENCIES
+    # )
 
     class Meta:
         model = InputInventoryItem

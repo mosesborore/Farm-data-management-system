@@ -5,6 +5,7 @@ from django.db import models
 from django.forms import SlugField
 from django.utils.translation import gettext_lazy as _
 from django_prices.models import MoneyField
+from django_prices.utils.formatting import format_price
 
 
 class InputCategory(models.Model):
@@ -118,6 +119,17 @@ class InputProduct(models.Model):
     class Meta:
         db_table = "Input_product"
 
+    def save(self, *args, **kwargs):
+        cost = self.unit_price_amount * self.total_units
+        self.total_net_amount = cost
+        return super().save(*args, **kwargs)
+
+    def get_unit_price(self):
+        return format_price(self.unit_price_amount, self.currency)
+
+    def get_total_cost(self):
+        return format_price(self.total_net_amount, self.currency)
+
     def __str__(self):
         return self.name
 
@@ -163,6 +175,11 @@ class InputInventory(models.Model):
             self.ref_code = str(uuid4()).rsplit("-")[-1]
         return super().save(*args, **kwargs)
 
+    def get_total_cost(self):
+        """returns the total cost for this inventory"""
+        total_cost = sum([item.total_net_amount for item in self.items.all()])
+        return format_price(total_cost, "KSH", html=True)
+
     def __str__(self):
         return "%s - %s" % (self.name, self.ref_code)
 
@@ -177,11 +194,18 @@ class InputInventoryItem(models.Model):
     )
     input_product = models.ForeignKey(
         InputProduct,
+        related_name="products",
         on_delete=models.CASCADE,
         db_column="Input_Inventory_item_Input_product_id",
     )
     quantity = models.PositiveIntegerField(
         "Input Inventory item quantity", db_column="Input_Inventory_item_quantity"
+    )
+    currency = models.CharField(
+        max_length=settings.DEFAULT_CURRENCY_CODE_LENGTH,
+        default=settings.DEFAULT_CURRENCY,
+        blank=True,
+        null=True,
     )
     total_net_amount = models.DecimalField(
         max_digits=settings.DEFAULT_MAX_DIGITS,
@@ -201,6 +225,9 @@ class InputInventoryItem(models.Model):
 
     def get_total(self):
         pass
+
+    def get_total_cost(self):
+        return format_price(self.total_net_amount, self.currency)
 
     def __str__(self):
         return "%s - %s Inventory Item" % (
