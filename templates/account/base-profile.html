@@ -115,13 +115,13 @@
 								</button>
 								<div class="collapse" id="tasks-collapse">
 									<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-										<li><a href="{% url 'task:task_home' %}"
+										<li><a href="{% url 'task:home' %}"
 												class="link-dark rounded nav__link">Ongoing</a></li>
-										<li><a href="{% url 'task:task_home' %}"
+										<li><a href="{% url 'task:home' %}"
 												class="link-dark rounded nav__link">Pending</a></li>
-										<li><a href="{% url 'task:task_home' %}"
+										<li><a href="{% url 'task:home' %}"
 												class="link-dark rounded nav__link">Complete</a></li>
-										<li><a href="{% url 'task:task_home' %}"
+										<li><a href="{% url 'task:home' %}"
 												class="link-dark rounded nav__link">Cancelled</a></li>
 									</ul>
 								</div>
@@ -133,10 +133,11 @@
 								</button>
 								<div class="collapse" id="seasons-collapse">
 									<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-										<li><a href="{% url 'farming:farming_home' %}"
-												class="link-dark rounded nav__link">Current</a></li>
-										<li><a href="{% url 'farming:farming_home' %}"
-												class="link-dark rounded nav__link">All</a></li>
+										<li>
+											<a href="{% url 'farming:home' %}" class="link-dark rounded nav__link">Seasons</a></li>
+										<li>
+											<a href="{% url 'farming:crop-list' %}" class="link-dark rounded nav__link">Crops</a>
+										</li>
 									</ul>
 								</div>
 							</li>
@@ -194,40 +195,40 @@
 				</symbol>
 			</svg>
 			{% if messages %}
-				{% for message in messages %}
-					{% if message.level == 20 %}
-					<!--INFO-->
-					<div class="alert alert-primary d-flex align-items-center" role="alert">
-						<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:">
-							<use xlink:href="#info-fill" /></svg>
-						<div>
-							{{ message }}
-						</div>
-						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-					</div>
-					{% elif  message.level == 25 %}
-					<!--SUCCESS-->
-					<div class="alert alert-success d-flex align-items-center" role="alert">
-						<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
-							<use xlink:href="#check-circle-fill" /></svg>
-						<div>
-							{{ message }}
-						</div>
-						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-					</div>
+			{% for message in messages %}
+			{% if message.level == 20 %}
+			<!--INFO-->
+			<div class="alert alert-primary d-flex align-items-center" role="alert">
+				<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:">
+					<use xlink:href="#info-fill" /></svg>
+				<div>
+					{{ message }}
+				</div>
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+			{% elif  message.level == 25 %}
+			<!--SUCCESS-->
+			<div class="alert alert-success d-flex align-items-center" role="alert">
+				<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+					<use xlink:href="#check-circle-fill" /></svg>
+				<div>
+					{{ message }}
+				</div>
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
 
-					{% elif message.level == 40 %}
-					<!--ERROR-->
-					<div class="alert alert-warning d-flex align-items-center" role="alert">
-						<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:">
-							<use xlink:href="#exclamation-triangle-fill" /></svg>
-						<div>
-							{{ message }}
-						</div>
-						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-					</div>
-					{% endif %}
-				{% endfor %}
+			{% elif message.level == 40 %}
+			<!--ERROR-->
+			<div class="alert alert-warning d-flex align-items-center" role="alert">
+				<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:">
+					<use xlink:href="#exclamation-triangle-fill" /></svg>
+				<div>
+					{{ message }}
+				</div>
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+			{% endif %}
+			{% endfor %}
 			{% endif%}
 
 			{% block main %}
@@ -240,4 +241,5 @@
 	<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 
 </body>
+
 </html>
