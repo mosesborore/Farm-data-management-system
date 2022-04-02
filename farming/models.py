@@ -41,7 +41,7 @@ class Crop(models.Model):
         db_table = "Crop"
 
     def __str__(self):
-        return "%s" % self.name
+        return "%s - %s" % (self.name, self.variety)
 
 
 YIELDS_MEASUREMENT = (
