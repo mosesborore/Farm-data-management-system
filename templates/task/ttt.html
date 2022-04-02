@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% block headContent %}
+<script type="text/javascript" src="https://cdn.tiny.cloud/1/lvvgsg5gi3v0h5114jgll5atnpc2tnv2dmdujpaqmtpjqktb/tinymce/5/tinymce.min.js"
+	referrerpolicy="origin"></script>
+{% endblock headContent %}
+
+
+{% block title %}
+Farm Tasks
+{% endblock title %}
+
+
+
+{% block main %}
+<div class="content">
+	<div
+		class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+		<h1 class="h2">Add New Task</h1>
+	</div>
+
+	<form action="{% url 'task:add-task' %}" method="POST" class="mt-4" style="max-width: 720px; margin: auto 50px;">
+		{% csrf_token %}
+		<div class="form-group mb-3">
+			<label for="name">Task Name</label>
+			{% render_field form.name id="name" class="form-control" placeholder="Enter Task Name" autofocus=True %}
+		</div>
+		<div class="row g-3">
+			<div class="col">
+				<div class="form-group mb-3">
+					<label for="start_date">Start date</label>
+					{% render_field form.start_date id="start_date" class="form-control" placeholder="start date" %}
+				</div>
+			</div>
+			<div class="col">
+				<div class="form-group mb-3">
+					<label for="deadline">Deadline</label>
+					{% render_field form.deadline id="deadline" class="form-control" placeholder="deadline" %}
+				</div>
+			</div>
+		</div>
+		<div class="row g-3">
+			<div class="col-sm">
+				<div class="form-group mb-3">
+					<label for="status">Status</label>
+					{% render_field form.status id="status" class="form-select"  %}
+				</div>
+			</div>
+			<div class="col">
+				<div class="form-group mb-3">
+					<label for="farm">Farm</label>
+					{% render_field form.farm id="farm" class="form-select" %}
+				</div>
+			</div>
+			<div class="col">
+				<div class="form-group mb-3">
+					<label for="expenses">Expected Expenses Amount</label>
+					{% render_field form.expected_expenses_price_amount id="expenses" class="form-control" placeholder="Enter expected expense amount" %}
+				</div>
+			</div>
+		</div>
+		<div class="form-group mb-3">
+			<label for="objectives">Objectives</label>
+			{% render_field form.objectives id="objectives" placeholder="Enter task objectives" %}
+		</div>
+
+		<div class="row g-3">
+			<div class="col">
+				<div class="form-group mb-3">
+					<label for="products">Input Product to be used:</label>
+					{% render_field form.products id="products" %}
+				</div>
+			</div>
+		</div>
+
+		<div class="row g-3">
+			<div class="col">
+				<div class="form-group mb-3">
+					<label for="farming_season">Farming Season</label>
+					{% render_field form.farming_season id="farming_season" class="form-select" %}
+				</div>
+			</div>
+			<div class="col">
+				<div class="form-group mb-3">
+					<label for="product_units_used">Product units used</label>
+					{% render_field form.product_units_used id="product_units_used" class="form-control" %}
+				</div>
+			</div>
+		</div>
+		<div class="form-group mb-3">
+			<label for="notes">Notes</label>
+			{% render_field form.notes id="notes" placeholder="Enter task notes" %}
+		</div>
+		<div class="form-group mb-2">
+			<label for="workers">Performed by:</label>
+			{% render_field form.workers id="workers"  id="workers" class="form-select"  aria-label="multiple select workers" %}
+		</div>
+		<button type="submit" class="btn btn-primary btn-block mt-4 mb-5">Save Task</button>
+	</form>
+
+</div>
+
+{% endblock main %}
+
+{% block scripts %}
+<script>
+	tinymce.init({
+		selector: 'textarea#objectives',
+		plugins: 'lists checklist tinymcespellchecker',
+		toolbar: 'checklist',
+		toolbar_mode: 'floating',
+		tinycomments_mode: 'embedded',
+	});
+	tinymce.init({
+		selector: 'textarea#notes',
+		plugins: 'lists checklist tinymcespellchecker',
+		toolbar: 'checklist',
+		toolbar_mode: 'floating',
+		tinycomments_mode: 'embedded',
+	});
+</script>
+{% endblock scripts %}

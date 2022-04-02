@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+
+{% load widget_tweaks %}
+
+{% block headContent %}
+{{form.media}}
+
+<style type="text/css">
+	.card-title {
+		text-transform: capitalize;
+	}
+
+
+	.tox-checklist>li:not(.tox-checklist--hidden) {
+		list-style: none;
+		margin: 0.25em 0;
+		position: relative;
+	}
+
+	.tox-checklist>li:not(.tox-checklist--hidden)::before {
+		content: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cg%20id%3D%22checklist-unchecked%22%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Crect%20id%3D%22Rectangle%22%20width%3D%2215%22%20height%3D%2215%22%20x%3D%22.5%22%20y%3D%22.5%22%20fill-rule%3D%22nonzero%22%20stroke%3D%22%234C4C4C%22%20rx%3D%222%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E%0A");
+		cursor: pointer;
+		height: 1em;
+		margin-left: -1.5em;
+		margin-top: 0.125em;
+		position: absolute;
+		width: 1em;
+	}
+
+	.tox-checklist li:not(.tox-checklist--hidden).tox-checklist--checked::before {
+		content: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%3E%3Cg%20id%3D%22checklist-checked%22%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Crect%20id%3D%22Rectangle%22%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%234099FF%22%20fill-rule%3D%22nonzero%22%20rx%3D%222%22%2F%3E%3Cpath%20id%3D%22Path%22%20fill%3D%22%23FFF%22%20fill-rule%3D%22nonzero%22%20d%3D%22M11.5703186%2C3.14417309%20C11.8516238%2C2.73724603%2012.4164781%2C2.62829933%2012.83558%2C2.89774797%20C13.260121%2C3.17069355%2013.3759736%2C3.72932262%2013.0909105%2C4.14168582%20L7.7580587%2C11.8560195%20C7.43776896%2C12.3193404%206.76483983%2C12.3852142%206.35607322%2C11.9948725%20L3.02491697%2C8.8138662%20C2.66090143%2C8.46625845%202.65798871%2C7.89594698%203.01850234%2C7.54483354%20C3.373942%2C7.19866177%203.94940006%2C7.19592841%204.30829608%2C7.5386474%20L6.85276923%2C9.9684299%20L11.5703186%2C3.14417309%20Z%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E%0A"
+			);
+	}
+
+	.tox-checklist--checked {
+		text-decoration: line-through;
+	}
+</style>
+{% endblock headContent %}
+
+
+{% block title %}
+Farm Tasks
+{% endblock title %}
+
+
+
+{% block main %}
+<div class="content">
+	<div
+		class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+		<h1 class="h2">Edit Task Information</h1>
+	</div>
+
+	<form action="{% url 'task:add-task' %}" id="taskFrom" method="POST" class="mt-4"
+		style="max-width: 720px; margin: auto 50px;">
+		{% csrf_token %}
+		<div class="form-group mb-3">
+			<label for="name" class="fw-bold">Task Name</label>
+			{% render_field form.name id="name" class="form-control " placeholder="Enter Task Name" autofocus=True %}
+		</div>
+		<div class="row g-3">
+			<div class="col">
+				<div class="form-group mb-3">
+					<label for="start_date" class="fw-bold">Start date</label>
+					{% render_field form.start_date id="start_date" class="form-control" placeholder="start date" %}
+				</div>
+			</div>
+			<div class="col">
+				<div class="form-group mb-3">
+					<label for="deadline" class="fw-bold">Deadline</label>
+					{% render_field form.deadline id="deadline" class="form-control" placeholder="deadline" %}
+				</div>
+			</div>
+		</div>
+		<div class="row g-3">
+			<div class="col-sm">
+				<div class="form-group mb-3">
+					<label for="status" class="fw-bold">Status</label>
+					{% render_field form.status id="status" class="form-select"  %}
+				</div>
+			</div>
+			<div class="col">
+				<div class="form-group mb-3">
+					<label for="farm" class="fw-bold">Farm</label>
+					{% render_field form.farm id="farm" class="form-select" %}
+				</div>
+			</div>
+			<div class="col">
+				<div class="form-group mb-3">
+					<label for="expenses" class="fw-bold">Expected Expenses Amount</label>
+					{% render_field form.expected_expenses_price_amount id="expenses" class="form-control" placeholder="Enter expected expense amount" %}
+				</div>
+			</div>
+		</div>
+		<div class="form-group mb-3">
+			<label for="objectives" class="fw-bold"">Objectives</label>
+			<div class=" objectives">
+				{{ objectives | safe }}
+		</div>
+</div>
+
+<div class="row g-3">
+	<div class="col">
+		<div class="form-group mb-3">
+			<label for="products" class="fw-bold">Input Product to be used:</label>
+			{% render_field form.products id="products" %}
+		</div>
+	</div>
+</div>
+
+<div class="row g-3">
+	<div class="col">
+		<div class="form-group mb-3">
+			<label for="farming_season" class="fw-bold">Farming Season</label>
+			{% render_field form.farming_season id="farming_season" class="form-select" %}
+		</div>
+	</div>
+	<div class="col">
+		<div class="form-group mb-3">
+			<label for="product_units_used" class="fw-bold">Product units used</label>
+			{% render_field form.product_units_used id="product_units_used" class="form-control" %}
+		</div>
+	</div>
+</div>
+<div class="form-group mb-3">
+	<label for="notes" class="fw-bold">Task Notes</label>
+	{% render_field form.notes id="notes" placeholder="Enter task notes" %}
+</div>
+<div class="form-group mb-2">
+	<label for="workers" class="fw-bold">Performed by:</label>
+	{% render_field form.workers id="workers"  id="workers" class="form-select"  aria-label="multiple select workers" %}
+</div>
+<button type="submit" id="submit" class="btn btn-primary btn-block mt-4 mb-5">Save Task</button>
+</form>
+
+</div>
+
+{% endblock main %}
+
+
+{% block scripts %}
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		$(".objectives>ul").addClass("tox-checklist")
+
+		$("ul.tox-checklist>li").on("click", function (event) {
+			$(this).toggleClass("tox-checklist--checked")
+		})
+
+		$("#taskFrom").submit(function (e) {
+			e.preventDefault();
+
+			var serializedData = $(this).serialize();
+			var objectives = $(".objectives").html()
+			var data = serializedData + "&objectives=" + objectives
+
+			$.ajax({
+				type: 'POST',
+				url: "{% url 'task:edit-task' task_id %}",
+				data: data,
+				success: function (response) {
+					window.location.href = '{% url "task:home" %}'
+				},
+				error: function (response) {
+					alert("no error occurred try again")
+				}
+			});
+		});
+	});
+</script>
+
+{% endblock scripts %}

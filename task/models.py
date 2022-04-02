@@ -1,7 +1,7 @@
 from django.conf import settings
-from django.db import models
+from django.db import models as models
 from django_prices.models import MoneyField
-from tinymce.models import HTMLField
+from tinymce import models as tinymce_models
 
 from account.models import Worker
 from farm.models import Farm
@@ -14,7 +14,7 @@ FARM_TASK_STATUS = (
         "pending",
     ),
     (
-        "Ongoing",
+        "ongoing",
         "ongoing",
     ),
     (
@@ -39,12 +39,10 @@ class FarmTask(models.Model):
     name = models.CharField(
         "Farm Task Name", max_length=256, db_column="Farm_Task_name"
     )
-    start_date = models.DateTimeField(
+    start_date = models.DateField(
         "Farm Task start date", db_column="Farm_Task_start_date"
     )
-    deadline = models.DateTimeField(
-        "Farm Task end date", db_column="Farm_Task_deadline"
-    )
+    deadline = models.DateField("Farm Task end date", db_column="Farm_Task_deadline")
     updated_on = models.DateField(
         "Farm Task updated on", auto_now=True, db_column="Farm_Task_updated_on"
     )
@@ -53,13 +51,18 @@ class FarmTask(models.Model):
         on_delete=models.CASCADE,
         db_column="Farm_Task_created_by",
     )
-    objective = HTMLField("Farm objectives", db_column="Farm_Task_objectives")
-    notes = HTMLField("Farm Task notes", db_column="Farm_Task_notes")
+    objectives = tinymce_models.HTMLField(
+        "Farm objectives", db_column="Farm_Task_objectives"
+    )
+    notes = tinymce_models.HTMLField(
+        "Farm Task notes", db_column="Farm_Task_notes", blank=True
+    )
     status = models.CharField(
         "Farm Task status",
         choices=FARM_TASK_STATUS,
         max_length=64,
         db_column="Farm_Task_status",
+        default="pending",
     )
     currency = models.CharField(
         max_length=settings.DEFAULT_CURRENCY_CODE_LENGTH,
@@ -84,6 +87,7 @@ class FarmTask(models.Model):
         InputProduct,
         verbose_name="Farm Task product to use",
         db_column="Farm_Task_Input_product_id",
+        blank=True,
     )
     product_units_used = models.PositiveIntegerField(
         "Input product units used",
@@ -105,3 +109,6 @@ class FarmTask(models.Model):
     class Meta:
         db_table = "Farm_Task"
         ordering = ("-start_date",)
+
+    def __str__(self):
+        return "%s" % self.name
