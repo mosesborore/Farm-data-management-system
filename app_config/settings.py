@@ -78,6 +78,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "django.template.context_processors.static",
             ],
         },
     },
@@ -153,4 +154,15 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
     ]
 }
 
-TINYMCE_DEFAULT_CONFIG = {"width": "500px", "height": "320px"}
+TINYMCE_DEFAULT_CONFIG = {
+    "theme": "silver",
+    "height": 300,
+    "menubar": False,
+    "plugins": "advlist,autolink,lists,link,image,charmap,print,preview,anchor,"
+    "fullscreen,table,paste,"
+    "help,wordcount",
+    "toolbar": "undo redo | formatselect | "
+    "bold italic |"
+    "bullist outdent indent | "
+    "removeformat | help",
+}
