@@ -2,7 +2,12 @@ from django.template import Library
 from django.utils.html import conditional_escape, format_html
 from django.utils.safestring import mark_safe
 
-from ..models import UNIT_MEASUREMENT, UNIT_RATE_MEASUREMENT, InputCategory
+from ..models import (
+    UNIT_MEASUREMENT,
+    UNIT_RATE_MEASUREMENT,
+    InputCategory,
+    InputInventory,
+)
 
 register = Library()
 
@@ -83,4 +88,31 @@ def category_tag(selected_id):
         possible_options = conditional_escape("\n").join(opt)
         return mark_safe(possible_options)
     except InputCategory.DoesNotExist:
+        pass
+
+
+@register.simple_tag(name="inventory_option_tag")
+def inventory_tag(selected_id):
+    """
+    Create <select>'s <option>(s) with the value [category id] and name [category name]
+    and adds 'selected' value in <option> if selected_id == category.id
+    """
+    try:
+        objects = InputInventory.objects.all()
+        opt = []
+
+        for obj in objects:
+            if obj.ref_code == selected_id:
+                # mark this option selected
+                opt.append(
+                    format_html(
+                        """<option value="{}" selected>{}</option>""", obj.id, obj.name
+                    )
+                )
+            opt.append(
+                format_html("""<option value="{}">{}</option>""", obj.id, obj.name)
+            )
+        possible_options = conditional_escape("\n").join(opt)
+        return mark_safe(possible_options)
+    except InputInventory.DoesNotExist:
         pass

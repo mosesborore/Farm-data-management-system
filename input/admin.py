@@ -1,7 +1,6 @@
 from django.contrib import admin
 
-from .models import (InputCategory, InputInventory, InputInventoryItem,
-                     InputProduct)
+from .models import InputCategory, InputInventory, InputInventoryItem, InputProduct
 
 # Register your models here.
 
