@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+
+{% block headContent %}
+
+{% endblock headContent %}
+
+
+{% block title %}
+Farming Seasons
+{% endblock title %}
+
+
+
+{% block main %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+	<h1 class="h2">Seasons Information</h1>
+	<div class="btn-toolbar mb-2 mb-md-0">
+	</div>
+</div>
+
+<div class="content" style="margin-top: 20px">
+	<button id="modelBtn" type="button" class="btn btn-primary mb-4 " data-bs-toggle="modal"
+		data-bs-target="#seasonModal">
+		Add New season
+	</button>
+	<!-- Add new season Modal -->
+	{% include './add-season-modal.html' %}
+	<!--  Add new season  MODAL -->
+
+	<!-- DATATABLE -->
+	<div class="container">
+		<table class="table table-striped display table-hover " id="table_id" style="width: 100%;">
+			<thead>
+				<tr>
+					<th scope="col">Farm Name</th>
+					<th scope="col"> Season name</th>
+					<th scope="col"> Season start date</th>
+					<th scope="col"> Season end date</th>
+					<th scope="col">Crop Planted</th>
+					<th scope="col">Season Yields</th>
+					<th scope="col">Actions</th>
+
+				</tr>
+			</thead>
+			<tbody>
+				{% if seasons %}
+				{% for season in seasons %}
+				<tr>
+					<td>{{ season.farm.name}}</td>
+					<td>{{ season.name}}</td>
+					<td>{{ season.start_date }}</td>
+					<td>{{ season.end_date }}</td>
+					<td> {{ season.crop.name }}</td>
+					<td> {{season.yields}} {{ season.yields_measurement }}</td>
+					<td>
+						<a class="btn" id="edit" href="{% url "farming:edit-season" season.id %}" role="button"
+							style="margin-left: 1px; font-size: 14px;" data-id="{{season.id}}">
+							edit
+						</a>
+						<a class="btn " id="delete" href="{% url 'farming:delete-season' season.id %}" id="modelBtn"
+							data-bs-toggle="modal" data-bs-target="#seasonDeleteModal{{season.id}}" role="button"
+							style="margin-left: 1px; color: red; font-size: 14px;">delete</a>
+
+						<!-- confirm delete modal -->
+						<div class="modal fade" id="seasonDeleteModal{{season.id}}" tabindex="-1" aria-labelledby="seasoneleteModal"
+							aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="seasonDeleteModal">Delete Farm details</h5>
+									</div>
+									<div class="modal-body">
+										<form action="{% url 'farming:delete-season' season.id %}" method="POST"
+											class="mt-4">
+											{% csrf_token %}
+											<input type="checkbox" name="delete" id="delete"> Are sure you want to
+											delete Season: {{ season.name }}?
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary"
+											data-bs-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-danger">Delete</button>
+									</div>
+									</form>
+								</div>
+							</div>
+						</div>
+						<!-- end confirm delete modal -->
+					</td>
+				</tr>
+				{% endfor %}
+				{% else %}
+				<tr aria-colspan="5">
+					<td></td>
+					<td></td>
+					<td colspan="5">
+						No season data in the database
+					</td>
+					<td></td>
+					<td></td>
+				</tr>
+				{% endif %}
+			</tbody>
+		</table>
+	</div>
+</div>
+{% endblock main %}
+
+
+{% block scripts %}
+<script>
+	$(document).ready(function () {
+		$("#table_id").DataTable({
+			columnDefs: [{
+				orderable: false,
+				className: 'focusedRow',
+				target: 0
+			}],
+			select: {
+				style: 'os',
+			},
+			order: [
+				[1, 'asc']
+			],
+			scrollX: true,
+			scrollY: "70vh",
+			scrollCollapse: true,
+			//responsive: true,
+			paging: true,
+			dom: "Bfrtip",
+			orientation: "landscape",
+			buttons: [{
+					text: "Export PDF",
+					extend: "pdfHtml5",
+					messageTop: "Season information report",
+					exportOptions: {
+						columns: [':visible']
+					}
+				},
+				'colvis'
+			],
+		});
+	});
+</script>
+{% endblock scripts %}

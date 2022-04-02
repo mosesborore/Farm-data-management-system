@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+
+{% block headContent %}
+<style type="text/css">
+	.content {
+		margin-top: 10px;
+	}
+
+	h2 {
+		margin: 10px 10px;
+	}
+</style>
+{% endblock headContent %}
+
+
+{% block title %}
+Edit Crop Information
+{% endblock title %}
+
+{% load widget_tweaks %}
+
+{% block main %}
+
+<div class="content">
+	<div
+		class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+		<h1 class="h2">Edit Crop Information</h1>
+	</div>
+	<form action="{% url 'farming:edit-crop' pk %}" method="POST" class="mt-4"
+		style="max-width: 720px; margin: auto 50px;">
+		{% csrf_token %}
+		<div class="form-group mb-2">
+			<label for="name">Crop Name</label>
+			{% render_field form.name id="name" class="form-control" placeholder="Enter Farm name" %}
+		</div>
+		<div class="form-group mb-2">
+			<label for="variety">Crop Variety</label>
+			{% render_field form.variety id="variety" class="form-control" placeholder="Enter crop variety" %}
+		</div>
+		<div class="form-group mb-2">
+			<label for="maturity_duration">Maturity Duration</label>
+			{% render_field form.maturity_duration id="maturity_duration" class="form-control" placeholder="Enter Maturity duration" %}
+		</div>
+		<div class="form-group mb-2">
+			<label for="duration_measurement">Yields Measurement</label>
+			{% render_field form.duration_measurement id="duration_measurement" class="form-select" %}
+		</div>
+		<div class="form-group mb-2">
+			<label for="desc">Description</label>
+			{% render_field form.desc id="desc" class="form-control" placeholder="Enter crop description" %}
+		</div>
+
+		<button type="submit" class="btn btn-primary btn-block mt-2 mb-5">Save changes</button>
+	</form>
+</div>
+
+{% endblock main %}

@@ -1,0 +1,48 @@
+{% load widget_tweaks %}
+<div class="modal fade" id="seasonModal" tabindex="-1" aria-labelledby="AddNewSeasonDetailModel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="AddNewSeasonDetailModel">Add New Season</h5>
+
+			</div>
+			<div class="modal-body">
+				<form action="{% url 'farming:home' %}" method="POST" class="mt-4">
+					{% csrf_token %}
+					<div class="form-group mb-2">
+						<label for="name">Name</label>
+						{% render_field form.name id="name" class="form-control" placeholder="Enter Farm name" %}
+					</div>
+					<div class="form-group mb-2">
+						<label for="start_date">Start date</label>
+						{% render_field form.start_date id="start_date" class="form-control" %}
+					</div>
+					<div class="form-group mb-2">
+						<label for="end_date">End Date</label>
+						{% render_field form.end_date id="end_date" class="form-control"%}
+					</div>
+					<div class="form-group mb-2">
+						<label for="farm">Farm</label>
+						{% render_field form.farm id="farm" class="form-select" placeholder="Enter Farm name" %}
+					</div>
+					<div class="form-group mb-2">
+						<label for="crop">Crop Planted</label>
+						{% render_field form.crop id="crop" class="form-select" placeholder="Enter Crop planted" %}
+					</div>
+					<div class="form-group mb-2">
+						<label for="yields">Yields</label>
+						{% render_field form.yields id="yields" class="form-control" placeholder="Enter Yields" %}
+					</div>
+					<div class="form-group mb-2">
+						<label for="yields_measurement">Yields Measurement</label>
+						{% render_field form.yields_measurement id="yields_measurement" class="form-select" %}
+					</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+				<button type="submit" class="btn btn-primary">Save changes</button>
+			</div>
+			</form>
+		</div>
+	</div>
+</div>

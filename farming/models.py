@@ -3,9 +3,9 @@ from django.db import models
 from farm.models import Farm
 
 DURATION = (
-    ("WEEK", "week(s)"),
-    ("MONTH", "month(s)"),
-    ("YEAR", "year(s)"),
+    ("week(s)", "week(s)"),
+    ("month(s)", "month(s)"),
+    ("year(s)", "year(s)"),
 )
 
 
@@ -32,13 +32,16 @@ class Crop(models.Model):
     duration_measurement = models.CharField(
         "Crop maturity duration measurement",
         max_length=16,
-        default="WEEK",
+        default="week(s)",
         choices=DURATION,
         db_column="Crop_duration_measurement",
     )
 
     class Meta:
         db_table = "Crop"
+
+    def __str__(self):
+        return "%s" % self.name
 
 
 YIELDS_MEASUREMENT = (
@@ -91,17 +94,22 @@ class FarmingSeason(models.Model):
         db_column="Farming_season_Crop_id",
     )
     yields = models.PositiveIntegerField(
-        "Season's yields", default=0, db_column="Farming_season_yields"
+        "Season's yields", default=0, db_column="Farming_season_yields", blank=True
     )
     yields_measurement = models.CharField(
         "Yields measurement",
         choices=YIELDS_MEASUREMENT,
         max_length=32,
+        blank=True,
+        default="KG/acre",
         db_column="Farming_season_yields_measurement",
     )
 
     class Meta:
         db_table = "Farming_season"
+
+    def __str__(self):
+        return "%s" % self.name
 
 
 class FarmingStage(models.Model):
@@ -115,9 +123,11 @@ class FarmingStage(models.Model):
     name = models.CharField(
         "Farming Stage name", max_length=64, db_column="Farming_stage_name"
     )
-    desc = models.TextField("Farming Stage description", db_column="Farming_stage_desc")
+    desc = models.TextField(
+        "Farming Stage description", db_column="Farming_stage_desc", blank=True
+    )
     start_date = models.DateField(
-        "Farming season start date",
+        "Farming stage start date",
         blank=False,
         null=False,
         db_column="Farming_stage_start_date",
@@ -135,7 +145,7 @@ class FarmingStage(models.Model):
 
     farming_season = models.ForeignKey(
         FarmingSeason,
-        verbose_name="Current Farm stage",
+        verbose_name="Current Farming Season stage",
         on_delete=models.CASCADE,
         related_name="stages",
         db_column="Farming_stage_Farming_Season_id",
@@ -143,3 +153,6 @@ class FarmingStage(models.Model):
 
     class Meta:
         db_table = "Farming_stage"
+
+    def __str__(self):
+        return "%s" % self.name

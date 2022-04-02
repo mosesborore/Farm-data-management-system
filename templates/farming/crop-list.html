@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+
+
+{% block headContent %}
+
+{% endblock headContent %}
+
+
+{% block title %}
+Crops
+{% endblock title %}
+
+
+
+{% block main %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+	<h1 class="h2">Crops Information</h1>
+	<div class="btn-toolbar mb-2 mb-md-0">
+	</div>
+</div>
+
+<div class="content" style="margin-top: 20px">
+	<button id="modelBtn" type="button" class="btn btn-primary mb-4 " data-bs-toggle="modal"
+		data-bs-target="#cropModal">
+		Add New crop
+	</button>
+	<!-- Add new crop Modal -->
+	{% include './add-crop-modal.html' %}
+	<!--  Add new crop  MODAL -->
+
+	<!-- DATATABLE -->
+	<div class="container">
+		<table class="table table-striped display table-hover " id="table_id" style="width: 100%;">
+			<thead>
+				<tr>
+					<th scope="col">Crop Name</th>
+					<th scope="col">Crop Variety</th>
+					<th scope="col"> Maturity Duration</th>
+					<th scope="col">Planted Count</th>
+					<th scope="col">Actions</th>
+
+				</tr>
+			</thead>
+			<tbody>
+				{% if crops %}
+				{% for crop in crops %}
+				<tr>
+					<td>{{ crop.name}}</td>
+					<td>{{ crop.variety}}</td>
+					<td>{{ crop.maturity_duration }} {{ crop.duration_measurement }}</td>
+					<td>{{ crop.planted_times }}</td>
+					<td>
+						<a class="btn" id="edit" href="{% url "farming:edit-crop" crop.id %}" role="button"
+							style="margin-left: 1px; font-size: 14px;" data-id="{{crop.id}}">
+							edit
+						</a>
+						<a class="btn " id="delete" href="{% url 'farming:delete-crop' crop.id %}" id="modelBtn"
+							data-bs-toggle="modal" data-bs-target="#cropDeleteModal{{crop.id}}" role="button"
+							style="margin-left: 1px; color: red; font-size: 14px;">delete</a>
+
+						<!-- confirm delete modal -->
+						<div class="modal fade" id="cropDeleteModal{{crop.id}}" tabindex="-1" aria-labelledby="cropDeleteModal"
+							aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="cropDeleteModal">Delete Crop details</h5>
+									</div>
+									<div class="modal-body">
+										<form action="{% url 'farming:delete-crop' crop.id %}" method="POST"
+											class="mt-4">
+											{% csrf_token %}
+											<input type="checkbox" name="delete" id="delete"> Are sure you want to
+											delete Crop: {{ crop.name }}?
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary"
+											data-bs-dismiss="modal">Close</button>
+										<button type="submit" class="btn btn-danger">Delete</button>
+									</div>
+									</form>
+								</div>
+							</div>
+						</div>
+						<!-- end confirm delete modal -->
+					</td>
+				</tr>
+				{% endfor %}
+				{% else %}
+				<tr aria-colspan="5">
+					<td></td>
+					<td></td>
+					<td colspan="5">
+						No season data in the database
+					</td>
+					<td></td>
+					<td></td>
+				</tr>
+				{% endif %}
+			</tbody>
+		</table>
+	</div>
+</div>
+{% endblock main %}
+
+
+{% block scripts %}
+<script>
+	$(document).ready(function () {
+		$("#table_id").DataTable({
+			columnDefs: [{
+				orderable: false,
+				className: 'focusedRow',
+				target: 0
+			}],
+			select: {
+				style: 'os',
+			},
+			order: [
+				[1, 'asc']
+			],
+			scrollX: true,
+			scrollY: "70vh",
+			scrollCollapse: true,
+			//responsive: true,
+			paging: true,
+			dom: "Bfrtip",
+			orientation: "landscape",
+			buttons: [{
+					text: "Export PDF",
+					extend: "pdfHtml5",
+					messageTop: "Crop information report",
+					exportOptions: {
+						columns: [':visible']
+					}
+				},
+				'colvis'
+			],
+		});
+	});
+</script>
+{% endblock scripts %}
