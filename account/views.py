@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 from django.views.generic import ListView
@@ -103,19 +104,21 @@ def profile(request):
             farmer_form = FarmerForm(request.POST)
 
             if farmer_form.is_valid():
-                farmer = get_object_or_404(Farmer, login_id=user)
-                if farmer is None:
-                    # meaning the user has no farmer account
-                    # create new Farmer account
-                    farmer = farmer_form.save(commit=False)
-                    farmer.login_id = user
-                    farmer.save()
-                else:
+                try:
+                    farmer = get_object_or_404(Farmer, login_id=user)
+                    
                     # the user has the Farmer details, hence
                     # update the Farmer details
                     farmer_form = FarmerForm(request.POST or None, instance=farmer)
                     farmer_form.login_id = user
                     farmer_form.save()
+                except Http404:
+                    # meaning the user has no farmer account
+                    # create new Farmer account
+                    farmer = farmer_form.save(commit=False)
+                    farmer.login_id = user
+                    farmer.save()
+
 
                 messages.success(request, "Profile update successfully")
             else:
@@ -126,18 +129,18 @@ def profile(request):
             worker_form = WorkerForm(request.POST)
 
             if worker_form.is_valid():
-                worker = get_object_or_404(Worker, login_id=user)
-                if worker is None:
+                try:
+                    worker = get_object_or_404(Worker, login_id=user)
+                    # the user has the Worker details, hence
+                    # update the Worker details
+                    worker_form = WorkerForm(request.POST or None, instance=worker)
+                    worker_form.save()
+                except Http404:
                     # meaning the user has no worker account
                     # create new Worker account
                     worker = worker_form.save(commit=False)
                     worker.login_id = user
                     worker.save()
-                else:
-                    # the user has the Worker details, hence
-                    # update the Worker details
-                    worker_form = WorkerForm(request.POST or None, instance=worker)
-                    worker_form.save()
 
                 messages.success(request, "Profile update successfully")
             else:
