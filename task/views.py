@@ -60,7 +60,7 @@ def edit_task(request, pk):
 
     if request.method == "POST" or request.is_ajax():
         form = FarmTaskForm(request.POST or None, instance=task)
-        print(request.POST)
+
         if form.is_valid():
             name = request.POST.get("name")
             form.save()
