@@ -54,7 +54,11 @@
 		<div class="form-control form-control-dark w-100"></div>
 		<div class="navbar-nav">
 			<div class="nav-item text-nowrap">
-				<a class="nav-link px-3" href="{% url 'account:logout' %}">Sign out</a>
+				<a class="nav-link px-3" href="{% url 'account:logout' %}" 
+				onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Sign out</a>
+				<form id="logout-form" action="{% url 'account:logout' %}" method="post" class="d-none">
+					{% csrf_token %}
+				</form>
 			</div>
 		</div>
 	</header>
@@ -134,9 +138,11 @@
 								<div class="collapse" id="seasons-collapse">
 									<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
 										<li>
-											<a href="{% url 'farming:home' %}" class="link-dark rounded nav__link">Seasons</a></li>
+											<a href="{% url 'farming:home' %}"
+												class="link-dark rounded nav__link">Seasons</a></li>
 										<li>
-											<a href="{% url 'farming:crop-list' %}" class="link-dark rounded nav__link">Crops</a>
+											<a href="{% url 'farming:crop-list' %}"
+												class="link-dark rounded nav__link">Crops</a>
 										</li>
 									</ul>
 								</div>
