@@ -171,8 +171,12 @@
 										<li><a href="#" class="link-dark rounded nav__link">New...</a></li>
 										<li><a href="{% url 'account:profile' %}"
 												class="link-dark rounded nav__link">Profile</a></li>
-										<li><a href="{% url 'account:logout' %}"
-												class="link-dark rounded nav__link">Sign out</a></li>
+										<li><a class="nav-link px-3" href="{% url 'account:logout' %}" 
+											onclick="event.preventDefault();
+											document.getElementById('logout-form').submit();">Sign out</a>
+										  <form id="logout-form" action="{% url 'account:logout' %}" method="post" class="d-none">
+											{% csrf_token %}
+										  </form></li>
 									</ul>
 								</div>
 							</li>

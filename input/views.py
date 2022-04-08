@@ -7,7 +7,6 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_POST
 from django.views.generic import ListView
-from django_prices.models import MoneyField
 
 from .forms import (
     InputCategoryForm,
@@ -59,12 +58,17 @@ def inventory_item_list(request, ref_code):
         if request.method == "POST":
             new_item_form = InputInventoryItemForm(request.POST)
             if new_item_form.is_valid():
+                quantity = request.POST.get('quantity')
+                product_pk = request.POST.get('input_product')
+                product = get_object_or_404(InputProduct, pk=product_pk)
+                
+                #decrease the product quantity
+                product.decrease_unit(quantity)
+                
                 new_item_form.save()
                 messages.success(request, "New Inventory added successfully")
             else:
                 messages.error(request, new_item_form.errors.as_ul())
-        if request.method == "DELETE":
-            print("delete meho")
 
     except Http404:
         messages.error(
@@ -84,6 +88,27 @@ def inventory_item_list(request, ref_code):
     }
     return render(request, "input/inventory-item-list.html", context)
 
+@require_POST
+@login_required(login_url="/account/login/")
+def delete_inventory_item(request, ref_code, pk ):
+    inventory = get_object_or_404(InputInventory, ref_code=ref_code)
+
+    if request.method == "POST":
+        delete = request.POST.get('delete', None)
+        print(delete)
+        if delete:
+            # delete on the item not the product
+            item = inventory.items.filter(pk=pk)
+            item.delete()
+            messages.success(request, "Inventory item deleted successfully")
+        else:
+            messages.info(
+                request,
+                _(
+                    "If you want to delete the item, make sure the checkbox is checked"
+                ),
+            )
+    return redirect('input:inventory-item-list', ref_code)
 
 class Products(LoginRequiredMixin, ListView):
     template_name = "input/product-list.html"
@@ -112,7 +137,12 @@ class Products(LoginRequiredMixin, ListView):
 def add_product(request):
     form = InputProductForm(request.POST)
     if form.is_valid():
-        form.save()
+        units = request.POST.get('total_units')
+        product = form.save(commit=False)
+        
+        # add initial available units
+        product.available_units = units
+        product.save()
         messages.success(request, "new product added successfully")
     else:
         messages.error(request, form.errors.as_text())

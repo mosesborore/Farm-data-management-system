@@ -19,16 +19,6 @@ Product Information
 {% block main %}
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 	<h1 class="h4">Inventory Items for: <span class="inventory-name">{{inventory_name}}</span> - {{ref_code}}</h1>
-	<div class="btn-toolbar mb-2 mb-md-0">
-		<div class="btn-group me-2">
-			<button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-			<button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-		</div>
-		<button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-			<span data-feather="calendar"></span>
-			This week
-		</button>
-	</div>
 </div>
 <div class="content" style="margin-top: 20px">
 	<!-- Add new inventory item Modal -->
@@ -48,6 +38,7 @@ Product Information
 					<th scope="col">name</th>
 					<th scope="col">Quantity</th>
 					<th scope="col">Total Amount</th>
+					<th scope="col">Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -58,8 +49,6 @@ Product Information
 					<td>{{ item.quantity }}</td>
 					<td>{{ item.get_total_cost }}</td>
 
-
-					{% comment %}
 					<td>
 						<button class="btn " id="delete" id="modelBtn" data-bs-toggle="modal"
 							data-bs-target="#itemDeleteModal{{item.id}}" role="button"
@@ -71,14 +60,14 @@ Product Information
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
-									<h5 class="modal-title" id="farmDeleteModal">Delete Soil details</h5>
+									<h5 class="modal-title" id="farmDeleteModal">Delete Inventory Item</h5>
 								</div>
 								<div class="modal-body">
-									<form action="{% url 'input:delete-item' item.id %}" method="DELETE"
+									<form action="{% url 'input:delete-item' ref_code item.id %}" method="POST"
 										class="mt-4">
 										{% csrf_token %}
-										<input type="checkbox" name="item" id="delete"> Are sure you want to delete
-										soil details?
+										<input type="checkbox" name="delete" id="delete"> Are sure you want to delete
+										item: <a href="#">{{ item.input_product.name }}</a>  details?
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-secondary"
@@ -90,8 +79,7 @@ Product Information
 						</div>
 					</div>
 					<!-- end confirm delete modal -->
-					{% endcomment %}
-				</tr>
+					</tr>
 				{% endfor %}
 				{% else %}
 				<tr aria-colspan="5">

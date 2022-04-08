@@ -14,22 +14,12 @@ Product Information
 {% block main %}
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 	<h1 class="h2">Product Information</h1>
-	<div class="btn-toolbar mb-2 mb-md-0">
-		<div class="btn-group me-2">
-			<button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-			<button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-		</div>
-		<button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-			<span data-feather="calendar"></span>
-			This week
-		</button>
-	</div>
 </div>
 <div class="content" style="margin-top: 20px">
 	<!-- Add new Product Modal -->
 	<button id="modelBtn" type="button" class="btn btn-primary mb-4 " data-bs-toggle="modal"
 		data-bs-target="#ProductModal">
-		Add New Product details
+		Add New Product
 	</button>
 	{% include './add-product-modal.html' %}
 	<!-- end Add new Product  MODAL -->
@@ -42,6 +32,7 @@ Product Information
 					<th scope="col">name</th>
 					<th scope="col">Price per Unit</th>
 					<th scope="col">Total units</th>
+					<th scope="col">Avail. units</th>
 					<th scope="col">Unit meas.</th>
 					<th scope="col">Total costs</th>
 					<th scope="col">Wgt per unit</th>
@@ -59,6 +50,7 @@ Product Information
 						{{ product.name}}</td>
 					<td>{{ product.get_unit_price }}</td>
 					<td>{{ product.total_units }}</td>
+					<td>{{ product.available_units }}</td>
 					<td>{{ product.unit_measurement }}</td>
 					<td>{{ product.get_total_cost }}</td>
 					<td>{{ product.unit_weight }} {{ product.unit_measurement }}</td>
