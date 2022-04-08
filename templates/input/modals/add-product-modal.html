@@ -1,4 +1,5 @@
 {% load widget_tweaks %}
+{% load static %}
 <div class="modal fade" id="ProductModal" tabindex="-1" aria-labelledby="AddNewProductDetailModel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -67,7 +68,7 @@
 					</div>
 					<div class="col">
 						<div class="form-group mb-3">
-							<label for="desc">Product Category</label>
+							<label for="desc">Product Description</label>
 							{% render_field product_form.desc id="desc" class="form-control" placeholder="Enter product description" %}
 						</div>
 					</div>
@@ -75,7 +76,10 @@
 					<div class="row g-1">
 						<div class="col">
 							<div class="form-group mb-3">
-								<label for="cat-id">Product Category</label>
+								<label for="cat-id">
+									<span class="me-2">Product Category </span> 
+							<a href="#" data-bs-toggle="modal"
+							data-bs-target="#categoryModal"><img src="{% static 'icons/plus-square.svg' %}" alt="plus icon"> Add Product Category</a> </label>
 								{% render_field product_form.category id="cat-id" class="form-control"  %}
 							</div>
 						</div>
@@ -89,3 +93,7 @@
 		</div>
 	</div>
 </div>
+
+<!-- Add new stage Modal -->
+{% include './add-category-modal.html' %}
+<!--  Add new stage  MODAL -->

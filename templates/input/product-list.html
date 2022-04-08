@@ -21,7 +21,7 @@ Product Information
 		data-bs-target="#ProductModal">
 		Add New Product
 	</button>
-	{% include './add-product-modal.html' %}
+	{% include './modals/add-product-modal.html' %}
 	<!-- end Add new Product  MODAL -->
 
 	<!-- DATATABLE -->
@@ -187,7 +187,12 @@ Product Information
 								<div class="row g-1">
 									<div class="col">
 										<div class="form-group mb-3">
-											<label for="cat-id" class="fw-bold"">Product Category</label>
+											<label for="cat-id" class="fw-bold"">
+												<span class=" me-2">Product Category </span>
+												<a href="#" data-bs-toggle="modal" data-bs-target="#categoryModal"><img
+														src="{% static 'icons/plus-square.svg' %}" alt="plus icon"> Add
+													Product Category</a>
+											</label>
 											<select name="category" id="cat-id" class="form-select">
 												{% category_option_tag product.category.id %}
 											</select>
@@ -256,6 +261,42 @@ Product Information
 				},
 				'colvis'
 			],
+		});
+
+		// add new stage 
+		$("#productCategoryForm").submit(function (e) {
+			e.preventDefault();
+
+			var serializedData = $(this).serialize();
+
+			$.ajax({
+				type: 'POST',
+				url: "{% url 'input:add-category' %}",
+				data: serializedData,
+				success: function (response) {
+					// get the name and id for the just inserted stage
+					name = response['data'][0]['name']
+					id = response['data'][0]['id']
+
+					// populate the stage with the stage just saved
+					let stages = $("select#cat-id");
+					stages.append(`<option value=\"${id}\" selected>${name}</option>`)
+
+					// reset the form
+					// empty the stage form
+					$("#productCategoryForm")[0].reset()
+
+					// dismiss the model
+					$("button#close-modal").click()
+
+					
+
+				},
+				error: function (response) {
+					alert("no error occurred. Please reload the page and try again")
+				}
+			});
+
 		});
 	});
 </script>
