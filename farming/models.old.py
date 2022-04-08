@@ -44,27 +44,6 @@ class Crop(models.Model):
         return "%s - %s" % (self.name, self.variety)
 
 
-class FarmingStage(models.Model):
-    id = models.BigAutoField(
-        db_column="Farming_stage_id",
-        auto_created=True,
-        primary_key=True,
-        serialize=False,
-        verbose_name="ID",
-    )
-    name = models.CharField(
-        "Farming Stage name", max_length=64, db_column="Farming_stage_name"
-    )
-    desc = models.TextField(
-        "Farming Stage description", db_column="Farming_stage_desc", blank=True
-    )
-    class Meta:
-        db_table = "Farming_stage"
-
-    def __str__(self):
-        return "%s" % self.name
-
-
 YIELDS_MEASUREMENT = (
     ("KGS", "kgs"),
     ("TONS", "tons"),
@@ -111,9 +90,6 @@ class FarmingSeason(models.Model):
         on_delete=models.CASCADE,
         db_column="Farming_season_Crop_id",
     )
-    stage = models.ForeignKey(
-		FarmingStage, related_name="stages", null=True, on_delete=models.SET_NULL,  db_column="Farming_season_current_Farming_stage_id"
-	)
     yields = models.PositiveIntegerField(
         "Season's yields", default=0, db_column="Farming_season_yields", blank=True
     )
@@ -128,6 +104,52 @@ class FarmingSeason(models.Model):
 
     class Meta:
         db_table = "Farming_season"
+
+    def __str__(self):
+        return "%s" % self.name
+
+
+class FarmingStage(models.Model):
+    id = models.BigAutoField(
+        db_column="Farming_stage_id",
+        auto_created=True,
+        primary_key=True,
+        serialize=False,
+        verbose_name="ID",
+    )
+    name = models.CharField(
+        "Farming Stage name", max_length=64, db_column="Farming_stage_name"
+    )
+    desc = models.TextField(
+        "Farming Stage description", db_column="Farming_stage_desc", blank=True
+    )
+    start_date = models.DateField(
+        "Farming stage start date",
+        blank=False,
+        null=False,
+        db_column="Farming_stage_start_date",
+    )
+    duration = models.PositiveIntegerField(
+        "Farm stage duration", blank=True, db_column="Farming_stage_duration"
+    )
+    duration_measurement = models.CharField(
+        "Farming stage duration measurement",
+        max_length=32,
+        blank=True,
+        choices=DURATION[:2],
+        db_column="Farming_stage_duration_measurement",
+    )  # slice the tuple so that we only weeks and months
+
+    farming_season = models.ForeignKey(
+        FarmingSeason,
+        verbose_name="Current Farming Season stage",
+        on_delete=models.CASCADE,
+        related_name="stages",
+        db_column="Farming_stage_Farming_Season_id",
+    )
+
+    class Meta:
+        db_table = "Farming_stage"
 
     def __str__(self):
         return "%s" % self.name

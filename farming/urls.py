@@ -11,4 +11,5 @@ urlpatterns = [
     path("crops", views.crop_list, name="crop-list"),
     path("crops/<int:pk>/edit", views.edit_crop, name="edit-crop"),
     path("crops/<int:pk>/delete", views.delete_crop, name="delete-crop"),
+    path("stage/add", views.add_stage, name="add-stage"),
 ]

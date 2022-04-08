@@ -33,11 +33,12 @@ Farming Seasons
 		<table class="table table-striped display table-hover " id="table_id" style="width: 100%;">
 			<thead>
 				<tr>
-					<th scope="col">Farm Name</th>
 					<th scope="col"> Season name</th>
+					<th scope="col">Farm Name</th>
 					<th scope="col"> Season start date</th>
 					<th scope="col"> Season end date</th>
 					<th scope="col">Crop Planted</th>
+					<th scope="col">Current Stage</th>
 					<th scope="col">Season Yields</th>
 					<th scope="col">Actions</th>
 
@@ -47,11 +48,12 @@ Farming Seasons
 				{% if seasons %}
 				{% for season in seasons %}
 				<tr>
-					<td>{{ season.farm.name}}</td>
 					<td>{{ season.name}}</td>
+					<td>{{ season.farm.name}}</td>
 					<td>{{ season.start_date }}</td>
 					<td>{{ season.end_date }}</td>
 					<td> {{ season.crop.name }}</td>
+					<td> {% if season.stage.name %}{{ season.stage.name }}{% else %}not specified{% endif %}</td>
 					<td> {{season.yields}} {{ season.yields_measurement }}</td>
 					<td>
 						<a class="btn" id="edit" href="{% url "farming:edit-season" season.id %}" role="button"
@@ -113,7 +115,7 @@ Farming Seasons
 	$(document).ready(function () {
 		$("#table_id").DataTable({
 			columnDefs: [{
-				orderable: false,
+				orderable: true,
 				className: 'focusedRow',
 				target: 0
 			}],
@@ -140,6 +142,40 @@ Farming Seasons
 				},
 				'colvis'
 			],
+		});
+
+		// add new stage 
+		$("#stageForm").submit(function (e) {
+			e.preventDefault();
+
+			var serializedData = $(this).serialize();
+
+			$.ajax({
+				type: 'POST',
+				url: "{% url 'farming:add-stage' %}",
+				data: serializedData,
+				success: function (response) {
+					// get the name and id for the just inserted stage
+					name = response['data'][0]['name']
+					id = response['data'][0]['id']
+
+					// populate the stage with the stage just saved
+					let stages = $("select#stage");
+					stages.append(`<option value=\"${id}\" selected>${name}</option>`)
+
+					// dismiss the model
+					$("button#close-modal").click()
+					
+					// reset the form
+					// empty the stage form
+					$("#stageForm")[0].reset()
+
+				},
+				error: function (response) {
+					alert("no error occurred. Please reload the page and try again")
+				}
+			});
+			
 		});
 	});
 </script>

@@ -1,4 +1,6 @@
 {% load widget_tweaks %}
+{% load static %}
+
 <div class="modal fade" id="seasonModal" tabindex="-1" aria-labelledby="AddNewSeasonDetailModel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -30,6 +32,14 @@
 						{% render_field form.crop id="crop" class="form-select" placeholder="Enter Crop planted" %}
 					</div>
 					<div class="form-group mb-2">
+						<label for="stage">
+							<span class="me-2">Current stage </span> 
+							<a href="#" data-bs-toggle="modal"
+							data-bs-target="#stageModal"><img src="{% static 'icons/plus-square.svg' %}" alt="plus icon"> Add New stage</a>
+						</label>
+						{% render_field form.stage id="stage" class="form-select" placeholder="Enter Current stage" %}
+					</div>
+					<div class="form-group mb-2">
 						<label for="yields">Yields</label>
 						{% render_field form.yields id="yields" class="form-control" placeholder="Enter Yields" %}
 					</div>
@@ -46,3 +56,7 @@
 		</div>
 	</div>
 </div>
+
+<!-- Add new stage Modal -->
+{% include './add-stage-modal.html' %}
+<!--  Add new stage  MODAL -->

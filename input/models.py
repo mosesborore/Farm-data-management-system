@@ -160,7 +160,7 @@ class InputProduct(models.Model):
         return format_price(self.total_net_amount, self.currency)
 
     def __str__(self):
-        return self.name
+        return "%s - %d" % (self.name, self.unit_price_amount)
 
 
 class InputInventory(models.Model):

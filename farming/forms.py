@@ -25,12 +25,7 @@ class FarmingSeasonForm(forms.ModelForm):
         fields = "__all__"
 
 
-class FarmingStage(forms.ModelForm):
-    start_date = forms.DateField(
-        widget=forms.DateInput(format="%Y-%m-%d", attrs={"type": "date"}),
-        input_formats=("%Y-%m-%d",),
-    )
-
+class FarmingStageForm(forms.ModelForm):
     class Meta:
         model = FarmingStage
         fields = "__all__"

@@ -1,9 +1,11 @@
 from django.contrib import messages
 from django.db.models import Count
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
-from .forms import CropForm, FarmingSeasonForm
+from .forms import CropForm, FarmingSeasonForm, FarmingStageForm
 from .models import Crop, FarmingSeason, FarmingStage
 
 
@@ -35,7 +37,9 @@ def edit_season(request, pk):
         else:
             messages.error(request, form.errors.as_text)
 
-    context = {"form": FarmingSeasonForm(instance=season), "pk": season.pk}
+    context = {
+        "form": FarmingSeasonForm(instance=season), 
+        "pk": season.pk}
 
     return render(request, "farming/edit-season.html", context)
 
@@ -115,3 +119,19 @@ def delete_crop(request, pk):
         messages.error(request, "Crop does not exist")
 
     return redirect("farming:crop-list")
+
+@require_POST
+@login_required(login_url="/account/login/")
+def add_stage(request):
+    if request.method == "POST" or request.is_ajax():
+        form = FarmingStageForm(request.POST)
+        if form.is_valid():
+            form.save()
+            stage = get_object_or_404(FarmingStage, name=request.POST.get('name'))
+        
+        context = {
+            "data": [
+                {"name": stage.name, "id":stage.id}
+            ]
+        }
+    return JsonResponse(context)

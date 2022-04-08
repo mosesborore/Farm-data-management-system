@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext_lazy as _
 from django.views.decorators.http import require_POST
@@ -14,7 +14,7 @@ from .forms import (
     InputInventoryItemForm,
     InputProductForm,
 )
-from .models import InputInventory, InputProduct
+from .models import InputCategory, InputInventory, InputProduct
 
 
 # Create your views here.
@@ -25,8 +25,14 @@ def input_home(request):
     inventories = InputInventory.objects.prefetch_related("items").annotate(
         item_count=Count("items")
     )
+    
+    if request.method == 'POST':
+        # add new inventory
+        form = InputInventoryForm(request.POST)
+        if form.is_valid():
+            form.save()
 
-    context = {"inventories": inventories}
+    context = {"inventories": inventories, "form": InputInventoryForm()}
     return render(request, "input/index.html", context)
 
 
@@ -128,6 +134,7 @@ class Products(LoginRequiredMixin, ListView):
         context = super().get_context_data()
         context["products"] = self.get_queryset()
         context["product_form"] = InputProductForm()
+        context["category_form"] = InputCategoryForm()
         context["unit_measurement"] = self.get_unit_measurement_options()
         return context
 
@@ -186,3 +193,19 @@ def delete_product(request, pk):
         return redirect("input:product-list")
     except InputProduct.DoesNotExist:
         messages.error(request, "Product with that name does not exist. Try again")
+
+@require_POST
+@login_required(login_url="/account/login/")
+def add_category(request):
+    if request.method == "POST" or request.is_ajax():
+        form = InputCategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            stage = get_object_or_404(InputCategory, name=request.POST.get('name'))
+        
+        context = {
+            "data": [
+                {"name": stage.name, "id":stage.id}
+            ]
+        }
+    return JsonResponse(context)
