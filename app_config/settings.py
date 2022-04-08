@@ -53,7 +53,7 @@ INSTALLED_APPS = [
 
 AUTH_USER_MODEL = "account.Login"
 
-LOGIN_URL = '/account/login'
+LOGIN_URL = "/account/login"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -92,7 +92,7 @@ WSGI_APPLICATION = "app_config.wsgi.application"
 DATABASES = {}
 if os.environ.get("DATABASE_URL"):
     DATABASES["default"] = dj_database_url.config(
-        default=os.environ.get("DATABASE_URL"),conn_max_age=300
+        default=os.environ.get("DATABASE_URL"), conn_max_age=300
     )
 
 AUTH_PASSWORD_VALIDATORS = [

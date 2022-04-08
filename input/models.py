@@ -2,12 +2,11 @@ from uuid import uuid4
 
 from django.conf import settings
 from django.db import models
-from django.forms import SlugField
 from django.db.models import F
+from django.forms import SlugField
 from django.utils.translation import gettext_lazy as _
 from django_prices.models import MoneyField
 from django_prices.utils.formatting import format_price
-
 
 
 class InputCategory(models.Model):
@@ -117,46 +116,47 @@ class InputProduct(models.Model):
         on_delete=models.CASCADE,
         db_column="Input_product_Input_category_id",
     )
-    
+
     available_units = models.PositiveBigIntegerField(
         "Available Units",
         default=0,
         blank=True,
-        db_column="Input_product_available_quantity"
+        db_column="Input_product_available_quantity",
     )
 
     class Meta:
         db_table = "Input_product"
-    
+
     def calculate_total_cost(self):
         cost = self.unit_price_amount * self.total_units
         return cost
-        
 
     def save(self, *args, **kwargs):
         self.total_net_amount = self.calculate_total_cost()
         return super().save(*args, **kwargs)
 
-    def increase_unit(self,quantity: int, commit: bool = True):
-        """ increase the available unit of product"""
-        self.available_units= F("available_units") + quantity
-        self.total_units = F('total_units') + quantity
+    def increase_unit(self, quantity: int, commit: bool = True):
+        """increase the available unit of product"""
+        self.available_units = F("available_units") + quantity
+        self.total_units = F("total_units") + quantity
         self.total_net_amount = self.calculate_total_cost()
         if commit:
-            self.save(update_fields=['total_net_amount','total_units', 'available_units'])
-    
+            self.save(
+                update_fields=["total_net_amount", "total_units", "available_units"]
+            )
+
     def decrease_unit(self, quantity: int, commit: bool = True):
-        """ decrease the available unit of product"""
-        self.available_units = F('available_units') - quantity
+        """decrease the available unit of product"""
+        self.available_units = F("available_units") - quantity
         if commit:
-            self.save(update_fields=['available_units'])
+            self.save(update_fields=["available_units"])
 
     def get_unit_price(self):
-        """ get formatted unit_price_amount """
+        """get formatted unit_price_amount"""
         return format_price(self.unit_price_amount, self.currency)
 
     def get_total_cost(self):
-        """ get formatted total_net_amount"""
+        """get formatted total_net_amount"""
         return format_price(self.total_net_amount, self.currency)
 
     def __str__(self):

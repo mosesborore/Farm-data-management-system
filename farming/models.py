@@ -58,6 +58,7 @@ class FarmingStage(models.Model):
     desc = models.TextField(
         "Farming Stage description", db_column="Farming_stage_desc", blank=True
     )
+
     class Meta:
         db_table = "Farming_stage"
 
@@ -112,8 +113,12 @@ class FarmingSeason(models.Model):
         db_column="Farming_season_Crop_id",
     )
     stage = models.ForeignKey(
-		FarmingStage, related_name="stages", null=True, on_delete=models.SET_NULL,  db_column="Farming_season_current_Farming_stage_id"
-	)
+        FarmingStage,
+        related_name="stages",
+        null=True,
+        on_delete=models.SET_NULL,
+        db_column="Farming_season_current_Farming_stage_id",
+    )
     yields = models.PositiveIntegerField(
         "Season's yields", default=0, db_column="Farming_season_yields", blank=True
     )

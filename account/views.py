@@ -106,7 +106,7 @@ def profile(request):
             if farmer_form.is_valid():
                 try:
                     farmer = get_object_or_404(Farmer, login_id=user)
-                    
+
                     # the user has the Farmer details, hence
                     # update the Farmer details
                     farmer_form = FarmerForm(request.POST or None, instance=farmer)
@@ -118,7 +118,6 @@ def profile(request):
                     farmer = farmer_form.save(commit=False)
                     farmer.login_id = user
                     farmer.save()
-
 
                 messages.success(request, "Profile update successfully")
             else:

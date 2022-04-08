@@ -6,13 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('input', '0009_auto_20220406_2315'),
+        ("input", "0009_auto_20220406_2315"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='inputproduct',
-            name='available_units',
-            field=models.PositiveBigIntegerField(blank=True, db_column='Input_product_available_quantity', default=0, verbose_name='Available Units'),
+            model_name="inputproduct",
+            name="available_units",
+            field=models.PositiveBigIntegerField(
+                blank=True,
+                db_column="Input_product_available_quantity",
+                default=0,
+                verbose_name="Available Units",
+            ),
         ),
     ]

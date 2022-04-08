@@ -25,8 +25,8 @@ def input_home(request):
     inventories = InputInventory.objects.prefetch_related("items").annotate(
         item_count=Count("items")
     )
-    
-    if request.method == 'POST':
+
+    if request.method == "POST":
         # add new inventory
         form = InputInventoryForm(request.POST)
         if form.is_valid():
@@ -64,13 +64,13 @@ def inventory_item_list(request, ref_code):
         if request.method == "POST":
             new_item_form = InputInventoryItemForm(request.POST)
             if new_item_form.is_valid():
-                quantity = request.POST.get('quantity')
-                product_pk = request.POST.get('input_product')
+                quantity = request.POST.get("quantity")
+                product_pk = request.POST.get("input_product")
                 product = get_object_or_404(InputProduct, pk=product_pk)
-                
-                #decrease the product quantity
+
+                # decrease the product quantity
                 product.decrease_unit(quantity)
-                
+
                 new_item_form.save()
                 messages.success(request, "New Inventory added successfully")
             else:
@@ -94,13 +94,14 @@ def inventory_item_list(request, ref_code):
     }
     return render(request, "input/inventory-item-list.html", context)
 
+
 @require_POST
 @login_required(login_url="/account/login/")
-def delete_inventory_item(request, ref_code, pk ):
+def delete_inventory_item(request, ref_code, pk):
     inventory = get_object_or_404(InputInventory, ref_code=ref_code)
 
     if request.method == "POST":
-        delete = request.POST.get('delete', None)
+        delete = request.POST.get("delete", None)
         print(delete)
         if delete:
             # delete on the item not the product
@@ -110,11 +111,10 @@ def delete_inventory_item(request, ref_code, pk ):
         else:
             messages.info(
                 request,
-                _(
-                    "If you want to delete the item, make sure the checkbox is checked"
-                ),
+                _("If you want to delete the item, make sure the checkbox is checked"),
             )
-    return redirect('input:inventory-item-list', ref_code)
+    return redirect("input:inventory-item-list", ref_code)
+
 
 class Products(LoginRequiredMixin, ListView):
     template_name = "input/product-list.html"
@@ -144,9 +144,9 @@ class Products(LoginRequiredMixin, ListView):
 def add_product(request):
     form = InputProductForm(request.POST)
     if form.is_valid():
-        units = request.POST.get('total_units')
+        units = request.POST.get("total_units")
         product = form.save(commit=False)
-        
+
         # add initial available units
         product.available_units = units
         product.save()
@@ -194,6 +194,7 @@ def delete_product(request, pk):
     except InputProduct.DoesNotExist:
         messages.error(request, "Product with that name does not exist. Try again")
 
+
 @require_POST
 @login_required(login_url="/account/login/")
 def add_category(request):
@@ -201,11 +202,7 @@ def add_category(request):
         form = InputCategoryForm(request.POST)
         if form.is_valid():
             form.save()
-            stage = get_object_or_404(InputCategory, name=request.POST.get('name'))
-        
-        context = {
-            "data": [
-                {"name": stage.name, "id":stage.id}
-            ]
-        }
+            stage = get_object_or_404(InputCategory, name=request.POST.get("name"))
+
+        context = {"data": [{"name": stage.name, "id": stage.id}]}
     return JsonResponse(context)

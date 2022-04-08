@@ -6,18 +6,26 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('input', '0007_inputinventoryitem_currency'),
+        ("input", "0007_inputinventoryitem_currency"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='inputproduct',
-            name='available_quantity',
-            field=models.PositiveBigIntegerField(db_column='Input_product_available_quantity', default=0, verbose_name='Available Quantity'),
+            model_name="inputproduct",
+            name="available_quantity",
+            field=models.PositiveBigIntegerField(
+                db_column="Input_product_available_quantity",
+                default=0,
+                verbose_name="Available Quantity",
+            ),
         ),
         migrations.AlterField(
-            model_name='inputproduct',
-            name='total_units',
-            field=models.PositiveBigIntegerField(db_column='Input_product_total_cost', default=0, verbose_name='Product total units'),
+            model_name="inputproduct",
+            name="total_units",
+            field=models.PositiveBigIntegerField(
+                db_column="Input_product_total_cost",
+                default=0,
+                verbose_name="Product total units",
+            ),
         ),
     ]

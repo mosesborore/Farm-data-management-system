@@ -1,6 +1,6 @@
 from django.contrib import messages
-from django.db.models import Count
 from django.contrib.auth.decorators import login_required
+from django.db.models import Count
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
@@ -37,9 +37,7 @@ def edit_season(request, pk):
         else:
             messages.error(request, form.errors.as_text)
 
-    context = {
-        "form": FarmingSeasonForm(instance=season), 
-        "pk": season.pk}
+    context = {"form": FarmingSeasonForm(instance=season), "pk": season.pk}
 
     return render(request, "farming/edit-season.html", context)
 
@@ -120,6 +118,7 @@ def delete_crop(request, pk):
 
     return redirect("farming:crop-list")
 
+
 @require_POST
 @login_required(login_url="/account/login/")
 def add_stage(request):
@@ -127,11 +126,7 @@ def add_stage(request):
         form = FarmingStageForm(request.POST)
         if form.is_valid():
             form.save()
-            stage = get_object_or_404(FarmingStage, name=request.POST.get('name'))
-        
-        context = {
-            "data": [
-                {"name": stage.name, "id":stage.id}
-            ]
-        }
+            stage = get_object_or_404(FarmingStage, name=request.POST.get("name"))
+
+        context = {"data": [{"name": stage.name, "id": stage.id}]}
     return JsonResponse(context)
