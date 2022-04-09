@@ -30,7 +30,7 @@ def farm_home_view(request):
         else:
             messages.error(request, "Only admins and managers can add farm details")
 
-    farms = Farm.objects.all().annotate(soil_test_count=Count("soil"))
+    farms = Farm.objects.annotate(soil_test_count=Count("soil"))
 
     form = FarmForm()
     context = {"farms": farms, "form": form}
@@ -90,8 +90,7 @@ def soil_detail(request):
     """
     retrieve all soil details
     """
-    if request.method == "GET":
-        soils = Soil.objects.all()
+    
 
     if request.method == "POST":
         form = SoilForm(request.POST)
@@ -100,6 +99,10 @@ def soil_detail(request):
             form.save()
             messages.success(request, "New soil details added successfully")
             return redirect("farm:soil-detail")
+        else:
+            messages.error(request, form.errors.as_data())
+
+    soils = Soil.objects.select_related("farm_id")
 
     form = SoilForm()
     context = {"soils": soils, "form": form}

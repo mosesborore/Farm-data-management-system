@@ -22,7 +22,7 @@ from .models import InputCategory, InputInventory, InputProduct
 def input_home(request):
     # products = InputProduct.objects.all()
     # count items per inventory
-    inventories = InputInventory.objects.prefetch_related("items").annotate(
+    inventories = InputInventory.objects.annotate(
         item_count=Count("items")
     )
 
@@ -66,6 +66,7 @@ def inventory_item_list(request, ref_code):
             if new_item_form.is_valid():
                 quantity = request.POST.get("quantity")
                 product_pk = request.POST.get("input_product")
+                
                 product = get_object_or_404(InputProduct, pk=product_pk)
 
                 # decrease the product quantity

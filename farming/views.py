@@ -18,7 +18,7 @@ def home(request):
             form.save()
             messages.success(request, f' "{name}" season added successfully')
 
-    seasons = FarmingSeason.objects.all()
+    seasons = FarmingSeason.objects.select_related("farm", "stage", "crop")
 
     context = {"seasons": seasons, "form": FarmingSeasonForm}
     return render(request, "farming/index.html", context)
