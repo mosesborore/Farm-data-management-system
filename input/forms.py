@@ -16,7 +16,7 @@ class InputProductForm(forms.ModelForm):
     # unit_price = MoneyField(label="Unit Price", available_currencies=AVAILABLE_CURRENCIES)
     class Meta:
         model = InputProduct
-        exclude = ("unit_price",)
+        fields = "__all__"
 
 
 class InputInventoryForm(forms.ModelForm):

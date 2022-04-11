@@ -2,9 +2,14 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Group
 
+from account.forms import LoginForm
+
 from .models import Farmer, Login, Worker
 
 admin.site.site_header = "Farm Data Management Administration"
+admin.site.login_form = LoginForm
+admin.site.index_title = "Administration Site"
+admin.site.site_title = "Farm Data Management Admin Site"
 
 # UserCreationForm === refer Customizing authentication in Django¶ documentation
 # UserChangeForm
@@ -14,17 +19,9 @@ admin.site.site_header = "Farm Data Management Administration"
 class LoginAdmin(UserAdmin):
     """admin options  and functionalities"""
 
-    list_display = (
-        "username",
-        "date_joined",
-        "last_login",
-        "is_admin",
-        "is_manager",
-        "is_staff",
-        "is_active",
-    )
+    list_display = ("username", "rank")
     search_fields = ("username",)
-    readonly_fields = ("id", "date_joined", "last_login")
+    readonly_fields = ("id",)
 
     filter_horizontal = ()
     list_filter = ()
@@ -39,19 +36,12 @@ class LoginAdmin(UserAdmin):
                 "fields": (
                     "username",
                     "password",
-                    "avatar",
                 )
             },
         ),
         (
             "Permissions",
-            {
-                "fields": (
-                    "is_admin",
-                    "is_manager",
-                    "is_active",
-                )
-            },
+            {"fields": ("rank",)},
         ),
     )
 
@@ -60,16 +50,7 @@ class LoginAdmin(UserAdmin):
             None,
             {
                 "classes": ("wide",),
-                "fields": (
-                    "username",
-                    "avatar",
-                    "password1",
-                    "password2",
-                    "is_admin",
-                    "is_manager",
-                    "is_staff",
-                    "is_active",
-                ),
+                "fields": ("username", "password1", "password2", "rank"),
             },
         ),
     )

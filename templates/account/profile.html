@@ -4,7 +4,7 @@
 
 {% block headContent %}
 <style type="text/css">
-	.user-name, #full-name-value{
+	.user-name, #full-name-value, .title{
 		text-transform: capitalize;
 	}
 </style>
@@ -25,8 +25,7 @@
 		<div class="d-flex align-items-start justify-content-between pb-4 mb-2">
 			<div class="d-flex align-items-start">
 				<div class="position-relative flex-shrink-0">
-					<img src="{{ request.user.avatar.url}}" class="rounded-circle" width="100"
-						alt="{{ request.user.username}}">
+					<div class="rounded-circle"></div>
 				</div>
 				<div class="p-3 p-sm-4">
 					<h3 class="h5"> <span class="me-1">Welcome,</span> <span class="user-name">{{ request.user.username}}</span></h3>
@@ -42,7 +41,7 @@
 						</li>
 						<li class="d-flex text-nav text-break mt-2">
 							<span class="mt-1 me-2 fw-bold">Title:</span>
-							<span  class="mt-1 me-2">{{title}}</span>
+							<span  class="mt-1 me-2 title">{{title}}</span>
 						</li>
 					</ul>
 				</div>

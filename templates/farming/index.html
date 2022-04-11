@@ -107,6 +107,11 @@ Farming Seasons
 		</table>
 	</div>
 </div>
+
+
+<!-- Add new stage Modal -->
+{% include './add-stage-modal.html' %}
+<!--  Add new stage  MODAL -->
 {% endblock main %}
 
 
@@ -145,10 +150,14 @@ Farming Seasons
 		});
 
 		// add new stage 
-		$("#stageForm").submit(function (e) {
+		$("#stageSubmit").on('click', function (e) {
 			e.preventDefault();
 
-			var serializedData = $(this).serialize();
+			var serializedData = $('#stageForm').serialize();
+
+			let data = $("#stageForm").serializeArray()
+
+			console.log(data)
 
 			$.ajax({
 				type: 'POST',

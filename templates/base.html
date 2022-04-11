@@ -182,7 +182,7 @@
                 <div class="collapse" id="account-collapse">
                   <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                     <li>
-                      {% if request.user.is_admin or request.user.is_manager %}
+                      {% if request.user.rank == 'farmer' or request.user.rank == 'manager' %}
                         <a href="#" class="link-dark rounded nav__link">users</a></li>
                       {% endif %}
                     <li><a href="{% url 'account:profile' %}" class="link-dark rounded nav__link">Profile</a></li>

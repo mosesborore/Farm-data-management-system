@@ -34,7 +34,7 @@ def login_view(request):
 
             # check if the user is a admin
             # if not check if the have Worker account
-            if not user.is_admin:
+            if user.rank == "worker":
                 try:
                     Worker.objects.get(login_id=user)
                 except Worker.DoesNotExist:
@@ -74,8 +74,10 @@ def signup(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
         if form.is_valid():
+            form = form.save(commit=False)
+            form.rank = "worker"
             form.save()
-            username = form.cleaned_data["username"]
+            username = form.username
             messages.success(
                 request,
                 f"Welcome, Account created successfully for {username}. Please Login",
@@ -98,7 +100,7 @@ def profile(request):
 
     if request.method == "POST":
 
-        if user.is_admin or user.is_manager:
+        if user.rank == "farmer" or user.rank == "manager":
             # meaning the form was submitted by user
             # who is admin or manager
             farmer_form = FarmerForm(request.POST)
@@ -147,7 +149,7 @@ def profile(request):
 
     context = {"form": None, "personal_data": None, "title": "Worker"}
 
-    if user.is_admin or user.is_manager:
+    if user.rank == "farmer" or user.rank == "manager":
         try:
             farmer = Farmer.objects.filter(login_id=user).first()
         except Farmer.DoesNotExist:
@@ -158,7 +160,7 @@ def profile(request):
 
         context["personal_data"] = farmer
         context["form"] = farmer_form
-        context["title"] = "Farmer/manager"
+        context["title"] = user.rank
     else:
         try:
             worker = Worker.objects.filter(login_id=user).first()
@@ -173,7 +175,9 @@ def profile(request):
 
         context["personal_data"] = worker
         context["form"] = worker_form
-        context["title"] = "Worker"
+        context["title"] = user.rank
+
+    print(user.rank)
 
     return render(request, "account/profile.html", context)
 

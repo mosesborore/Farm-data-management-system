@@ -98,10 +98,6 @@ Farming_stage
 Farming_stage_id(PK)
 Farming_stage_name
 Farming_stage_desc
-Farming_stage_start_date
-Farming_stage_duration
-Farming_stage_duration_measurement (months, weeks)
-Farming_stage_Farming_Season_id (FK)
 
 Farm_Task
 Farm_Task_id (PK)

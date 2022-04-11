@@ -1,28 +1,20 @@
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
-    PermissionsMixin,
 )
 from django.db import models
-from django.dispatch import receiver
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
-from versatileimagefield.fields import VersatileImageField
-from versatileimagefield.image_warmer import VersatileImageFieldWarmer
 
 from .validators import validate_possible_number
 
 
 class LoginManager(BaseUserManager):
-    def create_user(
-        self, username, password=None, is_staff=False, is_active=True, **extra_fields
-    ):
+    def create_user(self, username, password=None, **extra_fields):
         if not username:
             raise ValueError("User must have a username")
 
-        user = self.model(
-            username=username, is_active=is_active, is_staff=is_staff, **extra_fields
-        )
+        user = self.model(username=username, rank="worker", **extra_fields)
         if password:
             user.set_password(password)
         user.save(using=self._db)
@@ -32,15 +24,19 @@ class LoginManager(BaseUserManager):
     def create_superuser(self, username, password=None, **extra_fields):
         user = self.create_user(username=username, password=password, **extra_fields)
 
-        user.is_admin = True
-        user.is_manager = True
-        user.is_superuser = True
-        user.is_staff = True
+        user.rank = "farmer"
 
         user.save(using=self._db)
 
 
-class Login(PermissionsMixin, AbstractBaseUser):
+RANK = (
+    ("farmer", "farmer"),
+    ("manager", "manager"),
+    ("worker", "worker"),
+)
+
+
+class Login(AbstractBaseUser):
     id = models.BigAutoField(
         db_column="Login_id",
         auto_created=True,
@@ -54,24 +50,16 @@ class Login(PermissionsMixin, AbstractBaseUser):
         max_length=128,
         db_column="Login_password",
     )
-    date_joined = models.DateTimeField(verbose_name="date joined", auto_now_add=True)
-    last_login = models.DateTimeField(verbose_name="late joined", auto_now=True)
-    is_admin = models.BooleanField(default=False)
-    is_manager = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=True)
-    is_superuser = models.BooleanField(default=False)
-    avatar = VersatileImageField(
-        upload_to="user-profile-images",
-        height_field="height",
-        width_field="width",
-        blank=True,
-        null=True,
-        verbose_name="Profile picture",
-        default="defaultprofile.png",
+    rank = models.CharField(
+        db_column="Login_rank", choices=RANK, default="worker", max_length=10
     )
-    height = models.PositiveIntegerField("Profile Image Height", blank=True, null=True)
-    width = models.PositiveIntegerField("Profile Image Width", blank=True, null=True)
+    last_login = models.DateTimeField(
+        _("last login"), db_column="Login_last_login", blank=True, null=True
+    )
+    is_active = models.BooleanField(
+        "Account active", db_column="Login_is_active", default=True
+    )
+    is_staff = models.BooleanField("Is staff", db_column="Login_is_staff", default=True)
 
     USERNAME_FIELD = "username"
 
@@ -84,10 +72,10 @@ class Login(PermissionsMixin, AbstractBaseUser):
         ordering = ("username",)
 
     def __str_(self):
-        return str(self.username)
+        return f"{self.username} {self.rank}"
 
     def has_perm(self, perm, obj=None):
-        return self.is_admin or self.is_manager
+        return self.rank == "farmer" or self.rank == "manager"
 
     def has_module_perms(self, app_label):
         # doest the user have permissions to view the app `app_label`
@@ -181,19 +169,3 @@ class Worker(models.Model):
 
     def __str__(self):
         return self.full_name
-
-
-# Login Model Signal
-@receiver(models.signals.post_save, sender=Login)
-def warm_Account_profile_images(sender, instance, **kwargs):
-    profile_img_warmer = VersatileImageFieldWarmer(
-        instance_or_queryset=instance,
-        rendition_key_set="user_avatars",
-        image_attr="avatar",
-    )
-
-    num_created, failed_to_create = profile_img_warmer.warm()
-    if num_created:
-        pass
-    if failed_to_create:
-        pass

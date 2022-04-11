@@ -22,9 +22,7 @@ from .models import InputCategory, InputInventory, InputProduct
 def input_home(request):
     # products = InputProduct.objects.all()
     # count items per inventory
-    inventories = InputInventory.objects.annotate(
-        item_count=Count("items")
-    )
+    inventories = InputInventory.objects.annotate(item_count=Count("items"))
 
     if request.method == "POST":
         # add new inventory
@@ -66,7 +64,7 @@ def inventory_item_list(request, ref_code):
             if new_item_form.is_valid():
                 quantity = request.POST.get("quantity")
                 product_pk = request.POST.get("input_product")
-                
+
                 product = get_object_or_404(InputProduct, pk=product_pk)
 
                 # decrease the product quantity
@@ -200,6 +198,7 @@ def delete_product(request, pk):
 @login_required(login_url="/account/login/")
 def add_category(request):
     if request.method == "POST" or request.is_ajax():
+        print(request.POST)
         form = InputCategoryForm(request.POST)
         if form.is_valid():
             form.save()

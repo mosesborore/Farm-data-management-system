@@ -5,7 +5,6 @@ from django.db import models
 from django.db.models import F
 from django.forms import SlugField
 from django.utils.translation import gettext_lazy as _
-from django_prices.models import MoneyField
 from django_prices.utils.formatting import format_price
 
 
@@ -26,6 +25,7 @@ class InputCategory(models.Model):
 
     class Meta:
         db_table = "Input_category"
+        verbose_name_plural = "Input Categories"
 
     def __str__(self):
         return self.name
@@ -64,32 +64,22 @@ class InputProduct(models.Model):
     desc = models.TextField(
         "Input product description", db_column="Input_product_desc", blank=True
     )
-    currency = models.CharField(
-        max_length=settings.DEFAULT_CURRENCY_CODE_LENGTH,
-        default=settings.DEFAULT_CURRENCY,
-        blank=True,
-        null=True,
-    )
-    unit_price_amount = models.DecimalField(
+    unit_price = models.DecimalField(
         "Price per unit",
         max_digits=settings.DEFAULT_MAX_DIGITS,
         decimal_places=settings.DEFAULT_DECIMAL_PLACES,
-    )
-    unit_price = MoneyField(
-        amount_field="unit_price_amount",
-        currency_field="currency",
         db_column="Input_product_unit_price",
     )
     total_units = models.PositiveBigIntegerField(
-        "Product total units", db_column="Input_product_total_cost", default=0
+        "Product total units", db_column="Input_product_total_units", default=0
     )
-    total_net_amount = models.DecimalField(
+    total_cost = models.DecimalField(
         "Total Amount",
         max_digits=settings.DEFAULT_MAX_DIGITS,
         decimal_places=settings.DEFAULT_DECIMAL_PLACES,
         default=0.0,
+        db_column="Input_product_total_cost",
     )
-    total_cost = MoneyField(amount_field="total_net_amount", currency_field="currency")
     unit_weight = models.PositiveIntegerField(
         "Product unit weight", db_column="Input_product_unit_weight"
     )
@@ -128,18 +118,18 @@ class InputProduct(models.Model):
         db_table = "Input_product"
 
     def calculate_total_cost(self):
-        cost = self.unit_price_amount * self.total_units
+        cost = self.unit_price * self.total_units
         return cost
 
     def save(self, *args, **kwargs):
-        self.total_net_amount = self.calculate_total_cost()
+        self.total_cost = self.calculate_total_cost()
         return super().save(*args, **kwargs)
 
     def increase_unit(self, quantity: int, commit: bool = True):
         """increase the available unit of product"""
         self.available_units = F("available_units") + quantity
         self.total_units = F("total_units") + quantity
-        self.total_net_amount = self.calculate_total_cost()
+        self.total_cost = self.calculate_total_cost()
         if commit:
             self.save(
                 update_fields=["total_net_amount", "total_units", "available_units"]
@@ -152,15 +142,15 @@ class InputProduct(models.Model):
             self.save(update_fields=["available_units"])
 
     def get_unit_price(self):
-        """get formatted unit_price_amount"""
-        return format_price(self.unit_price_amount, self.currency)
+        """get formatted unit_price"""
+        return format_price(self.unit_price, "KSH")
 
     def get_total_cost(self):
-        """get formatted total_net_amount"""
-        return format_price(self.total_net_amount, self.currency)
+        """get formatted total_cost"""
+        return format_price(self.total_cost, "KSH")
 
     def __str__(self):
-        return "%s - %d" % (self.name, self.unit_price_amount)
+        return "%s - %d" % (self.name, self.unit_price)
 
 
 class InputInventory(models.Model):
@@ -198,6 +188,7 @@ class InputInventory(models.Model):
 
     class Meta:
         db_table = "Input_Inventory"
+        verbose_name_plural = "Input Inventories"
 
     def save(self, *args, **kwargs):
         if not self.ref_code:
@@ -230,18 +221,12 @@ class InputInventoryItem(models.Model):
     quantity = models.PositiveIntegerField(
         "Input Inventory item quantity", db_column="Input_Inventory_item_quantity"
     )
-    currency = models.CharField(
-        max_length=settings.DEFAULT_CURRENCY_CODE_LENGTH,
-        default=settings.DEFAULT_CURRENCY,
-        blank=True,
-        null=True,
-    )
-    total_net_amount = models.DecimalField(
+    total_cost = models.DecimalField(
         max_digits=settings.DEFAULT_MAX_DIGITS,
         decimal_places=settings.DEFAULT_DECIMAL_PLACES,
-        default=0,
+        default=0.0,
+        db_column="Input_Inventory_item_total_cost",
     )
-    total_cost = MoneyField(amount_field="total_net_amount", currency_field="currency")
     input_inventory = models.ForeignKey(
         InputInventory,
         on_delete=models.CASCADE,
@@ -256,7 +241,7 @@ class InputInventoryItem(models.Model):
         pass
 
     def get_total_cost(self):
-        return format_price(self.total_net_amount, self.currency)
+        return format_price(self.total_net_amount, "KSH")
 
     def __str__(self):
         return "%s - %s Inventory Item" % (

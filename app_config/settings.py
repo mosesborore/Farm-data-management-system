@@ -23,6 +23,8 @@ def get_list(text):
 
 ALLOWED_HOSTS = get_list(os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1"))
 
+INTERNAL_IPS = ["127.0.0.1"]
+
 OPENWEATHER_API_KEY = os.environ.get("OPENWEATHER_API_KEY")
 if not OPENWEATHER_API_KEY:
     warnings.warn("OPENWEATHER_API_KEY not configured")
@@ -36,6 +38,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "whitenoise.runserver_nostatic",
     "django.contrib.staticfiles",
+    "debug_toolbar",
     # Local app
     "account",
     "farm",
@@ -63,6 +66,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "app_config.urls"

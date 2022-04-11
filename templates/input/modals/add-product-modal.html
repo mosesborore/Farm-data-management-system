@@ -7,7 +7,7 @@
 				<h5 class="modal-title" id="AddNewProductDetailModel">Add New Product details</h5>
 			</div>
 			<div class="modal-body">
-				<form action="{% url 'input:add-product' %}" method="POST" class="mt-4">
+				<form action="{% url 'input:add-product' %}" id="productForm" method="POST" class="mt-4">
 					{% csrf_token %}
 					<div class="row g-3">
 						<div class="col">
@@ -18,8 +18,8 @@
 						</div>
 						<div class="col">
 							<div class="form-group mb-2">
-								<label for="unit_price_amount">Price Per Unit</label>
-								{% render_field product_form.unit_price_amount id="unit_price_amount" class="form-control" placeholder="Enter Price per unit" %}
+								<label for="unit_price">Price Per Unit</label>
+								{% render_field product_form.unit_price id="unit_price" class="form-control" placeholder="Enter Price per unit" %}
 							</div>
 						</div>
 					</div>
@@ -32,8 +32,8 @@
 						</div>
 						<div class="col">
 							<div class="form-group mb-2">
-								<label for="total_net_amount">Total Amount</label>
-								{% render_field product_form.total_net_amount id="total_net_amount" class="form-control" placeholder="Enter total amount" %}
+								<label for="total_cost">Total Amount</label>
+								{% render_field product_form.total_cost id="total_cost" class="form-control" placeholder="Enter total amount" %}
 							</div>
 						</div>
 					</div>
@@ -75,7 +75,7 @@
 
 					<div class="row g-1">
 						<div class="col">
-							<div class="form-group mb-3">
+							<div class="form-group mb-3 product-category">
 								<label for="cat-id">
 									<span class="me-2">Product Category </span> 
 							<a href="#" data-bs-toggle="modal"
@@ -93,7 +93,3 @@
 		</div>
 	</div>
 </div>
-
-<!-- Add new stage Modal -->
-{% include './add-category-modal.html' %}
-<!--  Add new stage  MODAL -->

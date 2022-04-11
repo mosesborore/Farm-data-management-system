@@ -90,7 +90,6 @@ def soil_detail(request):
     """
     retrieve all soil details
     """
-    
 
     if request.method == "POST":
         form = SoilForm(request.POST)
