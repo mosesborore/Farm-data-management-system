@@ -42,7 +42,7 @@ Soil_last_testing_date
 Soil_next_testing_date
 Soil_status
 Soil_notes
-Soil_farm_farm_id(FK)
+Soil_farm_id(FK)
 
 Input_category
 Input_category_id (PK)
