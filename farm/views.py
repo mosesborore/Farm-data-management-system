@@ -52,7 +52,7 @@ def edit_farm(request, pk):
     # if a get request
     try:
         farm = get_object_or_404(Farm, pk=pk)
-    except (farm.DoesNotExist, Http404):
+    except (Farm.DoesNotExist, Http404):
         messages.error(request, "Farm with Farm ID pk does not exit")
         return redirect("farm:farm-detail")
 
@@ -81,7 +81,7 @@ def delete_farm(request, pk):
             )
 
         return redirect("farm:farm-home")
-    except farm.DoesNotExist:
+    except Farm.DoesNotExist:
         messages.error(request, "Farm with that Farm ID does not exit")
         return redirect("farm:farm-home")
 
@@ -122,7 +122,7 @@ def edit_soil_detail(request, pk):
     # if a GET request
     try:
         soil = get_object_or_404(Soil, pk=pk)
-    except (soil.DoesNotExist, Http404):
+    except (Soil.DoesNotExist, Http404):
         messages.error(request, "Soil with that ID does not exit")
         return redirect("farm:soil-detail")
 
