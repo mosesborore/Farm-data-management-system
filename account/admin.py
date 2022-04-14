@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.admin import ModelAdmin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Group
 
@@ -56,11 +57,35 @@ class LoginAdmin(UserAdmin):
     )
 
 
+class FarmerAdmin(ModelAdmin):
+    list_display = ("first_name", "last_name", "national_id", "phone_no")
+    search_fields = (
+        "first_name",
+        "last_name",
+        "national_id",
+        "phone_no",
+    )
+    readonly_fields = ("id",)
+
+
+class WorkerAdmin(ModelAdmin):
+    list_display = ("first_name", "last_name", "national_id", "phone_no", "login_id")
+    search_fields = (
+        "first_name",
+        "last_name",
+        "national_id",
+        "phone_no",
+    )
+    readonly_fields = ("id",)
+
+    list_select_related = True
+
+
 admin.site.register(Login, LoginAdmin)
 # since we're not using Django's built-in permissions
 # we unregister the Group model from admin
 admin.site.unregister(Group)
 
-admin.site.register(Farmer)
+admin.site.register(Farmer, FarmerAdmin)
 
-admin.site.register(Worker)
+admin.site.register(Worker, WorkerAdmin)
