@@ -1,7 +1,4 @@
-from django.contrib.auth.models import (
-    AbstractBaseUser,
-    BaseUserManager,
-)
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
@@ -108,11 +105,11 @@ class Farmer(models.Model):
         db_column="Farmer_national_id",
     )
     phone_no = PossiblePhoneNumberField(
-        blank=True, default="", db_column="Farmer_phone_no"
+        "Farmer Phone no", blank=True, default="", db_column="Farmer_phone_no"
     )
     login_id = models.ForeignKey(
         "Login",
-        verbose_name="login id",
+        verbose_name="Farmer login id",
         on_delete=models.CASCADE,
         db_column="Farmer_Login_id",
     )
@@ -150,11 +147,11 @@ class Worker(models.Model):
         db_column="Worker_national_id",
     )
     phone_no = PossiblePhoneNumberField(
-        blank=True, default="", db_column="Worker_phone_no"
+        "Worker Phone no",blank=True, default="", db_column="Worker_phone_no"
     )
     login_id = models.ForeignKey(
         "Login",
-        verbose_name="login id",
+        verbose_name="Worker login id",
         on_delete=models.CASCADE,
         db_column="Worker_Login_id",
     )
