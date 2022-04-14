@@ -119,22 +119,13 @@ class Products(LoginRequiredMixin, ListView):
     template_name = "input/product-list.html"
 
     def get_queryset(self):
-        return InputProduct.objects.all()
-
-    def get_unit_measurement_options(self):
-        return (
-            ("KG", _("kilograms")),
-            ("G", _("grams")),
-            ("L", _("liter")),
-            ("BAG", _("bag")),
-        )
+        return InputProduct.objects.select_related("category")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         context["products"] = self.get_queryset()
         context["product_form"] = InputProductForm()
         context["category_form"] = InputCategoryForm()
-        context["unit_measurement"] = self.get_unit_measurement_options()
         return context
 
 
