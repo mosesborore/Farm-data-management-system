@@ -64,21 +64,12 @@ class FarmTask(models.Model):
         db_column="Farm_Task_status",
         default="pending",
     )
-    currency = models.CharField(
-        max_length=settings.DEFAULT_CURRENCY_CODE_LENGTH,
-        default=settings.DEFAULT_CURRENCY,
-        blank=True,
-        null=True,
-    )
-    expected_expenses_price_amount = models.DecimalField(
+    expected_expenses = models.DecimalField(
+        "Farm Task expected expenses",
         max_digits=settings.DEFAULT_MAX_DIGITS,
         decimal_places=settings.DEFAULT_DECIMAL_PLACES,
-    )
-    expected_expenses = MoneyField(
-        amount_field="expected_expenses_price_amount",
-        currency_field="currency",
-        verbose_name="expected expenses",
         db_column="Farm_Task_expected_expenses",
+        default=0.0,
     )
     farm = models.ForeignKey(
         Farm, on_delete=models.CASCADE, db_column="Farm_Task_Farm_id"
