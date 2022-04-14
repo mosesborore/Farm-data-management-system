@@ -1,15 +1,16 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% load widget_tweaks %}
 {% block headContent %}
 
- {{form.media}}
+<script src="{% static '/js/masonry.pkgd.min.js' %}"></script>
+
+{{form.media}}
 
 <style type="text/css">
 	.card-title {
 		text-transform: capitalize;
 	}
-
 
 	.tox-checklist>li:not(.tox-checklist--hidden) {
 		list-style: none;
@@ -32,10 +33,13 @@
 			);
 	}
 
-	.tox-checklist--checked{
+	.tox-checklist--checked {
 		text-decoration: line-through;
 	}
 
+	.hide-search{
+		display: none;
+	}
 </style>
 {% endblock headContent %}
 
@@ -49,50 +53,139 @@ Farm Tasks
 {% block main %}
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
 	<h1 class="h2">Task Information</h1>
+	<h5 class="h5">
+	{% if filter_title %}
+		Results for: {{ filter_title }}
+	{% endif %}
+		</h5>
 </div>
 
-<div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-2">
-	
-	{% if tasks %}
-		{% for task in tasks %}
-		<div class="col">
-			<div class="card" style="width: 20rem;">
-				<div class="card-body">
-					<h5 class="card-title" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight{{task.id}}"
-					aria-controls="offcanvasRight">{{ task.name}}</h5>
-					<small class="mb-4 text-muted">Status: {{task.status}}</small>
-					<h6 class="card-subtitle mb-2 my-2 text-muted">{{task.notes | safe}}</h6>
-					<div class="card-text">{{task.objectives | safe}}</div>
-					<a href="{% url 'task:edit-task' task.id %}" class="card-link">Edit</a>
-					<a href="{% url 'task:delete-task' task.id%}" class="card-link btn-link" style="color: red;">Delete</a>
+
+
+<div class="form-container mb-10 py-10" style="margin-bottom: 15px;">
+	<a href="{% url 'task:add-task' %}" type="button" class="btn btn-primary mb-4" style="display: inline;">Add Task </a>
+
+	<form id="form-filter-task" action="{% url "task:home" %}" method="post">
+		{% csrf_token %}
+		<div class="row g-2" data-masonry='{"percentPosition": true }' >
+			<div class="col-sm-4 col-lg-2 mb-2">
+				<div class="form-group">
+					<label for="filter-name"  class="fw-bold">Filter task by</label>
+					<select type="text" id="filter-name" name="filter-name" class="form-select">
+						<option value="status">Status</option>
+						<option value="farm">Farm</option>
+						<option value="season">Season</option>
+					</select>
 				</div>
 			</div>
+			<div class="col-sm-4 col-lg-4 mb-2" style="width: 70px;">
+				<button type="button" id="filter-btn" class="btn btn-secondary" style="font-size: 10px; margin-top: 20px">Filter by this</button>
+			</div>
+			
+			<div class="col-sm-5 col-lg-4 mb-2 status">
+				<div class="form-group">
+					<label for="search"  class="fw-bold"></label>
+					<select type="text" id="search" name="search" class="form-select">
+					</select>
+				</div>
+			</div>
+			<div class="col-sm-6 col-lg-4 mb-2 ms-10">
+				<p></p>
+				<button type="submit" id="filter-btn" class="btn btn-secondary" style="margin-top: 5px">search</button>
+			</div>
 		</div>
-		{% endfor %}
-		{% else %}
-			<p>No tasks available. Please <a href="{% url 'task:add-task' %}"> add tasks</a> </p>
+		
+	</form>
+</div>
+
+<div class="row row-cols-1 row-cols-lg-3 align-items-center g-3 py-2" data-masonry='{"percentPosition": true }'>
+
+	{% if tasks %}
+	{% for task in tasks %}
+	<div class="col">
+		<div class="card" style="width: 20rem;">
+			<div class="card-body">
+				<h5 class="card-title" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight{{task.id}}"
+					aria-controls="offcanvasRight">{{ task.name}}</h5>
+				<small class="mb-4 text-muted">Status: {{task.status}}</small>
+				<p class="card-subtitle h6 mb-2 my-2 text-muted">{{task.notes | safe}}</p>
+				<div class="card-text">{{task.objectives | safe}}</div>
+				<a href="{% url 'task:edit-task' task.id %}" class="card-link">Edit</a>
+				<a href="{% url 'task:delete-task' task.id%}" class="card-link btn-link" style="color: red;">Delete</a>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+	{% else %}
+	<p>No tasks available. Please <a href="{% url 'task:add-task' %}"> add tasks</a> </p>
 	{% endif %}
 </div>
 
+<!-- SEARCH TERMS -->
+
+<!-- FARM -->
+<div class="col-sm-6 col-lg-4 mb-2 farm d-none" >
+	<div class="form-group">
+		<label for="search"  class="fw-bold"></label>
+		<select type="text" id="search-farm" name="filter-name" class="form-select">
+			{% for farm in farms %}
+				<option value="{{ farm.id}}">{{ farm.name  }}</option>
+			{% endfor %}
+		</select>
+	</div>
+</div>
+
+<div class="col-sm-6 col-lg-4 mb-2 season d-none">
+	<div class="form-group">
+		<label for="search"  class="fw-bold"></label>
+		<select type="text" id="search-season" name="filter-name" class="form-select">
+			{% for season in seasons %}
+				<option value="{{ season.id}}">{{ season.name  }}</option>
+			{% endfor %}
+		</select>
+	</div>
+</div>
+
 {% endblock main %}
- 
+
 {% block scripts %}
 
 <script type="text/javascript">
-	$(document).ready(function(){
+	$(document).ready(function () {
 		$(".card-text>ul").addClass("tox-checklist")
 
-		$("ul.tox-checklist>li").on("click", function(event){
+		$("ul.tox-checklist>li").on("click", function (event) {
 			$(this).toggleClass("tox-checklist--checked")
 		})
 
-		$("form").submit(function(e){
+		// prepopulate filter-name
+		$("select#search").empty()
+		$("select#search").append("<option value='ongoing'>Ongoing</option> <option value='pending'>Pending</option> <option value='complete'>Complete</option><option value='cancelled'>Concelled</option>")
+
+		$("#filter-btn").on('click load', function(e){
 			e.preventDefault()
-			var objectives = $("#objectives").html()
-			console.log(objectives)
+
+			let data = $("#form-filter-task").serializeArray()
+
+			let filter_name = data[1]['value']
+			if (filter_name === 'farm'){
+				let farmOptions = $("select#search-farm").html()
+				$("select#search").empty()
+				$("select#search").append(farmOptions)
+				console.log(farmOptions)
+
+			}else if (filter_name === 'status'){
+				$("select#search").empty()
+				$("select#search").append("<option value='ongoing'>Ongoing</option> <option value='pending'>Pending</option> <option value='complete'>Complete</option><option value='cancelled'>Concelled</option>")
+			}
+			else if (filter_name === 'season'){
+				let seasonOptions = $("select#search-season").html()
+				$("select#search").empty()
+				$("select#search").append(seasonOptions)
+				console.log(seasonOptions)
+			}
 		})
-	}	
-	)
+	})
 </script>
 
 {% endblock scripts %}
