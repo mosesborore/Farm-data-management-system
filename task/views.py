@@ -1,6 +1,10 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
+from django.db.models import Q
+
+from farm.models import Farm
+from farming.models import FarmingSeason
 
 from .forms import FarmTaskForm
 from .models import FarmTask
@@ -9,11 +13,33 @@ from .utils import parse_to_checkbox
 
 @login_required(login_url="/account/login/")
 def task_home_view(request):
-    print(request.path)
+    
+    tasks = FarmTask.objects.all()
+    
     if request.method == "POST":
-        print(request.POST)
+        filter_name = request.POST.get("filter-name")
+        search_term = request.POST.get("search")
 
-    context = {"tasks": FarmTask.objects.all(), "form": FarmTaskForm()}
+        if filter_name == "status":
+            filters = Q(status=search_term)
+        elif filter_name == "farm":
+            filters = Q(farm=search_term)
+        else:
+            filters = Q(farming_season=search_term)
+
+        try:
+            tasks = FarmTask.objects.select_related("farm", "farming_season").filter(
+                filters
+            )
+        except ValueError:
+            messages.error(request, "Make sure the filter name matches with the search term")
+
+    context = {
+        "tasks": tasks,
+        "form": FarmTaskForm(),
+        "farms": Farm.objects.all(),
+        "seasons": FarmingSeason.objects.all(),
+    }
     return render(request, "task/index.html", context)
 
 
@@ -49,7 +75,12 @@ def filter_task(request, status):
         )
         return redirect("task:home")
 
-    context = {"tasks": tasks}
+    context = {
+        "tasks": tasks,
+        "form": FarmTaskForm(),
+        "farms": Farm.objects.all(),
+        "seasons": FarmingSeason.objects.all(),
+    }
     return render(request, "task/index.html", context)
 
 
