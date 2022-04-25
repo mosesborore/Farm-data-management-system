@@ -25,7 +25,7 @@ ALLOWED_HOSTS = get_list(os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1"))
 
 INTERNAL_IPS = ["127.0.0.1"]
 
-OPENWEATHER_API_KEY = os.environ.get("OPENWEATHER_API_KEY")
+OPENWEATHER_API_KEY = os.environ.get("OPENWEATHER_API_KEY", 'a3fe7f88aab145543cf50a8d30d16a8f')
 if not OPENWEATHER_API_KEY:
     warnings.warn("OPENWEATHER_API_KEY not configured")
 
@@ -98,7 +98,17 @@ if os.environ.get("DATABASE_URL"):
     DATABASES["default"] = dj_database_url.config(
         default=os.environ.get("DATABASE_URL"), conn_max_age=300
     )
-
+else:
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'FarmData',
+        'USER': 'orion',
+        'PASSWORD': 'orion-master',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
+    }
 AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",

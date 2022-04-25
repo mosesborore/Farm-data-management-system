@@ -150,7 +150,8 @@ class InputProduct(models.Model):
         return format_price(self.total_cost, "KSH")
 
     def __str__(self):
-        return "%s - %d" % (self.name, self.unit_price)
+        status = "available" if self.available_units  else "not available"
+        return "%s - %d - %s" % (self.name, self.unit_price, status)
 
 
 class InputInventory(models.Model):
@@ -197,7 +198,7 @@ class InputInventory(models.Model):
 
     def get_total_cost(self):
         """returns the total cost for this inventory"""
-        total_cost = sum([item.total_net_amount for item in self.items.all()])
+        total_cost = sum([item.total_cost for item in self.items.all()])
         return format_price(total_cost, "KSH", html=True)
 
     def __str__(self):
@@ -241,7 +242,7 @@ class InputInventoryItem(models.Model):
         pass
 
     def get_total_cost(self):
-        return format_price(self.total_net_amount, "KSH")
+        return format_price(self.total_cost, "KSH")
 
     def __str__(self):
         return "%s - %s Inventory Item" % (

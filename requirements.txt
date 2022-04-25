@@ -27,7 +27,6 @@ phonenumberslite==8.12.43
 Pillow==9.0.1
 platformdirs==2.5.1
 prices==1.1.0
-psycopg2==2.9.3
 psycopg2-binary==2.9.3
 pycodestyle==2.8.0
 pyflakes==2.4.0

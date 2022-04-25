@@ -4,13 +4,13 @@
 
 {% block headContent %}
 
-    {% include '../shared/styles.html' %} 
-    {% include '../shared/scripts.html' %}
+{% include '../shared/styles.html' %}
+{% include '../shared/scripts.html' %}
 
 {% endblock %}
 
 {% block title %}
-    Farm Information
+Farm Information
 {% endblock title %}
 
 {% block main %}
@@ -18,7 +18,8 @@
     <h1 class="h2">Farm Information</h1>
 </div>
 <div class="content" style="margin-top: 20px">
-    <button id="modelBtn" type="button" class="btn btn-primary mb-4 " data-bs-toggle="modal" data-bs-target="#farmModal">
+    <button id="modelBtn" type="button" class="btn btn-primary mb-4 " data-bs-toggle="modal"
+        data-bs-target="#farmModal">
         Add Farm
     </button>
     <!-- Add new farm Modal -->
@@ -50,24 +51,31 @@
                     <td> {{ farm.area_unit }}</td>
                     <td> {{farm.soil_test_count}}</td>
                     <td>
-                        <a class="btn" id="edit" href="{% url 'farm:edit-farm-detail' farm.id %}" role="button" style="margin-left: 1px; font-size: 14px;" data-id="{{farm.id}}">edit</a>
-                        <a class="btn " id="delete" href="{% url 'farm:delete-farm-detail' farm.id %}" id="modelBtn" data-bs-toggle="modal" data-bs-target="#farmDeleteModal{{ farm.id }}" role="button" style="margin-left: 1px; color: red; font-size: 14px;">delete</a>
+                        <a class="btn" id="edit" href="{% url 'farm:edit-farm-detail' farm.id %}" role="button"
+                            style="margin-left: 1px; font-size: 14px;" data-id="{{farm.id}}">edit</a>
+                        <a class="btn " id="delete" href="{% url 'farm:delete-farm-detail' farm.id %}" id="modelBtn"
+                            data-bs-toggle="modal" data-bs-target="#farmDeleteModal{{ farm.id }}" role="button"
+                            style="margin-left: 1px; color: red; font-size: 14px;">delete</a>
                         <!-- confirm delete modal -->
-                        <div class="modal fade" id="farmDeleteModal{{ farm.id }}" tabindex="-1" aria-labelledby="farmDeleteModal" aria-hidden="true">
+                        <div class="modal fade" id="farmDeleteModal{{ farm.id }}" tabindex="-1"
+                            aria-labelledby="farmDeleteModal" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="farmDeleteModal">Delete Farm details</h5>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="{% url 'farm:delete-farm-detail' farm.id %}" method="POST" class="mt-4">
+                                        <form action="{% url 'farm:delete-farm-detail' farm.id %}" method="POST"
+                                            class="mt-4">
                                             {% csrf_token %}
-                                            <input type="checkbox" name="delete" id="delete"> Are sure you want to delete Farm: {{ farm.name }}?
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-danger">Delete</button>
-                                        </div>
+                                            <input type="checkbox" name="delete" id="delete"> Are sure you want to
+                                            delete Farm: {{ farm.name }}?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </div>
                                     </form>
                                 </div>
                             </div>
@@ -96,37 +104,37 @@
 
 {% block scripts %}
 <script>
-	$(document).ready(function () {
-		$("#table_id").DataTable({
-			columnDefs: [{
-				orderable: false,
-				className: 'focusedRow',
-				target: 0
-			}],
-			select: {
-				style: 'os',
-			},
-			order: [
-				[1, 'asc']
-			],
-			scrollX: true,
-			scrollY: "70vh",
-			scrollCollapse: true,
-			//responsive: true,
-			paging: true,
-			dom: "Bfrtip",
-			orientation: "landscape",
-			buttons: [{
-					text: "Export PDF",
-					extend: "pdfHtml5",
-					messageTop: "Season information report",
-					exportOptions: {
-						columns: [':visible']
-					}
-				},
-				'colvis'
-			],
-		});
-	});
+    $(document).ready(function () {
+        $("#table_id").DataTable({
+            columnDefs: [{
+                orderable: false,
+                className: 'focusedRow',
+                target: 0
+            }],
+            select: {
+                style: 'os',
+            },
+            order: [
+                [1, 'asc']
+            ],
+            scrollX: true,
+            scrollY: "70vh",
+            scrollCollapse: true,
+            //responsive: true,
+            paging: true,
+            dom: "Bfrtip",
+            orientation: "landscape",
+            buttons: [{
+                text: "Export PDF",
+                extend: "pdfHtml5",
+                messageTop: "Season information report",
+                exportOptions: {
+                    columns: [':visible']
+                }
+            },
+                'colvis'
+            ],
+        });
+    });
 </script>
 {% endblock scripts %}

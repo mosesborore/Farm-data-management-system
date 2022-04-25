@@ -14,7 +14,7 @@ from .forms import (
     InputInventoryItemForm,
     InputProductForm,
 )
-from .models import InputCategory, InputInventory, InputProduct
+from .models import InputCategory, InputInventory, InputInventoryItem, InputProduct
 
 
 # Create your views here.
@@ -66,12 +66,15 @@ def inventory_item_list(request, ref_code):
                 product_pk = request.POST.get("input_product")
 
                 product = get_object_or_404(InputProduct, pk=product_pk)
-
-                # decrease the product quantity
-                product.decrease_unit(quantity)
-
-                new_item_form.save()
-                messages.success(request, "New Inventory added successfully")
+                product_name = product.name
+                try:
+                    # decrease the product quantity
+                    product.decrease_unit(quantity)
+                    
+                    new_item_form.save()
+                    messages.success(request, "New Inventory added successfully")
+                except Exception:
+                    messages.error(request, f'Cannot add item. The available quantity for "{product_name}" is zero. Please refill')
             else:
                 messages.error(request, new_item_form.errors.as_ul())
 
@@ -93,6 +96,52 @@ def inventory_item_list(request, ref_code):
     }
     return render(request, "input/inventory-item-list.html", context)
 
+
+def edit_inventory_item(request, ref_code, pk):
+    item = get_object_or_404(InputInventoryItem, input_inventory__ref_code=ref_code, pk=pk)
+
+    item_product = item.input_product
+    if request.method == "POST":
+        form = InputInventoryItemForm(request.POST or None, instance=item)
+        
+        quantity = int(request.POST.get('quantity'))
+        initial_quantity = item.quantity
+        
+        # for instance, b4 quantity was 5 and now quantity is 8
+        # meaning the quantity has been increased by 3 (8-5)
+        requested_quantity = quantity - initial_quantity
+        
+        # quantity is not updated
+        if item.quantity == quantity:
+            if form.is_valid():
+                form.save()
+                messages.error(request, f"Item details updated successfully")
+                return redirect('input:inventory-item-list', ref_code)
+            else:
+                messages.error(request, form.errors.as_text)
+        # quantity has been updated
+        # if the requested quantity is greater than the available product quantity
+        elif item_product.available_units < int(requested_quantity):
+            rem = item_product.available_units
+            messages.error(request, f'Unable to allocate the request quantity. Remaining quantity for product: "{item_product.name}" is {rem}')
+        elif item_product.available_units >= int(requested_quantity):
+            if form.is_valid():
+                # get the product and decrease it quantity
+                product = get_object_or_404(InputProduct, pk=item_product.id)
+                product.decrease_unit(requested_quantity)
+                form.save()
+                messages.error(request, f"Item details updated successfully")
+                return redirect('input:inventory-item-list', ref_code)
+            else:
+                messages.error(request, form.errors.as_text)
+                
+    form = InputInventoryItemForm(instance=item)
+    context = {
+        "form": form,
+        "name": item_product.name
+    }
+    return render(request, "input/edit-item.html", context)
+    
 
 @require_POST
 @login_required(login_url="/account/login/")

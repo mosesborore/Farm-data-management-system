@@ -4,209 +4,204 @@
 {% load options %}
 
 {% block headContent %}
-
-	{% include '../shared/styles.html' %} 
-	{% include '../shared/scripts.html' %}
-
-{% endblock %}
-
+{% include '../shared/styles.html' %}
+{% include '../shared/scripts.html' %} {% endblock %}
 {% block title %}
 Product Information
 {% endblock title %}
 
 {% block main %}
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-	<h1 class="h2">Product Information</h1>
+    <h1 class="h2">Product Information</h1>
 </div>
 <div class="content" style="margin-top: 20px">
-	<!-- Add new Product Modal -->
-	<button id="modelBtn" type="button" class="btn btn-primary mb-4 " data-bs-toggle="modal"
-		data-bs-target="#ProductModal">
-		Add New Product
-	</button>
-	{% include './modals/add-product-modal.html' %}
-	<!-- end Add new Product  MODAL -->
+    <!-- Add new Product Modal -->
+    <button id="modelBtn" type="button" class="btn btn-primary mb-4 " data-bs-toggle="modal"
+        data-bs-target="#ProductModal">
+        Add New Product
+    </button>
+    {% include './modals/add-product-modal.html' %}
+    <!-- end Add new Product  MODAL -->
 
-	<!-- DATATABLE -->
-	<div class="container">
-		<table class="table table-striped display table-hover " id="table_id" style="width: 100%;">
-			<thead>
-				<tr>
-					<th scope="col">name</th>
-					<th scope="col">Price per Unit</th>
-					<th scope="col">Total units</th>
-					<th scope="col">Avail. units</th>
-					<th scope="col">Unit meas.</th>
-					<th scope="col">Total costs</th>
-					<th scope="col">Wgt per unit</th>
-					<th scope="col">Rate</th>
-					<th scope="col">Prod. category</th>
-					<th scope="col">Actions</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% if products %}
-				{% for product in products %}
-				<tr>
-					<td data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight{{product.id}}"
-						aria-controls="offcanvasRight">
-						{{ product.name}}</td>
-					<td>{{ product.get_unit_price }}</td>
-					<td>{{ product.total_units }}</td>
-					<td>{{ product.available_units }}</td>
-					<td>{{ product.unit_measurement }}</td>
-					<td>{{ product.get_total_cost }}</td>
-					<td>{{ product.unit_weight }} {{ product.unit_measurement }}</td>
-					<td> {{ product.unit_rate }} {{ product.unit_rate_measurement }}</td>
-					<td> <span class="badge bg-secondary">{{ product.category.name }}</span></td>
-					<td>
-						<button class="btn " id="delete" id="modelBtn" data-bs-toggle="modal"
-							data-bs-target="#productDeleteModal{{product.id}}" role="button"
-							style="margin-left: 1px; color: red; font-size: 14px;">delete</button>
-					</td>
-					<!-- confirm delete modal -->
-					<div class="modal fade" id="productDeleteModal{{product.id}}" tabindex="-1"
-						aria-labelledby="productDeleteModal{{product.id}}" aria-hidden="true">
-						<div class="modal-dialog">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h5 class="modal-title" id="farmDeleteModal">Delete Soil details</h5>
-								</div>
-								<div class="modal-body">
-									<form action="{% url 'input:delete-product' product.id %}" method="POST"
-										class="mt-4">
-										{% csrf_token %}
-										<input type="checkbox" name="delete" id="delete"> Are sure you want to delete
-										soil details?
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-secondary"
-										data-bs-dismiss="modal">Close</button>
-									<button type="submit" class="btn btn-danger">Delete</button>
-								</div>
-								</form>
-							</div>
-						</div>
-					</div>
-					<!-- end confirm delete modal -->
+    <!-- DATATABLE -->
+    <div class="container">
+        <table class="table table-striped display table-hover " id="table_id" style="width: 100%;">
+            <thead>
+                <tr>
+                    <th scope="col">name</th>
+                    <th scope="col">Price per Unit</th>
+                    <th scope="col">Total units</th>
+                    <th scope="col">Avail. units</th>
+                    <th scope="col">Unit meas.</th>
+                    <th scope="col">Total costs</th>
+                    <th scope="col">Wgt per unit</th>
+                    <th scope="col">Rate</th>
+                    <th scope="col">Prod. category</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if products %} {% for product in products %}
+                <tr>
+                    <td data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight{{product.id}}"
+                        aria-controls="offcanvasRight">
+                        {{ product.name}}
+                    </td>
+                    <td>{{ product.get_unit_price }}</td>
+                    <td>{{ product.total_units }}</td>
+                    <td> {{ product.available_units }}
+                        {% if not product.available_units %}<span class="badge bg-danger">Refill</span>{% endif %}
+                    </td>
+                    <td>{{ product.unit_measurement }}</td>
+                    <td>{{ product.get_total_cost }}</td>
+                    <td>{{ product.unit_weight }} {{ product.unit_measurement }}</td>
+                    <td> {{ product.unit_rate }} {{ product.unit_rate_measurement }}</td>
+                    <td> <span class="badge bg-secondary">{{ product.category.name }}</span></td>
+                    <td>
+                        <button class="btn " id="delete" id="modelBtn" data-bs-toggle="modal"
+                            data-bs-target="#productDeleteModal{{product.id}}" role="button"
+                            style="margin-left: 1px; color: red; font-size: 14px;">delete</button>
+                    </td>
+                    <!-- confirm delete modal -->
+                    <div class="modal fade" id="productDeleteModal{{product.id}}" tabindex="-1"
+                        aria-labelledby="productDeleteModal{{product.id}}" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="farmDeleteModal">Delete Product details</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{% url 'input:delete-product' product.id %}" method="POST"
+                                        class="mt-4">
+                                        {% csrf_token %}
+                                        <input type="checkbox" name="delete" id="delete"> Are sure you want to delete: <a href="{% url 'input:product-list' %}">{{product.name}}</a>?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end confirm delete modal -->
 
-					<!-- OFFCANVAS -->
-					<div class="offcanvas offcanvas-end" tabindex="-1" data-bs-scroll="true"
-						id="offcanvasRight{{product.id}}" aria-labelledby="offcanvasRightLabel">
-						<div class="offcanvas-header">
-							<h5 id="offcanvasRightLabel fs-5 text-capitalize mb-100"> Edit product</h5>
-							<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-								aria-label="Close"></button>
-						</div>
-						<div class="offcanvas-body">
-							<form action="{% url 'input:edit-product' product.pk %}" method="POST" class="mt-4">
-								{% csrf_token %}
-								<div class="row g-3">
-									<div class="col">
-										<div class="form-group mb-2">
-											<label for="name" class="fw-bold">Product Name</label>
-											<input type="text" name="name" id="name" value="{{product.name}}"
-												class="form-control" placeholder="Enter product name" autofocus=True
-												required>
-										</div>
-									</div>
-									<div class="col">
-										<div class="form-group mb-2">
-											<label for="unit_price" class="fw-bold">Price Per Unit</label>
-											<input type="number" step="0.01" name="unit_price"
-												id="unit_price" class="form-control"
-												value="{{product.unit_price}}" placeholder="Enter Price per unit"
-												required>
-										</div>
-									</div>
-								</div>
-								<div class="row g-3">
-									<div class="col">
-										<div class="form-group mb-2">
-											<label for="total_units" class="fw-bold">Total Units</label>
-											<input type="number" name="total_units" id="total_units"
-												value="{{ product.total_units }}" class="form-control"
-												placeholder="Enter total units" required>
-										</div>
-									</div>
-									<div class="col">
-										<div class="form-group mb-2">
-											<label for="total_cost" class="fw-bold">Total Amount</label>
-											<input type="number" name="total_cost"
-												value="{{product.total_cost}}" id="total_cost" min="0"
-												step="0.01" class="form-control" placeholder="Enter total amount"
-												required>
-										</div>
-									</div>
-								</div>
-								<div class="row g-3">
-									<div class="col">
-										<div class="form-group mb-2 date">
-											<label for="unit_weight" class="fw-bold">Weight per Unit</label>
-											<input type="number" name="unit_weight" value="{{product.unit_weight}}"
-												id="unit_weight" class="form-control"
-												placeholder="Enter weight per unit" required>
-										</div>
-									</div>
-									<div class="col">
-										<div class="form-group mb-2">
-											<label for="unit_measurement" class="fw-bold">Unit measurements</label>
-											<select name="unit_measurement" class="form-select" required
-												aria-required="true">
-												{% unit_measurement_tag product.unit_measurement %}
-											</select>
+                    <!-- OFFCANVAS -->
+                    <div class="offcanvas offcanvas-end" tabindex="-1" data-bs-scroll="true"
+                        id="offcanvasRight{{product.id}}" aria-labelledby="offcanvasRightLabel">
+                        <div class="offcanvas-header">
+                            <h5 id="offcanvasRightLabel fs-5 text-capitalize mb-100"> Edit product</h5>
+                            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                            <form action="{% url 'input:edit-product' product.pk %}" method="POST" class="mt-4">
+                                {% csrf_token %}
+                                <div class="row g-3">
+                                    <div class="col">
+                                        <div class="form-group mb-2">
+                                            <label for="name" class="fw-bold">Product Name</label>
+                                            <input type="text" name="name" id="name" value="{{product.name}}"
+                                                class="form-control" placeholder="Enter product name" autofocus=True
+                                                required>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group mb-2">
+                                            <label for="unit_price" class="fw-bold">Price Per Unit</label>
+                                            <input type="number" step="0.01" name="unit_price" id="unit_price"
+                                                class="form-control" value="{{product.unit_price}}"
+                                                placeholder="Enter Price per unit" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col">
+                                        <div class="form-group mb-2">
+                                            <label for="total_units" class="fw-bold">Total Units</label>
+                                            <input type="number" name="total_units" id="total_units"
+                                                value="{{ product.total_units }}" class="form-control"
+                                                placeholder="Enter total units" required>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group mb-2">
+                                            <label for="total_cost" class="fw-bold">Total Amount</label>
+                                            <input type="number" name="total_cost" value="{{product.total_cost}}"
+                                                id="total_cost" min="0" step="0.01" class="form-control"
+                                                placeholder="Enter total amount" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col">
+                                        <div class="form-group mb-2 date">
+                                            <label for="unit_weight" class="fw-bold">Weight per Unit</label>
+                                            <input type="number" name="unit_weight" value="{{product.unit_weight}}"
+                                                id="unit_weight" class="form-control"
+                                                placeholder="Enter weight per unit" required>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group mb-2">
+                                            <label for="unit_measurement" class="fw-bold">Unit measurements</label>
+                                            <select name="unit_measurement" class="form-select" required
+                                                aria-required="true">
+                                                {% unit_measurement_tag product.unit_measurement %}
+                                            </select>
 
-										</div>
-									</div>
-								</div>
+                                        </div>
+                                    </div>
+                                </div>
 
-								<div class="row g-3">
-									<div class="col">
-										<div class="form-group mb-2 date">
-											<label for="unit_rate" class="fw-bold">Rate per unit</label>
-											<input type="number" name="unit_rate" id="unit_rate" class="form-control"
-												min="0" value="{{product.unit_rate}}"
-												placeholder="Enter rate e.g. 10kg/acre" required aria-required="true">
-										</div>
-									</div>
-									<div class="col">
-										<div class="form-group mb-2">
-											<label for="unit_rate_measurement" class="fw-bold">Rate measurement</label>
-											<select name="unit_rate_measurement" id="unit_rate_measurement"
-												class="form-select" required aria-required="true">
-												{% unit_rate_measurement_tag product.unit_rate_measurement %}
-											</select>
-										</div>
-									</div>
-								</div>
-								<div class="col">
-									<div class="form-group mb-3">
-										<label for="desc" class="fw-bold">Product Description</label>
-										<textarea name="desc" id="desc" cols="40" rows="10" class="form-control"
-											placeholder="Enter product description"
-											aria-required="false">{{ product.desc }}</textarea>
-									</div>
-								</div>
-								<div class="row g-1">
-									<div class="col">
-										<div class="form-group mb-3">
-											<label for="cat-id" class="fw-bold"">
-												<span class=" me-2">Product Category </span>
-												<a href="#" data-bs-toggle="modal" data-bs-target="#categoryModal"><img
-														src="{% static 'icons/plus-square.svg' %}" alt="plus icon"> Add
+                                <div class="row g-3">
+                                    <div class="col">
+                                        <div class="form-group mb-2 date">
+                                            <label for="unit_rate" class="fw-bold">Rate per unit</label>
+                                            <input type="number" name="unit_rate" id="unit_rate" class="form-control"
+                                                min="0" value="{{product.unit_rate}}"
+                                                placeholder="Enter rate e.g. 10kg/acre" required aria-required="true">
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group mb-2">
+                                            <label for="unit_rate_measurement" class="fw-bold">Rate measurement</label>
+                                            <select name="unit_rate_measurement" id="unit_rate_measurement"
+                                                class="form-select" required aria-required="true">
+                                                {% unit_rate_measurement_tag product.unit_rate_measurement %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group mb-3">
+                                        <label for="desc" class="fw-bold">Product Description</label>
+                                        <textarea name="desc" id="desc" cols="40" rows="10" class="form-control"
+                                            placeholder="Enter product description"
+                                            aria-required="false">{{ product.desc }}</textarea>
+                                    </div>
+                                </div>
+                                <div class="row g-1">
+                                    <div class="col">
+                                        <div class="form-group mb-3">
+                                            <label for="cat-id" class="fw-bold" ">
+												<span class=" me-2 ">Product Category </span>
+												<a href=" # " data-bs-toggle=" modal " data-bs-target=" #categoryModal "><img
+														src=" {% static 'icons/plus-square.svg' %} " alt=" plus icon "> Add
 													Product Category</a>
 											</label>
-											<select name="category" id="cat-id" class="form-select">
+											<select name=" category " id=" cat-id " class=" form-select ">
 												{% category_option_tag product.category.id %}
 											</select>
 
 										</div>
 									</div>
 								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-secondary" data-bs-dismiss="offcanvas"
-										aria-label="Close">Close</button>
-									<button type="submit" class="btn btn-primary">Save changes</button>
+								<div class=" modal-footer ">
+									<button type=" button " class=" btn btn-secondary " data-bs-dismiss=" offcanvas "
+										aria-label=" Close ">Close</button>
+									<button type=" submit " class=" btn btn-primary ">Save changes</button>
 								</div>
 							</form>
 						</div>
@@ -215,10 +210,10 @@ Product Information
 				</tr>
 				{% endfor %}
 				{% else %}
-				<tr aria-colspan="5">
+				<tr aria-colspan=" 5 ">
 					<td></td>
 					<td></td>
-					<td colspan="5">
+					<td colspan=" 5 ">
 						No Product data in the database
 					</td>
 					<td></td>
@@ -226,8 +221,8 @@ Product Information
 				</tr>
 				{% endif %}
 			</tbody>
-		</table>
-	</div>
+        </table>
+    </div>
 </div>
 
 
@@ -239,74 +234,74 @@ Product Information
 
 {% block scripts %}
 <script type="text/javascript">
-	$(document).ready(function () {
-		$("#table_id").DataTable({
-			columnDefs: [{
-				orderable: false,
-				className: 'focusedRow',
-				target: 0
-			}],
-			select: {
-				style: 'os',
-			},
-			order: [
-				[1, 'asc']
-			],
-			scrollX: true,
-			scrollY: "70vh",
-			scrollCollapse: true,
-			//responsive: true,
-			paging: true,
-			dom: "Bfrtip",
-			orientation: "landscape",
-			buttons: [{
-					text: "Export PDF",
-					extend: "pdfHtml5",
-					messageTop: "Product information report",
-					exportOptions: {
-						columns: [':visible']
-					}
-				},
-				'colvis'
-			],
-		});
+    $(document).ready(function () {
+        $(" #table_id ").DataTable({
+            columnDefs: [{
+                orderable: false,
+                className: 'focusedRow ',
+                target: 0
+            }],
+            select: {
+                style: 'os ',
+            },
+            order: [
+                [1, 'asc ']
+            ],
+            scrollX: true,
+            scrollY: " 70vh ",
+            scrollCollapse: true,
+            //responsive: true,
+            paging: true,
+            dom: " Bfrtip ",
+            orientation: "landscape",
+            buttons: [{
+                text: "Export PDF",
+                extend: "pdfHtml5",
+                messageTop: "Product information report",
+                exportOptions: {
+                    columns: [':visible ']
+                }
+            },
+                'colvis'
+            ],
+        });
 
-		// add new stage 
-		$("#productCategorySubBtn").on('click', function (e) {
-			e.preventDefault();
+        // add new stage 
+        $(" #productCategorySubBtn").on('click', function (e) {
+            e.preventDefault();
 
-			var serializedData = $("#productCategoryForm").serialize();
+            var serializedData = $("#productCategoryForm").serialize();
 
-			$.ajax({
-				type: 'POST',
-				url: "{% url 'input:add-category' %}",
-				data: serializedData,
-				success: function (response) {
-					// get the name and id for the just inserted stage
-					name = response['data'][0]['name']
-					id = response['data'][0]['id']
+            $.ajax({
+                type: 'POST ',
+                url: " {% url 'input:add-category' %} ",
+                data: serializedData,
+                success: function (response) {
+                    // get the name and id for the just inserted stage
+                    name = response['data'][0]['name']
+                    id = response['data '][0]['id ']
 
-					// populate the stage with the stage just saved
-					let stages = $("select#cat-id");
-					stages.append(`<option value=\"${id}\" selected>${name}</option>`)
+                    // populate the stage with the stage just saved
+                    let stages = $("select#cat-id");
+                    stages.append(`<option value=\" ${id}\ " selected>${name}</option>`)
 
-					// reset the form
-					// empty the stage form
-					$("#productCategoryForm")[0].reset()
+                    // reset the form
+                    // empty the stage form
+                    $("#productCategoryForm")[0].reset()
 
-					// dismiss the model
-					$("button#close-modal").click()
+                    // dismiss the model
+                    $("button#close-modal").click()
 
-					
 
-				},
-				error: function (response) {
-					alert("no error occurred. Please reload the page and try again")
-				}
-			});
 
-		});
-	});
+                },
+                error: function (response) {
+                    alert(" no error occurred. Please reload the page and try again ")
+                }
+            });
+
+        });
+    });
 </script>
 
 {% endblock scripts %}

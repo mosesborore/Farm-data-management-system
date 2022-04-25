@@ -17,7 +17,7 @@
 {% endblock %}
 
 {% block title %}
-Product Information
+	{{inventory_name}} - {{ref_code}} Inventory
 {% endblock title %}
 
 {% block main %}
@@ -54,6 +54,8 @@ Product Information
 					<td>{{ item.get_total_cost }}</td>
 
 					<td>
+						<a class="btn" id="edit" href="{% url 'input:edit-item' ref_code item.id%}" role="button"
+                            style="margin-left: 1px; font-size: 14px;" data-id="{{farm.id}}">edit</a>
 						<button class="btn " id="delete" id="modelBtn" data-bs-toggle="modal"
 							data-bs-target="#itemDeleteModal{{item.id}}" role="button"
 							style="margin-left: 1px; color: red; font-size: 14px;">delete</button>
@@ -98,10 +100,16 @@ Product Information
 				{% endif %}
 
 			</tbody>
+
+			<tfoot>
+                <tr>
+                    <td>Total</td>
+					<td class="fw-bold">{{inventory_total_cost}}</td>
+					<td></td>
+                </tr>
+            </tfoot>
 		</table>
 	</div>
-
-	<h4 class="h5">TOTAL: {{inventory_total_cost}}</h4>
 </div>
 
 {% endblock main %}
@@ -129,7 +137,7 @@ Product Information
 			buttons: [{
 					text: "Export PDF",
 					extend: "pdfHtml5",
-					messageTop: "Farm information report",
+					messageTop: "Inventory Items information report",
 					exportOptions: {
 						columns: [':visible']
 					}

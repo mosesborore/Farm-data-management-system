@@ -17,6 +17,11 @@ urlpatterns = [
         name="inventory-item-list",
     ),
     path(
+        "inventory/<str:ref_code>/items/<int:pk>/edit",
+        views.edit_inventory_item,
+        name="edit-item",
+    ),
+    path(
         "inventory/<str:ref_code>/items/<int:pk>/delete",
         views.delete_inventory_item,
         name="delete-item",
