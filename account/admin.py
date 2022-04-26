@@ -22,7 +22,7 @@ class LoginAdmin(UserAdmin):
 
     list_display = ("username", "rank")
     search_fields = ("username",)
-    readonly_fields = ("id",)
+    # readonly_fields = ("id",)
 
     filter_horizontal = ()
     list_filter = ()
@@ -65,7 +65,7 @@ class FarmerAdmin(ModelAdmin):
         "national_id",
         "phone_no",
     )
-    readonly_fields = ("id",)
+    # readonly_fields = ("id",)
 
 
 class WorkerAdmin(ModelAdmin):
@@ -76,7 +76,7 @@ class WorkerAdmin(ModelAdmin):
         "national_id",
         "phone_no",
     )
-    readonly_fields = ("id",)
+    # readonly_fields = ("id",)
 
     list_select_related = True
 
