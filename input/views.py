@@ -238,7 +238,6 @@ def delete_product(request, pk):
 @login_required(login_url="/account/login/")
 def add_category(request):
     if request.method == "POST" or request.is_ajax():
-        print(request.POST)
         form = InputCategoryForm(request.POST)
         if form.is_valid():
             form.save()

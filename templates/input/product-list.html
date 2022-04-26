@@ -186,12 +186,12 @@ Product Information
                                     <div class="col">
                                         <div class="form-group mb-3">
                                             <label for="cat-id" class="fw-bold" ">
-												<span class=" me-2 ">Product Category </span>
-												<a href=" # " data-bs-toggle=" modal " data-bs-target=" #categoryModal "><img
-														src=" {% static 'icons/plus-square.svg' %} " alt=" plus icon "> Add
+												<span class="me-2">Product Category </span>
+												<a href="#" data-bs-toggle="modal" data-bs-target="#categoryModal"><img
+														src=" {% static 'icons/plus-square.svg' %} " alt="plus icon"> Add
 													Product Category</a>
 											</label>
-											<select name=" category " id=" cat-id " class=" form-select ">
+											<select name="category" id="cat-id" class="form-select">
 												{% category_option_tag product.category.id %}
 											</select>
 
@@ -235,7 +235,7 @@ Product Information
 {% block scripts %}
 <script type="text/javascript">
     $(document).ready(function () {
-        $(" #table_id ").DataTable({
+        $("#table_id").DataTable({
             columnDefs: [{
                 orderable: false,
                 className: 'focusedRow ',
@@ -267,23 +267,23 @@ Product Information
         });
 
         // add new stage 
-        $(" #productCategorySubBtn").on('click', function (e) {
+        $("#productCategorySubBtn").on('click', function (e) {
             e.preventDefault();
 
             var serializedData = $("#productCategoryForm").serialize();
 
             $.ajax({
-                type: 'POST ',
-                url: " {% url 'input:add-category' %} ",
+                type: 'POST',
+                url: "{% url 'input:add-category' %}",
                 data: serializedData,
                 success: function (response) {
                     // get the name and id for the just inserted stage
                     name = response['data'][0]['name']
-                    id = response['data '][0]['id ']
+                    id = response['data'][0]['id']
 
                     // populate the stage with the stage just saved
                     let stages = $("select#cat-id");
-                    stages.append(`<option value=\" ${id}\ " selected>${name}</option>`)
+                    stages.append(`<option value=\"${id}\" selected>${name}</option>`)
 
                     // reset the form
                     // empty the stage form
@@ -296,7 +296,8 @@ Product Information
 
                 },
                 error: function (response) {
-                    alert(" no error occurred. Please reload the page and try again ")
+                    console.log(response)
+                    alert("no error occurred. Please reload the page and try again")
                 }
             });
 
