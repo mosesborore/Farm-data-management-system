@@ -67,6 +67,10 @@ SOIL_STRUCTURE = (
     ("platy", "platy"),
 )
 
+SOIL_STATUS = (
+    ('healthy', 'healthy'),
+    ('unhealthy', 'unhealthy'),
+)
 
 class Soil(models.Model):
     id = models.BigAutoField(
@@ -114,7 +118,7 @@ class Soil(models.Model):
         "Soil next testing date", db_column="Soil_next_testing_date"
     )
     status = models.CharField(
-        "Soil status", max_length=64, db_column="Soil_status"
+        "Soil status", max_length=64, db_column="Soil_status", choices=SOIL_STATUS
     )  # find soil status that describe the soil
     notes = models.TextField("Soil Notes", db_column="Soil_notes", editable=True)
     farm_id = models.ForeignKey(
