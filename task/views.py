@@ -13,9 +13,9 @@ from .utils import parse_to_checkbox
 
 @login_required(login_url="/account/login/")
 def task_home_view(request):
-    
+
     tasks = FarmTask.objects.all()
-    
+
     if request.method == "POST":
         filter_name = request.POST.get("filter-name")
         search_term = request.POST.get("search")
@@ -32,7 +32,9 @@ def task_home_view(request):
                 filters
             )
         except ValueError:
-            messages.error(request, "Make sure the filter name matches with the search term")
+            messages.error(
+                request, "Make sure the filter name matches with the search term"
+            )
 
     context = {
         "tasks": tasks,

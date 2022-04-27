@@ -68,9 +68,10 @@ SOIL_STRUCTURE = (
 )
 
 SOIL_STATUS = (
-    ('healthy', 'healthy'),
-    ('unhealthy', 'unhealthy'),
+    ("healthy", "healthy"),
+    ("unhealthy", "unhealthy"),
 )
+
 
 class Soil(models.Model):
     id = models.BigAutoField(

@@ -147,7 +147,7 @@ class Worker(models.Model):
         db_column="Worker_national_id",
     )
     phone_no = PossiblePhoneNumberField(
-        "Worker Phone no",blank=True, default="", db_column="Worker_phone_no"
+        "Worker Phone no", blank=True, default="", db_column="Worker_phone_no"
     )
     login_id = models.ForeignKey(
         "Login",

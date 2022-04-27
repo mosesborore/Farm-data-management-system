@@ -48,7 +48,7 @@ UNIT_RATE_MEASUREMENT = (
     ("L/ha", _("liter/hectare")),
     ("G/hectare", _("grams/hectare")),
     ("bag/acre", _("bags/acre")),
-    ("bag/hectare", _("bags/hectare"))
+    ("bag/hectare", _("bags/hectare")),
 )
 
 
@@ -152,7 +152,7 @@ class InputProduct(models.Model):
         return format_price(self.total_cost, "KSH")
 
     def __str__(self):
-        status = "available" if self.available_units  else "not available"
+        status = "available" if self.available_units else "not available"
         return "%s - %d - %s" % (self.name, self.unit_price, status)
 
 

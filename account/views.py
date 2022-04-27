@@ -34,7 +34,7 @@ def login_view(request):
 
             # check if the user is a admin
             # if not check if the have Worker account
-            if user.rank == "worker" or user.rank == 'manager':
+            if user.rank == "worker" or user.rank == "manager":
                 try:
                     Worker.objects.get(login_id=user)
                 except Worker.DoesNotExist:
@@ -100,7 +100,7 @@ def profile(request):
 
     if request.method == "POST":
 
-        if user.rank == "farmer" or user.rank == "manager":
+        if user.rank == "farmer":
             # meaning the form was submitted by user
             # who is admin or manager
             farmer_form = FarmerForm(request.POST)
@@ -125,7 +125,7 @@ def profile(request):
             else:
                 messages.error(request, farmer_form.errors.as_text())
 
-        else:
+        elif user.rank == "worker" or user.rank == "manager":
             # the user is a worker
             worker_form = WorkerForm(request.POST)
 
@@ -149,7 +149,7 @@ def profile(request):
 
     context = {"form": None, "personal_data": None, "title": "Worker"}
 
-    if user.rank == "farmer" or user.rank == "manager":
+    if user.rank == "farmer":
         try:
             farmer = Farmer.objects.filter(login_id=user).first()
         except Farmer.DoesNotExist:
@@ -161,7 +161,7 @@ def profile(request):
         context["personal_data"] = farmer
         context["form"] = farmer_form
         context["title"] = user.rank
-    else:
+    elif user.rank == "worker" or user.rank == "manager":
         try:
             worker = Worker.objects.filter(login_id=user).first()
         except Worker.DoesNotExist:
