@@ -34,7 +34,7 @@ def login_view(request):
 
             # check if the user is a admin
             # if not check if the have Worker account
-            if user.rank == "worker":
+            if user.rank == "worker" or user.rank == 'manager':
                 try:
                     Worker.objects.get(login_id=user)
                 except Worker.DoesNotExist:

@@ -144,8 +144,6 @@
 									<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
 										<li><a href="{% url 'weather:today' %}"
 												class="link-dark rounded nav__link">Today</a></li>
-										<li><a href="{% url 'weather:today' %}" class="link-dark rounded nav__link">All
-												Time</a></li>
 									</ul>
 								</div>
 							</li>
@@ -157,11 +155,6 @@
 								</button>
 								<div class="collapse" id="account-collapse">
 									<ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-										<li>
-											{% if request.user.rank == 'farmer' or request.user.rank == 'manager' %}
-											<a href="#" class="link-dark rounded nav__link">users</a></li>
-										{% endif %}
-							</li>
 							<li><a href="{% url 'account:profile' %}" class="link-dark rounded nav__link">Profile</a>
 							</li>
 							<li><a class="nav-link px-3" href="{% url 'account:logout' %}" onclick="event.preventDefault();

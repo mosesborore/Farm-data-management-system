@@ -3,6 +3,7 @@ from django.db import models
 from farm.models import Farm
 
 DURATION = (
+    ("days", "days"),
     ("week(s)", "week(s)"),
     ("month(s)", "month(s)"),
     ("year(s)", "year(s)"),
