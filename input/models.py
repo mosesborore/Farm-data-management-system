@@ -47,6 +47,8 @@ UNIT_RATE_MEASUREMENT = (
     ("KG/ha", _("kilogram/hectare")),
     ("L/ha", _("liter/hectare")),
     ("G/hectare", _("grams/hectare")),
+    ("bag/acre", _("bags/acre")),
+    ("bag/hectare", _("bags/hectare"))
 )
 
 
