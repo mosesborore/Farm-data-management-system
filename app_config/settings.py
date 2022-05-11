@@ -51,7 +51,6 @@ INSTALLED_APPS = [
     # External apps
     "widget_tweaks",
     "django_prices",
-    "versatileimagefield",
     "phonenumber_field",
     "tinymce",
 ]
@@ -158,19 +157,6 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 PHONENUMBER_DEFAULT_REGION = "KE"
 PHONENUMBER_DB_FORMAT = "NATIONAL"
 PHONENUMBER_DEFAULT_FORMAT = "NATIONAL"
-
-# VERSATILE SETTINGS
-VERSATILEIMAGEFIELD_SETTINGS = {
-    # images should be pre-generated
-    "create_images_on_demand": False,
-}
-
-VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
-    "user_avatars": [
-        ("default", "thumbnail__445x445"),
-        ("profile_medium", "thumbnail__300x300"),
-    ]
-}
 
 TINYMCE_DEFAULT_CONFIG = {
     "theme": "silver",
