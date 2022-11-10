@@ -26,7 +26,7 @@ ALLOWED_HOSTS = get_list(os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1"))
 INTERNAL_IPS = ["127.0.0.1"]
 
 OPENWEATHER_API_KEY = os.environ.get(
-    "OPENWEATHER_API_KEY", "a3fe7f88aab145543cf50a8d30d16a8f"
+    "OPENWEATHER_API_KEY"
 )
 if not OPENWEATHER_API_KEY:
     warnings.warn("OPENWEATHER_API_KEY not configured")
